@@ -1,0 +1,145 @@
+<svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <style>
+    .ttl  { font-size: 12.5px; font-weight: 700; fill: #1f2937; }
+    .det  { font-size: 10px;   fill: #5b6470; }
+    .mono { font-family: 'Consolas','SFMono-Regular',monospace; font-size: 10px; fill: #374151; }
+    .lane { font-size: 12.5px; font-weight: 700; }
+    .albl { font-size: 9.5px; fill: #404654; stroke: #fff; stroke-width: 3px; paint-order: stroke; }
+    .bdg  { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  </style>
+
+  <!-- diagram title (可删) -->
+  <text x="490" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#283346">南开校内 Web 搜索引擎 · 系统架构</text>
+
+  <!-- ===================== 离线 lane ===================== -->
+  <rect x="20" y="50" width="694" height="200" rx="12" fill="#f3f7fc" stroke="#cdd9e8"/>
+  <text class="lane" x="34" y="70" fill="#3f6396">离线构建 (Offline)</text>
+
+  <!-- 在线 lane -->
+  <rect x="20" y="300" width="694" height="196" rx="12" fill="#f6f5f0" stroke="#ddd5c4"/>
+  <text class="lane" x="34" y="320" fill="#8a7330">在线检索 (Online)</text>
+
+  <!-- ===================== ES 中央存储 ===================== -->
+  <rect x="742" y="50" width="216" height="446" rx="12" fill="#eaf2fc" stroke="#5b86c5" stroke-width="1.6"/>
+  <text x="850" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#2f5a9e">Elasticsearch</text>
+  <text x="850" y="102" text-anchor="middle" font-size="10.5" fill="#5b7aa8">索引存储 · BM25 召回</text>
+
+  <!-- index chips -->
+  <g>
+    <rect x="762" y="120" width="176" height="40" rx="7" fill="#ffffff" stroke="#9bb6da"/>
+    <text class="mono" x="774" y="138">nku_pages</text>
+    <text class="det"  x="774" y="153">网页索引（多字段）</text>
+
+    <rect x="762" y="170" width="176" height="40" rx="7" fill="#ffffff" stroke="#9bb6da"/>
+    <text class="mono" x="774" y="188">nku_docs</text>
+    <text class="det"  x="774" y="203">文档索引（PDF/Office）</text>
+
+    <rect x="762" y="220" width="176" height="40" rx="7" fill="#ffffff" stroke="#9bb6da"/>
+    <text class="mono" x="774" y="238">nku_querylog</text>
+    <text class="det"  x="774" y="253">查询日志</text>
+
+    <rect x="762" y="270" width="176" height="40" rx="7" fill="#ffffff" stroke="#9bb6da"/>
+    <text class="mono" x="774" y="288">nku_suggest</text>
+    <text class="det"  x="774" y="303">联想词典（completion）</text>
+  </g>
+  <text class="det" x="762" y="344">字段: title / body / anchor_text /</text>
+  <text class="det" x="762" y="358">url / site / publish_time / pagerank</text>
+
+  <!-- ===================== 离线模块 ===================== -->
+  <!-- 校内站点 -->
+  <rect x="36" y="100" width="104" height="56" rx="9" fill="#ffffff" stroke="#b9c6d8"/>
+  <text class="ttl" x="88" y="126" text-anchor="middle" font-size="11.5">南开校内站点</text>
+  <text class="mono" x="88" y="143" text-anchor="middle" font-size="9">*.nankai.edu.cn</text>
+
+  <!-- ① 网页抓取 -->
+  <rect x="172" y="96" width="150" height="64" rx="9" fill="#ffffff" stroke="#7ea0cf"/>
+  <circle cx="187" cy="111" r="11" fill="#4a78c0"/><text class="bdg" x="187" y="115" text-anchor="middle">1</text>
+  <text class="ttl" x="206" y="116">网页抓取 Crawler</text>
+  <text class="det" x="184" y="134">BFS · 多线程 · 校内域名</text>
+  <text class="det" x="184" y="149">锚文本聚合 · 快照 · 附件</text>
+
+  <!-- 中间产物 -->
+  <rect x="354" y="104" width="118" height="52" rx="5" fill="#ffffff" stroke="#b9c6d8"/>
+  <rect x="350" y="100" width="118" height="52" rx="5" fill="#ffffff" stroke="#b9c6d8"/>
+  <text class="mono" x="362" y="122">pages.jsonl</text>
+  <text class="mono" x="362" y="138">docs.jsonl</text>
+  <text class="det"  x="362" y="151">+ snapshots/</text>
+
+  <!-- ② 文本索引 -->
+  <rect x="502" y="96" width="150" height="64" rx="9" fill="#ffffff" stroke="#7ea0cf"/>
+  <circle cx="517" cy="111" r="11" fill="#4a78c0"/><text class="bdg" x="517" y="115" text-anchor="middle">2</text>
+  <text class="ttl" x="536" y="116">文本索引 Indexer</text>
+  <text class="det" x="514" y="134">正文抽取（PDF/Office）</text>
+  <text class="mono" x="514" y="149">streaming_bulk 写入</text>
+
+  <!-- 链接分析 PageRank -->
+  <rect x="350" y="192" width="170" height="44" rx="9" fill="#ffffff" stroke="#9bb0c8"/>
+  <text class="ttl" x="362" y="211" font-size="11.5">链接分析 PageRank</text>
+  <text class="det" x="362" y="227">α = 0.85 · 出链构图打分</text>
+
+  <!-- ===================== 在线模块 ===================== -->
+  <!-- 用户 -->
+  <rect x="36" y="372" width="104" height="56" rx="9" fill="#ffffff" stroke="#cdbf9c"/>
+  <text class="ttl" x="88" y="404" text-anchor="middle">用户 / 浏览器</text>
+
+  <!-- ④ Web 交互 -->
+  <rect x="172" y="368" width="162" height="64" rx="9" fill="#ffffff" stroke="#c4a96a"/>
+  <circle cx="187" cy="383" r="11" fill="#b08a3c"/><text class="bdg" x="187" y="387" text-anchor="middle">4</text>
+  <text class="ttl" x="206" y="388">Web 交互 Flask</text>
+  <text class="det" x="184" y="406">六类查询 · 快照 · 下载</text>
+  <text class="det" x="184" y="421">登录 · 联想 / 推荐</text>
+
+  <!-- ③ 检索与排序 -->
+  <rect x="366" y="366" width="180" height="70" rx="9" fill="#ffffff" stroke="#c4a96a"/>
+  <circle cx="381" cy="381" r="11" fill="#b08a3c"/><text class="bdg" x="381" y="385" text-anchor="middle">3</text>
+  <text class="ttl" x="400" y="386">检索与排序</text>
+  <text class="det" x="378" y="404">两阶段 retrieve-then-rerank</text>
+  <text class="det" x="378" y="419">① BM25 召回 → ② 混合重排</text>
+  <text class="det" x="378" y="432" font-size="9">(BM25 · PageRank · 时效 · 个性化)</text>
+
+  <!-- ===================== 箭头：离线 ===================== -->
+  <line x1="140" y1="128" x2="170" y2="128" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="155" y="120" text-anchor="middle">抓取</text>
+
+  <line x1="322" y1="128" x2="348" y2="128" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="335" y="120" text-anchor="middle">写出</text>
+
+  <line x1="472" y1="128" x2="500" y2="128" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="486" y="120" text-anchor="middle">读取</text>
+
+  <line x1="652" y1="116" x2="740" y2="116" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="696" y="108" text-anchor="middle">写入索引</text>
+
+  <!-- 抓取 -> PageRank (out_links) -->
+  <polyline points="240,160 240,214 348,214" fill="none" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="250" y="186">out_links</text>
+
+  <!-- PageRank -> 文本索引 (回写) -->
+  <polyline points="520,214 600,214 600,160" fill="none" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="606" y="190">pagerank 回写</text>
+
+  <!-- ===================== 箭头：在线 ===================== -->
+  <!-- 用户 <-> Web -->
+  <line x1="140" y1="394" x2="170" y2="394" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="155" y="387" text-anchor="middle">查询</text>
+  <line x1="170" y1="412" x2="140" y2="412" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="155" y="425" text-anchor="middle">结果页</text>
+
+  <!-- Web <-> 检索排序 -->
+  <line x1="334" y1="394" x2="364" y2="394" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="349" y="387" text-anchor="middle">q + 画像</text>
+  <line x1="364" y1="412" x2="334" y2="412" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="349" y="425" text-anchor="middle">结果</text>
+
+  <!-- 检索排序 <-> ES -->
+  <line x1="546" y1="394" x2="740" y2="394" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="640" y="387" text-anchor="middle">BM25 召回 / 读取</text>
+  <line x1="740" y1="414" x2="546" y2="414" stroke="#555" marker-end="url(#arr)"/>
+  <text class="albl" x="640" y="427" text-anchor="middle">候选池 → 重排</text>
+</svg>

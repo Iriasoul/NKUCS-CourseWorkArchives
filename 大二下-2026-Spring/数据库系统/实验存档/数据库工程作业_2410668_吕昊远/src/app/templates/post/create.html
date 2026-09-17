@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}发帖 - 校园论坛{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h4 class="mb-4">发新帖</h4>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">板块</label>
+                <select name="section_id" class="form-select" required>
+                    <option value="">请选择板块</option>
+                    {% for s in sections %}
+                    <option value="{{ s.section_id }}">{{ s.section_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">标题</label>
+                <input type="text" name="title" class="form-control"
+                       value="{{ title or '' }}" required maxlength="100">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">内容</label>
+                <textarea name="content" class="form-control" rows="8"
+                          required>{{ content or '' }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">发布</button>
+            <a href="{{ url_for('post.index') }}" class="btn btn-link">取消</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

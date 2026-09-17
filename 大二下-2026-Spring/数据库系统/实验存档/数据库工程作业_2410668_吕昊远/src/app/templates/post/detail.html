@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} - 校园论坛{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        {# 帖子主体 #}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>{{ post.title }}</h3>
+                <div class="text-muted small mb-3">
+                    {{ post.section_name }} · {{ post.author }} ·
+                    {{ post.publish_time.strftime('%Y-%m-%d %H:%M') }} ·
+                </div>
+                {# 点赞按钮 #}
+                <form method="post"
+                    action="{{ url_for('post.toggle_like', post_id=post.post_id) }}"
+                    style="display:inline;">
+                    <button type="submit" class="btn btn-sm
+                            {{ 'btn-danger' if is_liked else 'btn-outline-secondary' }}">
+                        👍 {{ post.like_count }}
+                        {{ '已点赞' if is_liked else '点赞' }}
+                    </button>
+                </form>
+                {# 收藏按钮(下拉菜单选择收藏夹) #}
+                {% if session.user_id %}
+                <div class="dropdown d-inline-block ms-2">
+                    <button class="btn btn-sm {{ 'btn-warning' if is_favorited else 'btn-outline-warning' }} dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                        {{ '★ 已收藏' if is_favorited else '☆ 收藏' }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% if folders %}
+                            {% for folder in folders %}
+                            {% set in_folder = folder.folder_id in favorited_folder_ids %}
+                            <li>
+                                <form method="post" action="{{ url_for('user.toggle_favorite') }}">
+                                    <input type="hidden" name="post_id"   value="{{ post.post_id }}">
+                                    <input type="hidden" name="folder_id" value="{{ folder.folder_id }}">
+                                    <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center">
+                                        <span>{{ folder.folder_name }}</span>
+                                        {% if in_folder %}
+                                            <span class="text-success">✓</span>
+                                        {% else %}
+                                            <span class="text-muted">＋</span>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                            <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('user.profile') }}">
+                                + 新建收藏夹
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+
+                {# 删除按钮:仅帖子作者可见 #}
+                {% if session.user_id == post.author_id %}
+                <form method="post"
+                    action="{{ url_for('post.delete', post_id=post.post_id) }}"
+                    style="display:inline;"
+                    onsubmit="return confirm('确定删除这篇帖子吗?评论和点赞也会一并删除。');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger ms-2">删除</button>
+                </form>
+                {% endif %}
+                <div style="white-space: pre-wrap;">{{ post.content }}</div>
+            </div>
+        </div>
+
+        {# 评论列表 #}
+        <h5>评论 ({{ top_comments|length }})</h5>
+
+        {% for comment in top_comments %}
+        <div class="card mb-2">
+            <div class="card-body py-2">
+                <div class="small text-muted mb-1">
+                    {{ comment.author }} · {{ comment.publish_time.strftime('%m-%d %H:%M') }}
+                </div>
+                <div>{{ comment.content }}</div>
+
+                {# 这条评论的所有回复 #}
+                {% set comment_replies = replies.get(comment.comment_id, []) %}
+                {% if comment_replies %}
+                <div class="ms-4 mt-2">
+                    {% for reply in comment_replies %}
+                    <div class="border-start ps-3 mb-1">
+                        <span class="small text-muted">{{ reply.author }}</span>
+                        {{ reply.content }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {# 回复按钮 #}
+                {% if session.user_id %}
+                <button class="btn btn-link btn-sm p-0 mt-1 text-muted"
+                        onclick="toggleReply({{ comment.comment_id }})">回复</button>
+                <div id="reply-{{ comment.comment_id }}" style="display:none;" class="mt-2">
+                    <form method="post"
+                          action="{{ url_for('post.add_comment', post_id=post.post_id) }}">
+                        <input type="hidden" name="parent_comment_id"
+                               value="{{ comment.comment_id }}">
+                        <textarea name="content" class="form-control form-control-sm"
+                                  rows="2" placeholder="回复 {{ comment.author }}..."></textarea>
+                        <button class="btn btn-sm btn-primary mt-1" type="submit">提交回复</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+            <p class="text-muted small">还没有评论,来说第一句吧</p>
+        {% endfor %}
+
+        {# 发评论 #}
+        {% if session.user_id %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6>发表评论</h6>
+                <form method="post"
+                      action="{{ url_for('post.add_comment', post_id=post.post_id) }}">
+                    <textarea name="content" class="form-control" rows="3"
+                              placeholder="写下你的想法..." required></textarea>
+                    <button class="btn btn-primary btn-sm mt-2" type="submit">提交</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted mt-3">
+            <a href="{{ url_for('auth.login') }}">登录</a> 后才能发表评论
+        </p>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+function toggleReply(commentId) {
+    const div = document.getElementById('reply-' + commentId);
+    div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

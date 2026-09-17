@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}收藏夹 - 校园论坛{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>收藏的帖子</h4>
+    <a href="{{ url_for('user.profile') }}" class="btn btn-sm btn-outline-secondary">
+        ← 返回收藏夹
+    </a>
+</div>
+
+{% for post in posts %}
+<div class="card mb-2">
+    <div class="card-body py-2">
+        <a href="{{ url_for('post.detail', post_id=post.post_id) }}"
+           class="text-decoration-none text-dark fw-bold">
+            {{ post.title }}
+        </a>
+        <div class="text-muted small mt-1">
+            {{ post.section_name }} · {{ post.author }} ·
+            收藏于 {{ post.favorite_time.strftime('%m-%d %H:%M') }}
+
+            {# 取消收藏按钮 #}
+            <form method="post" action="{{ url_for('user.toggle_favorite') }}"
+                  style="display:inline;">
+                <input type="hidden" name="post_id"   value="{{ post.post_id }}">
+                <input type="hidden" name="folder_id" value="{{ folder_id }}">
+                <button type="submit" class="btn btn-link btn-sm text-danger p-0 ms-2">
+                    取消收藏
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+    <p class="text-muted">这个收藏夹还是空的</p>
+{% endfor %}
+{% endblock %}

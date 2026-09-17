@@ -1,0 +1,19 @@
+<h1>{{ post.title }}</h1>
+<p>作者: {{ post.username }} | 发布时间: {{ post.publish_time }}</p>
+<hr>
+<div>{{ post.content }}</div>
+
+<h3>评论区</h3>
+<ul>
+    {% for c in comments %}
+    <li>
+        <strong>{{ c.author }}</strong> 
+        <small>({{ c.publish_time }})</small>: 
+        {% if c.reply_to %}
+            <span style="color: blue;">@{{ c.reply_to }}：</span>
+        {% endif %}
+        {{ c.content }}
+        <a href="#">回复</a>
+    </li>
+    {% endfor %}
+</ul>
