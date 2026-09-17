@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}注册{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h2>注册</h2>
+  <form method="post" class="auth-form">
+    <label>用户名 <input name="username" required></label>
+    <label>密码 <input name="password" type="password" required></label>
+    <label>身份
+      <select name="role">
+        {% for val, label in roles %}
+          <option value="{{ val }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>学院 (用于个性化排序)
+      <select name="college">
+        <option value="">不指定</option>
+        {% for c in colleges %}
+          <option value="{{ c }}">{{ c }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <fieldset class="prefs">
+      <legend>感兴趣的站点 (可多选)</legend>
+      {% for s in sites %}
+        <label class="pref-item">
+          <input type="checkbox" name="prefer_sites" value="{{ s }}"> {{ s }}
+        </label>
+      {% endfor %}
+    </fieldset>
+    <button type="submit">注册</button>
+  </form>
+</section>
+{% endblock %}

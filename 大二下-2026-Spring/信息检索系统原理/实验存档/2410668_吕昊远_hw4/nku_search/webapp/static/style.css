@@ -1,0 +1,194 @@
+/* ============================================================
+   南开搜索 - 样式
+   设计取向: 干净, 学术感, 略带南开校色 (#7a0019 是马里兰大紫红, 不对;
+   南开使用青莲紫 #2A0F66 + 白)。
+   作业明确说界面不计美观分, 这里以可读 + 清晰功能区分为主。
+   ============================================================ */
+
+:root {
+  --nk-purple: #6E2C8A;
+  --nk-purple-dark: #4a1d5e;
+  --nk-accent: #FFB300;
+  --bg: #FAFAFB;
+  --card: #FFFFFF;
+  --text: #1B1B1F;
+  --text-2: #5a5a66;
+  --border: #E6E6EC;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+       "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+       line-height: 1.55; }
+a { color: var(--nk-purple); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* topbar */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 28px; background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; gap: 8px;
+  font-weight: 700; font-size: 18px; color: var(--nk-purple); }
+.logo-mark { display: inline-flex; width: 28px; height: 28px;
+  border-radius: 6px; background: var(--nk-purple); color: #fff;
+  align-items: center; justify-content: center; font-weight: 800; }
+.nav a { margin-left: 18px; color: var(--text-2); }
+.nav a:hover { color: var(--nk-purple); }
+
+/* main */
+.main { max-width: 880px; margin: 0 auto; padding: 24px 20px 60px; }
+
+/* hero */
+.hero { padding: 60px 0 24px; text-align: center; }
+.hero-title { font-size: 56px; margin: 0 0 8px; letter-spacing: 2px; }
+.hero-accent { color: var(--nk-purple); }
+.hero-sub { color: var(--text-2); margin: 0 0 28px; }
+
+/* search */
+.search-form { max-width: 680px; margin: 0 auto; }
+.search-form.compact { margin: 0; }
+.search-box { position: relative; display: flex; align-items: stretch;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 24px; box-shadow: var(--shadow); }
+.search-box:focus-within { border-color: var(--nk-purple); }
+.search-input { flex: 1; padding: 14px 20px; font-size: 16px;
+  border: none; outline: none; background: transparent;
+  border-radius: 24px 0 0 24px; }
+.search-btn { padding: 0 28px; font-size: 16px; font-weight: 600;
+  background: var(--nk-purple); color: #fff; border: 0; cursor: pointer;
+  border-radius: 0 24px 24px 0; }
+.search-btn:hover { background: var(--nk-purple-dark); }
+
+.search-tabs { margin-top: 12px; display: flex; gap: 14px;
+  justify-content: center; font-size: 14px; color: var(--text-2); }
+.search-tabs label { cursor: pointer; padding: 4px 10px; border-radius: 12px; }
+.search-tabs label.active { background: rgba(110,44,138,.08); color: var(--nk-purple); }
+.search-tabs input { margin-right: 4px; }
+
+/* suggest dropdown */
+.suggest-box {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--card); border: 1px solid var(--border);
+  border-top: 0; border-radius: 0 0 14px 14px; z-index: 20;
+  display: none; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.suggest-item { padding: 10px 18px; cursor: pointer; font-size: 14px;
+  text-align: left; }
+.suggest-item:hover { background: #f4eef9; }
+
+/* recommendations */
+.recs { margin-top: 40px; }
+.recs-title { font-size: 15px; color: var(--text-2); margin: 0 0 12px;
+  letter-spacing: 1px; }
+.recs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.rec-card { display: flex; flex-direction: column; justify-content: center;
+  height: 88px; box-sizing: border-box; padding: 12px 16px; gap: 6px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; color: var(--text); overflow: hidden; }
+.rec-card:hover { border-color: var(--nk-purple); text-decoration: none; }
+.rec-title { font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rec-meta { font-size: 12px; color: var(--text-2);
+  display: flex; gap: 12px; justify-content: space-between; }
+.rec-meta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rec-reason { color: var(--nk-accent); font-weight: 500; min-width: 0; }
+
+/* result page */
+.result-head { padding: 8px 0 4px; }
+.result-meta { color: var(--text-2); font-size: 13px; margin: 14px 0 24px; }
+
+.results { display: flex; flex-direction: column; gap: 22px; }
+.hit { background: var(--card); padding: 16px 18px; border-radius: 10px;
+  border: 1px solid var(--border); }
+.hit.doc { border-left: 3px solid var(--nk-accent); }
+.hit-title { font-size: 17px; font-weight: 600; color: var(--nk-purple-dark); }
+.hit-url { font-size: 12px; color: #6c8b3a; margin: 4px 0 8px; }
+.hit-site { color: var(--nk-purple); font-weight: 600; }
+.hit-snippet { margin: 4px 0 6px; color: var(--text-2); font-size: 14px; }
+.hit-snippet em { color: var(--nk-purple-dark); font-style: normal;
+  font-weight: 700; background: #fff6c4; padding: 0 2px; }
+.hit-actions { display: flex; gap: 10px; font-size: 12px; align-items: center;
+  margin-top: 4px; }
+.hit-actions .action { padding: 2px 8px; border-radius: 6px;
+  background: rgba(110,44,138,.08); color: var(--nk-purple); }
+.hit-actions .action.ghost { background: transparent; color: var(--text-2); }
+.docs-title { margin-top: 32px; color: var(--text-2);
+  font-size: 14px; letter-spacing: 1px; }
+
+/* snapshot */
+.snapshot-head h2 { margin-bottom: 4px; }
+.snap-meta { color: var(--text-2); font-size: 13px; }
+.snapshot-wrap { margin-top: 16px; border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; }
+.snapshot-frame { width: 100%; min-height: 600px; border: 0; background: #fff; }
+
+/* auth & forms */
+.auth-card { max-width: 420px; margin: 60px auto; background: var(--card);
+  padding: 32px; border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: var(--shadow); }
+.auth-card.wide { max-width: 620px; }
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.auth-form label { display: flex; flex-direction: column;
+  font-size: 13px; color: var(--text-2); gap: 4px; }
+.auth-form input { padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 14px; }
+.auth-form input:focus { outline: 0; border-color: var(--nk-purple); }
+.auth-form button { padding: 10px; border: 0; border-radius: 8px;
+  background: var(--nk-purple); color: #fff; font-size: 14px; cursor: pointer; }
+.auth-foot { text-align: center; color: var(--text-2); font-size: 13px;
+  margin: 14px 0 0; }
+
+.prefs { border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+.prefs legend { padding: 0 6px; color: var(--text-2); font-size: 13px; }
+.pref-item { display: flex; align-items: center; gap: 6px;
+  font-size: 13px; padding: 4px 8px; cursor: pointer; }
+
+.small { font-size: 12px; color: var(--text-2); }
+
+/* history */
+.hist-list { list-style: none; padding: 0; }
+.hist-item { padding: 10px 0; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; }
+.hist-q { font-weight: 500; }
+.hist-ts { color: var(--text-2); font-size: 12px; }
+
+/* misc */
+.empty { color: var(--text-2); padding: 24px 0; text-align: center; }
+.flashes { max-width: 880px; margin: 12px auto 0; padding: 0 20px; }
+.flash { padding: 10px 14px; border-radius: 8px; margin-bottom: 6px; font-size: 13px; }
+.flash-error { background: #fde7e7; color: #9b1c1c; }
+.flash-success { background: #e7f8ec; color: #186236; }
+
+.footer { text-align: center; color: var(--text-2);
+  padding: 30px 0; font-size: 12px; }
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 36px; }
+  .recs-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 站点范围下拉 (A3) ===== */
+.search-scope {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #5f6368;
+}
+.search-scope label { display: inline-flex; align-items: center; gap: 6px; }
+.site-select {
+  padding: 4px 8px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: #202124;
+  cursor: pointer;
+}
+.site-select:hover { border-color: #aab0b6; }
+
+/* 快照存档时间 (A4) */
+.snap-archived { color: #1a73e8; font-weight: 600; }

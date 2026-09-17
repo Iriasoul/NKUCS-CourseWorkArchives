@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}{{ q }} - 南开搜索{% endblock %}
+
+{% block content %}
+<section class="result-head">
+  <form class="search-form compact" action="{{ url_for('search') }}" method="get" autocomplete="off">
+    <div class="search-box">
+      <input id="q-input" class="search-input" name="q" value="{{ q }}" />
+      <button class="search-btn" type="submit">搜索</button>
+      <div id="suggest-box" class="suggest-box"></div>
+    </div>
+    <div class="search-tabs">
+      {% for t, lbl in [('auto','智能'),('phrase','短语'),
+                        ('wildcard','通配'),('doc','文档')] %}
+        <label class="{% if qtype==t %}active{% endif %}">
+          <input type="radio" name="type" value="{{ t }}"
+                 {% if qtype==t %}checked{% endif %}> {{ lbl }}
+        </label>
+      {% endfor %}
+    </div>
+    <div class="search-scope">
+      <label>站点范围：
+        <select name="site" class="site-select">
+          {% for val, label in site_options %}
+            <option value="{{ val }}" {% if site==val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>文档类型：
+        <select name="ext" class="site-select">
+          {% for v, l in [('','全部类型'),('pdf','PDF'),
+                          ('doc,docx','Word (doc/docx)'),
+                          ('xls,xlsx','Excel (xls/xlsx)'),
+                          ('ppt,pptx','PPT (ppt/pptx)')] %}
+            <option value="{{ v }}" {% if ext==v %}selected{% endif %}>{{ l }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+  </form>
+  <p class="result-meta">
+    查询类型: <b>{{ data.type }}</b>
+    · 命中 {{ data.hits|length }} 条
+    {% if data.docs %}· 文档 {{ data.docs|length }} 条{% endif %}
+  </p>
+</section>
+
+<section class="results">
+  {% if not data.hits and not data.docs %}
+    <p class="empty">没有找到相关结果。试试通配符 (温* / 计?) 或换关键词。</p>
+  {% endif %}
+
+  {% for hit in data.hits %}
+    <article class="hit">
+      <a class="hit-title" href="{{ hit.url }}" target="_blank" rel="noopener">
+        {{ hit.title|safe }}
+      </a>
+      <div class="hit-url">
+        <span class="hit-site">{{ hit.site }}</span> · {{ hit.url }}
+      </div>
+      <p class="hit-snippet">{{ hit.snippet|safe }}</p>
+      <div class="hit-actions">
+        <a class="action" href="{{ url_for('snapshot', doc_id=hit.doc_id) }}">
+          网页快照
+        </a>
+        {% if hit.final_score is defined %}
+          <span class="action ghost" title="0.55*BM25+0.25*个性化+0.10*时效+0.10*PageRank">
+            final={{ '%.3f'|format(hit.final_score) }}
+            {% if hit._components %}
+              (个{{ hit._components.personal }} 时{{ hit._components.time }}
+               PR{{ hit._components.pagerank }} B{{ hit._components.bm25 }})
+            {% endif %}
+          </span>
+        {% else %}
+          <span class="action ghost">score={{ '%.2f'|format(hit.score or 0) }}</span>
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+
+  {% if data.docs %}
+    <h3 class="docs-title">相关文档</h3>
+    {% for d in data.docs %}
+      <article class="hit doc">
+        <a class="hit-title" href="{{ url_for('download', doc_id=d.doc_id) }}">
+          [{{ d.ext|upper }}] {{ d.title }}
+        </a>
+        <div class="hit-url">
+          {{ d.url }}
+        </div>
+        <p class="hit-snippet">{{ d.snippet|safe }}</p>
+        <div class="hit-actions">
+          <a class="action" href="{{ url_for('download', doc_id=d.doc_id) }}">
+            下载
+          </a>
+        </div>
+      </article>
+    {% endfor %}
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}个人偏好{% endblock %}
+{% block content %}
+<section class="auth-card wide">
+  <h2>个人偏好</h2>
+  <p class="small">这些偏好会用于个性化排序: 喜好的站点会被 boost,
+    关注的关键词在结果中权重更高。</p>
+  <form method="post" class="auth-form">
+    <label>身份
+      <select name="role">
+        {% for val, label in roles %}
+          <option value="{{ val }}"
+            {% if current_user.role == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>学院
+      <select name="college">
+        <option value="">不指定</option>
+        {% for c in colleges %}
+          <option value="{{ c }}"
+            {% if current_user.college == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <fieldset class="prefs">
+      <legend>感兴趣的站点</legend>
+      {% for s in sites_all %}
+        <label class="pref-item">
+          <input type="checkbox" name="prefer_sites" value="{{ s }}"
+                 {% if s in current_user.prefer_sites %}checked{% endif %}> {{ s }}
+        </label>
+      {% endfor %}
+    </fieldset>
+    <label>
+      关注关键词 (英文逗号分隔)
+      <input name="prefer_terms"
+             value="{{ current_user.prefer_terms|join(', ') }}">
+    </label>
+    <button type="submit">保存</button>
+  </form>
+</section>
+{% endblock %}

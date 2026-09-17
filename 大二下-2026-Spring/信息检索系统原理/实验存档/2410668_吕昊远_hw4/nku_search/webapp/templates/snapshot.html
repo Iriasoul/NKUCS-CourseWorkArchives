@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}网页快照{% endblock %}
+
+{% block content %}
+<section class="snapshot-head">
+  <h2>网页快照</h2>
+  <p class="snap-meta">
+    这是搜索引擎收录时该页面的本地副本 (doc_id={{ doc_id }})。
+    原站可能已更新或下线。
+  </p>
+  {% if exists and archived_at %}
+  <p class="snap-meta snap-archived">本快照抓取于 {{ archived_at }}</p>
+  {% endif %}
+</section>
+
+{% if exists %}
+  <div class="snapshot-wrap">
+    <iframe class="snapshot-frame" srcdoc="{{ snapshot_html|e }}"
+            sandbox="allow-same-origin"></iframe>
+  </div>
+{% else %}
+  <p class="empty">该页面未保存快照。 (我们仅对部分页面 + 前 50 个种子页面保存了快照)</p>
+{% endif %}
+{% endblock %}

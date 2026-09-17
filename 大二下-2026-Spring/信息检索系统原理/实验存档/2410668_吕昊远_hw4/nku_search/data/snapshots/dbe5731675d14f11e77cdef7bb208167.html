@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="renderer" content="webkit" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+	南开大学大型仪器管理平台</title>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+<base href="http://less.nankai.edu.cn/lims/" />
+<link rel="shortcut icon" href="cache/c502bc7d2e9624f92f6d3acf9e5892ec.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="cache/67b17c875e6260fec984b138deb7ea1d.png" />
+<link href="cache/bbdb995c29d547cdf236a6621aa45375.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/e5a594f5e3529f8890cb5c2c9989a4fb.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/a4657e1d274765b3d6abf601597f014a.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/ed168a90736449f21a14d72f4a56ba25.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/65cf247620c66c1e71797d06b2d16d50.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/8eea0c55e399b7b9f8b89ba33d42ce18.css?v=20110816" rel="stylesheet" type="text/css" /><link href="cache/d1b3c851cddb9a21c369bbba3038712a.css?v=20110816" rel="stylesheet" type="text/css" /><script src="cache/44a9cf22705e3c8c2e8302fa870973d6.js?v=20110817" type="text/javascript"></script><script src="cache/09ca532bbfeef05e50039da8004bb31f.js?v=20110817" type="text/javascript"></script><script src="cache/24bea7146bd193545e5c4e3c2f7ff472.js?v=20110817" type="text/javascript"></script><script src="cache/5bdf9ac987d14129264be779390fa1ef.js?v=20110817" type="text/javascript"></script><script src="cache/536aae49620ce2bf68ea26b747bb9aa8.js?v=20110817" type="text/javascript"></script><script src="cache/64a8e457945e4dbc6b0b54b2c7083851.js?v=20110817" type="text/javascript"></script><script src="cache/aef8088632ad689784b2a4d400ac736c.js?v=20110817" type="text/javascript"></script><script src="cache/a3253ce3ff1eca76ca6d4cedf5513c59.js?v=20110817" type="text/javascript"></script><script src="cache/291b3c97081b7baad4d3e8fa62a22415.js?v=20110817" type="text/javascript"></script><script src="cache/7ffd86ef04bb4d080ce2e82c4a7b09a0.js?v=20110817" type="text/javascript"></script><script src="cache/afb7c897c4c8f93d8f33d3b47fe16c68.js?v=20110817" type="text/javascript"></script><script>
+(function($){
+    Q['mousewheelEventDuration'] = 0.2;
+	Q['24hour'] = 1;
+	// 系统时区与utc的时间差
+	Q['utc_offset'] = 28800000;
+})(jQuery);
+</script>
+
+
+</head>
+<body>
+	<table width="100%" height="100%">
+	<tr>
+	<td class="top" colspan="2" height="32">
+		<div id="header">
+			<div class="header_content"
+                        >
+				<div id="top_menu" class="float_right"><div class="top_menu_item" style="height:auto;line-height:inherit">
+	<a class="link" href="#">语言</a>
+	<select name="top_locale" class="middle"><option value="zh_CN" selected="selected">中文</option><option value="en_US">English</option></select></div>
+<span class="separator">&#160;</span>
+<span class="top_menu_contact">
+	<span class="label">客服</span>
+	<strong>400-017-KONG</strong>
+		<span class="phone">(400-017-5664)</span>
+	</span>
+<span class="separator">&#160;</span>
+<div class="top_menu_item">
+		<a class="link link_login" href="http://less.nankai.edu.cn/lims/login">登录</a>
+</div>
+&#160;
+
+<script>
+jQuery(function($){
+	var selector = $("select[name=top_locale]");
+	selector.change(function() {
+		save_language_change($(this).val());
+	})
+
+	function save_language_change(val) {
+		Q.trigger({
+			object: 'save_language',
+			event: 'change',
+			url: 'http://less.nankai.edu.cn/lims/index',
+			global: false,
+			data: {
+				language: val
+			},
+			success : function(data, status, xhr) {
+                window.location.reload();      
+            }
+        });
+	}
+})
+</script>
+</div>
+				<a href="http://less.nankai.edu.cn/lims/"><img class="float_left" src="cache/06a2cb08607261bef01466fbeaa28e38.png" usemap="#logo_map"/></a>
+			</div>
+		</div>
+	</td>
+	</tr>
+	<tr>
+				<td id="sidebar" class="top" width="194">
+			<div class="sidebar_wrapper">
+				<div class="sidebar_content">
+					<div class="hr_1">&#160;</div>
+<div class="sidebar_body">
+<div class="padding_1 sidebar_item sidebar_home"><div class="padding_1 center">
+<h1><a href="http://less.nankai.edu.cn/">主页</a></h1>
+</div>
+</div><div class="padding_1 sidebar_item sidebar_signup"><div class="padding_1 center">
+	<h1>
+		<a href="http://less.nankai.edu.cn/lims/!labs/signup">
+		注册新用户		</a>
+	</h1>
+</div>
+</div><div class="padding_1 sidebar_item sidebar_lab_signup"><div class="padding_1 center">
+	<h1><a href="http://less.nankai.edu.cn/lims/!labs/signup/lab">注册新课题组</a></h1>
+</div>
+</div><div class="hr_1 sidebar_item sidebar_bottom">&#160;</div>
+</div>
+				</div>
+			</div>
+		</td>
+				<td id="center" class="top" width="100%">
+			<div class="center_content">
+								<div style="padding-top:3px">
+				<style>
+    #verify.button_login {
+        background-position: 20px center;
+    }
+    #center {
+        vertical-align: middle;
+    }
+    #center .center_content {
+        width: 45.5%;
+        margin: 0 auto;
+    }
+</style>
+<div class="padding_2 message message_normal">
+	<h3>校内使用校级平台必须具有校园一卡通系统帐号(<a href="https://sso.nankai.edu.cn/sso/login" target="_blank">https://sso.nankai.edu.cn</a>)</h3>
+	<div class="padding_1 description">
+		<p>没有一卡通的用户办理一卡通帐号请联系 <strong style="color:red"><big>23508231、85358890转网信办</big></strong></p>
+	</div>
+</div>
+<div style="min-width: 675px;">
+    <div style="border: 2px solid #DFDFDF; border-radius: 3px; float: left; width: 45%; min-height: 306px; margin-right: 8%; background-color: #F4F4F4;">
+        <div style="text-align: center; padding: 10px; font-size: 18px; border-bottom: 1px solid #DFDFDF; background: #989898; color: white;">校外用户注册及登录</div>
+        <style>
+	div.login_form {
+		border: 0;
+		border-radius: 0;
+	}
+	.padding_1 {
+		padding-top: 5%; 
+	}
+    a.button_login:not(#verify) {
+        background-image: url(/lims/images/buttons/reg.png)    
+    }
+</style>
+<div class="form login_form padding_1 clearfix">
+	<form method="post" autocomplete="off" action="http://less.nankai.edu.cn/lims/login">
+    	<table class="form" style="margin:auto">
+		<tbody>
+            <tr class="label right nowrap middle" style="text-align: left;"><td style="padding-left: 10px; font-size: 14px;">账号：</td></tr>
+			<tr style="text-align: center;">
+				<td class="middle nowrap left" colspan="2">
+					<input type="hidden" name="verify_token" value="65525a177e030ab75811da74b6b8d18f" />
+					<input name="token" class="text middle " size="15" value=""  tabindex="1" />
+<span class="separator middle">@</span>
+<select name="token_backend" class="dropdown middle"><option value="database">本地用户</option><option value="ids.nankai" selected="selected">一卡通用户</option><option value="database%yiqi.tju">天津大学本地用户</option><option value="ids.tju%yiqi.tju">天津大学一卡通用户</option></select>				</td>
+			</tr>
+			<tr class="label right nowrap middle" style="text-align: left;"><td style="padding-left: 9px; font-size: 14px; padding-top: 10px;">密码：</td></tr>
+			<tr style="text-align: center;">
+				<td class="middle left" colspan="2">
+					<input name="password" type="password" class="text" size="37" tabindex="2">
+				</td>
+			</tr>
+			<tbody id="vfcode_6a337784aa5e9">
+    <tr>
+        <td colspan="2" class="label left nowrap middle" style="padding-left: 9px; font-size: 14px; padding-top: 10px;">
+            验证码：        </td>
+    </tr>
+    <tr>
+        <td class="middle" colspan="2">
+            <input name="vfcode" class="text" size="20"/>
+            &#160;
+            <span><a href="http://less.nankai.edu.cn/lims/" class="button button_refresh"
+                    q-object="verification_code" q-event="click"
+                    q-src="http://less.nankai.edu.cn/lims/!login_plus/vfcode/index"
+                    q-static="mode=login">刷新</a></span>
+            <img class="label left nowrap middle" src="http://less.nankai.edu.cn/lims/!login_plus/vfcode?t=1781757829" style="height: 22px" />
+        </td>
+    </tr>
+</tbody>
+
+			<tr>
+				<td class="middle nowrap" style="padding-left: 9px; padding-top: 9px;">
+					<input id="checkbox6a3377855e137" name="persist" type="checkbox" tabindex="3" class="checkbox middle"/> <label for="checkbox6a3377855e137" class="middle">记住登录</label>					&#160;
+				</td>
+				 <td style="padding-left: 75px; padding-top: 9px;">
+					<a class="blue middle" href="http://less.nankai.edu.cn/lims/recovery">忘记了密码?</a> 
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 5px; padding-left: 9px;"><a href="http://less.nankai.edu.cn/lims/!labs/signup/lab" class="button button_login middle" style="width:30px; padding-left: 26px; height: 16px; font-size: 14px; padding-top: 5px;" >注册</a></td>
+                <td style="padding-top: 5px; padding-left: 79px;"><input type="submit" name="submit" class="button button_login middle" value="登录" tabindex="4" style="width: 62px; padding-left: 26px; height: 27px; font-size: 14px; padding-top: 1px;"/></td>
+            </tr>
+		</tbody>
+	</table>
+	</form>
+</div>
+
+    </div>
+    <div style="border: 2px solid #DFDFDF; border-radius: 3px; float: left; width: 45%; min-height: 306px; background-color: #F4F4F4;">
+        <div style="text-align: center; padding: 10px; font-size: 18px; border-bottom: 1px solid #DFDFDF; background: #989898; color: white; ">校内用户注册及登录</div>
+        <div style="text-align: center; margin-top: 105px;">
+                    <a href="http://less.nankai.edu.cn/gate/?from=nankai&redirect=http%3A%2F%2Fless.nankai.edu.cn%2Flims%2F%21people%2Fdocking%2Flogin" class="button button_login middle" id="verify" style="width: 108px; padding-left: 50px; height: 17px; font-size:
+            14px; padding-top: 6px;">统一身份验证</a>
+        </div>
+    </div>
+    <div style="clear: both; "></div>
+</div>
+
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+	<td class="bottom" colspan="2" height="28">
+	<div id="footer"><div class="footer_content">
+        <script type="text/javascript">(function(){Q.jslamda_1c9d43acfe2d61b1c39af6ce4e1c0b28=function(_oO){var server_time = _oO[0]; /*JSFORMATED*/
+
+jQuery(function($){var utc_offset=Q['utc_offset']|0;var d=new Date();var local_offset=server_time*1000-d.getTime();var last_remote_time=0;var offset=local_offset+utc_offset;setInterval(function(){var local_utc=moment().utc();var remote_time=local_utc+offset;var diff=remote_time-last_remote_time;remote_time=last_remote_time+(Math.round(diff/1000)*1000);last_remote_time=remote_time;var nd=new Date(remote_time);var time=moment(nd).utc().format('YYYY/MM/DD HH:mm:ss');$('#footer_time').html(time);},1000);})};Q.jslamda_1c9d43acfe2d61b1c39af6ce4e1c0b28([1781757829]);})();</script>        <script type="text/javascript">(function(){Q.jslamda_baec6461b0d69dde1b861aefbe375d8a=function(_oO){var decode_url = _oO[0]; /*JSFORMATED*/
+
+(function($){if(Q.browser.msie&&Q.browser.version<8){$('img[src*=base64]').livequery(function(){$(this).attr('src',decode_url+"?code="+encodeURIComponent($(this).attr('src')));});}})(jQuery);};Q.jslamda_baec6461b0d69dde1b861aefbe375d8a(["http:\/\/less.nankai.edu.cn\/lims\/icon\/decode"]);})();</script>		<div class="clearfix">
+	<div class="float_left">
+		<span class="description middle"><small>release-2.24.1</small></span>
+		<span class="separator middle">&#160;</span>	
+	</div>
+	<div class="float_left">	
+		<span class="email">
+			<a href="mailto:nkyqpt@nankai.edu.cn"><small>nkyqpt@nankai.edu.cn</small></a>
+		</span>
+		<span class="separator middle">&#160;</span>
+	</div>	
+	<div class="float_right">
+		<span class="separator middle">&#160;</span>
+		<span class="copyright middle">
+		<a href="http://www.geneegroup.com" target="_blank"><strong>基理科技</strong></a> &#169; 2026 版权所有. 保留所有权利.		</span>
+		<span class="separator middle">&#160;</span>
+		<div class="footer_browser_suggestion middle">
+<a class="label" onclick="jQuery(this).next().toggle(); return false">建议更换浏览器</a>
+<div class="tip hidden">
+    <h4>更换网络浏览器的建议</h4>
+    <p class="description">我们检测到您的系统使用了过时的网络浏览器，存在安全隐患。为了保证您浏览时的安全以及获得最佳的浏览效果, 我们强烈建议您更换为以下浏览器。</p>
+    <div class="hr_1">&#160;</div>
+    <div class="clearfix">
+    	<span class="nowrap inline_block"><img class="middle" src="images/browsers/firefox_s.gif" />&#160;<a class="middle" href="software/Firefox_ZH_3.6.13.exe"><strong>火狐浏览器</strong></a></span>
+    	<div class="hr_1">&#160;</div>
+    	<span class="nowrap inline_block"><img class="middle" src="images/browsers/chrome_s.gif" />&#160;<a class="middle" href="http://www.google.com/chrome/"><strong>谷歌Chrome浏览器</strong></a></span>
+    	<div class="hr_1">&#160;</div>
+    	<span class="nowrap inline_block"><img class="middle" src="images/browsers/safari_s.gif" />&#160;<a class="middle" href="http://www.apple.com/safari/download/"><strong>苹果Safari浏览器</strong></a></span>
+    </div>
+    <div class="hr_1">&#160;</div>
+    <div class="right">
+		        <a href="http://less.nankai.edu.cn/lims/signup?nobrowstip=1" style="color: #633" confirm="您确定不想尝试一下其他浏览器吗?">我不要更换浏览器&#187;</a>
+    </div>
+</div>
+</div>
+<span class="separator middle">&#160;</span>		<span class="description middle"><small><strong><span id='footer_time'>2026/06/18 12:43:49</span></strong></small></span>
+	</div>
+</div>
+	</div></div>
+	</td>
+	</tr>
+	</table>
+	<script src="cache/45bbe2a74be18b057b5a7bc69d7b1781.js?v=20110817" type="text/javascript"></script><script>
+    const tooltipText = ''; // 提示语支持配置
+    const imageUrl = ''; // 图标地址支持配置
+    const defaultWidth = "72"; // 图标宽度支持配置
+    const defaultHeight = "66"; // 图标高度支持配置
+    defaultX = ""; // 图标X坐标支持配置
+    defaultY = ""; // 图标Y坐标支持配置
+
+    // 如果X/Y均不是数字，则居中显示
+    if (defaultY === "") {
+        // 获取当前界面的高度
+        const windowHeight = window.innerHeight;
+        // 获取居中位置的Y坐标，如果拖动元素的高度大于界面高度，则Y坐标为0
+        defaultY = windowHeight / 2 - defaultHeight / 2;
+    }
+    // 如果居中位置的Y坐标小于0，则将Y坐标设置为0
+    if (defaultY <= 0) {
+        defaultY = 6;
+    }
+    if (defaultX === "") {
+        // X坐标为最右边
+        const windowWidth = window.innerWidth;
+        defaultX = windowWidth - defaultWidth - 6;
+    }
+    // 如果居中位置的X坐标小于0，则将X坐标设置为0
+    if (defaultX <= 0) {
+        defaultX = 6;
+    }
+
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', function() {
+        // 创建可拖动元素实例 或者 使用自定义配置
+        const kfDraggable = new KFDraggable({
+            config: {
+                // 图片大小配置
+                defaultSize: {
+                    width: defaultWidth,
+                    height: defaultHeight
+                },
+                // 拖动元素默认位置配置
+                defaultPostion: {
+                    x: defaultX,
+                    y: defaultY
+                },
+                tooltipText: tooltipText, // 提示文字，默认提示“有问题？点我，帮你解答问题”
+            },
+            imageUrl: imageUrl, // 不配置则使用默认图片
+            kfJs: {"id":"qd30090842188e408c1f93676808f3a558056612c00d","src":"https:\/\/wp.qiye.qq.com\/qidian\/3009084218\/8e408c1f93676808f3a558056612c00d","charset":"utf-8","async":true,"defer":true}, // 企点的客服配置
+        });
+    });
+</script></body>
+</html>
+

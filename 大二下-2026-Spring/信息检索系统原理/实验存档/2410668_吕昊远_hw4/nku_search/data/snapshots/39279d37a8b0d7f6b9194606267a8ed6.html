@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../font/iconfont.css" />
+    <link rel="stylesheet" href="../css/reset.css?20210517" />
+    <link rel="stylesheet" href="../css/style.css?20210517" />
+
+    <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../js/scripts.js?20210517"></script>
+    <script type="text/javascript" src="../js/iscroll.js"></script>
+    <!-- animate Effect -->
+    <link type="text/css" rel="stylesheet" href="../js/wow/animate.css">
+    <!--[if lt IE 9]>
+          <script src="../js/html5shiv.min.js"></script>
+          <script src="../js/respond.min.js"></script>
+        <![endif]-->
+    <title>校友会-旅游与服务学院主页</title><META Name="keywords" Content="旅游与服务学院主页" />
+
+    <!--移动端上下滑动加载刷新-->
+    <script type="text/javascript">
+
+        var myScroll,
+            pullDownEl, 
+            pullDownOffset,
+            pullUpEl, 
+            pullUpOffset,
+            generatedCount = 0;
+        
+        function pullDownAction () {
+            setTimeout(function () {    // <-- Simulate network congestion, remove setTimeout from production!
+                var el, li, i;
+                el = document.getElementById('thelist');
+        
+                for (i=0; i<5; i++) {
+                    li = document.createElement('li');
+                    li.innerText = '这里是要生成的内容' + (++generatedCount);
+                    el.insertBefore(li, el.childNodes[0]);
+                }
+                document.getElementById("pullUp").style.display="";
+                myScroll.refresh();
+            }, 1000);
+        }
+        
+        function pullUpAction () {
+            setTimeout(function () {
+                var el, li, i;
+                el = document.getElementById('thelist');
+        
+                for (i=0; i<1; i++) {
+                    li = document.createElement('li');
+                    li.innerText = '这里是要生成的内容' + (++generatedCount);
+                    el.appendChild(li, el.childNodes[0]);
+                }
+                myScroll.refresh();
+            }, 1000);
+        }
+        
+        function loaded() {
+            pullDownEl = document.getElementById('pullDown');
+            pullDownOffset = pullDownEl.offsetHeight;
+            pullUpEl = document.getElementById('pullUp');   
+            pullUpOffset = 10;
+            //pullUpOffset = pullUpEl.offsetHeight;
+            myScroll = new iScroll('wrapper', {
+                useTransition: true,
+                topOffset: pullDownOffset,
+                onRefresh: function () {
+                    //that.maxScrollY = that.wrapperH - that.scrollerH + that.minScrollY;
+                    //that.minScrollY = -that.options.topOffset || 0;
+                    //alert(this.wrapperH);
+                    //alert(this.scrollerH);
+                    if (pullDownEl.className.match('loading')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';}
+                    if (pullUpEl.className.match('loading')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+                    }
+                    
+                    document.getElementById("pullUp").style.display="none";
+                    document.getElementById("show").innerHTML="onRefresh: up["+pullUpEl.className+"],down["+pullDownEl.className+"],Y["+this.y+"],maxScrollY["+this.maxScrollY+"],minScrollY["+this.minScrollY+"],scrollerH["+this.scrollerH+"],wrapperH["+this.wrapperH+"]";
+                },
+                onScrollMove: function () {
+                    document.getElementById("show").innerHTML="onScrollMove: up["+pullUpEl.className+"],down["+pullDownEl.className+"],Y["+this.y+"],maxScrollY["+this.maxScrollY+"],minScrollY["+this.minScrollY+"],scrollerH["+this.scrollerH+"],wrapperH["+this.wrapperH+"]";
+                    if (this.y > 0) {
+                        pullDownEl.className = 'flip';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
+                        this.minScrollY = 0;
+                    }
+                    if (this.y < 0 && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+                        this.minScrollY = -pullDownOffset;
+                    }
+                    
+                    if ( this.scrollerH < this.wrapperH && this.y < (this.minScrollY-pullUpOffset) || this.scrollerH > this.wrapperH && this.y < (this.maxScrollY - pullUpOffset) ) {
+                        document.getElementById("pullUp").style.display="";
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
+                    } 
+                     if (this.scrollerH < this.wrapperH && this.y > (this.minScrollY-pullUpOffset) && pullUpEl.className.match('flip') || this.scrollerH > this.wrapperH && this.y > (this.maxScrollY - pullUpOffset) && pullUpEl.className.match('flip')) {
+                        document.getElementById("pullUp").style.display="none";
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+                    }
+                },
+                onScrollEnd: function () {
+                    document.getElementById("show").innerHTML="onScrollEnd: up["+pullUpEl.className+"],down["+pullDownEl.className+"],Y["+this.y+"],maxScrollY["+this.maxScrollY+"],minScrollY["+this.minScrollY+"],scrollerH["+this.scrollerH+"],wrapperH["+this.wrapperH+"]";
+                    if (pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'loading';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';                
+                        pullDownAction();   // Execute custom function (ajax call?)
+                    } 
+                     if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';        
+                        pullUpAction(); // Execute custom function (ajax call?)
+                    }
+                }
+            });
+            
+            //setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+        }
+        
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+        
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+    </script>
+    <!--移动端上下滑动加载刷新-->  
+<!--Announced by Visual SiteBuilder 9-->
+<link rel="stylesheet" type="text/css" href="../_sitegray/_sitegray_d.css" />
+<script language="javascript" src="../_sitegray/_sitegray.js"></script>
+<!-- CustomerNO:77656262657232307e7846575256574200000004435d -->
+<link rel="stylesheet" type="text/css" href="../btlb.vsb.css" />
+<script type="text/javascript" src="/system/resource/js/vsbscreen.min.js" id="_vsbscreen" devices="pc|mobile|pad"></script>
+<script type="text/javascript" src="/system/resource/js/counter.js"></script>
+<script type="text/javascript">_jsq_(1079,'/btlb.jsp',-1,1738754965)</script>
+</head>
+
+<body class="bg-f4">
+<div class="header trans header1">
+    <div class="head-logo wow fadeIn"><a href="javascript:"></a></div>
+    <div class="header-first-bar wow fadeIn">
+        <ol class="pull-right" style="position: relative;">
+                    <li class="mnu-1"><i class="lkjp lk-shouye top-ico"></i><a href="../index.htm" class="trans ">首页<span class="trans"></span></a></li>
+        <li class="mnu-1"><i class="lkjp lk-lianxiwomendianhua top-ico"></i><a href="../info/1117/2771.htm" class="trans ">联系我们<span class="trans"></span></a></li>
+        <li class="mnu-1"><a href="http://oa.tas.nankai.edu.cn/Login/index.html" class="trans " target="_blank">OA系统<span class="trans"></span></a></li>
+        <li class="mnu-1"><a href="https://entas.nankai.edu.cn/" class="trans " target="_blank">EN<span class="trans"></span></a></li>
+
+            <li id="searchAll">
+                    <div id="iocSearch" onclick="searchOpen()" style="width:32px;height:26px;"><span class="search_ico"><i class="lkjp lk-search"></i></span></div>
+                    <div id="searchOpenInput" style="display:none;width:200px;height:26px;">
+                        <script type="text/javascript">
+    function _nl_ys_check(){
+        
+        var keyword = document.getElementById('showkeycode250077').value;
+        if(keyword==null||keyword==""){
+            alert("请输入你要检索的内容！");
+            $(".search_open").focus();
+            return false;
+        }
+        if(window.toFF==1)
+        {
+            document.getElementById("lucenenewssearchkey250077").value = Simplized(keyword );
+        }else
+        {
+            document.getElementById("lucenenewssearchkey250077").value = keyword;            
+        }
+        var  base64 = new Base64();
+        document.getElementById("lucenenewssearchkey250077").value = base64.encode(document.getElementById("lucenenewssearchkey250077").value);
+        new VsbFormFunc().disableAutoEnable(document.getElementById("showkeycode250077"));
+        return true;
+    }
+    function searchClose(){
+        var keyword = document.getElementById('showkeycode250077').value;
+        if(keyword==null||keyword==""){
+            $("#searchOpenInput").css({"display":"none"});
+            $("#iocSearch").css({"display":"block"});
+       }
+  }
+</script>
+<form action="../ssjgy.jsp?urltype=tree.TreeTempUrl&wbtreeid=1110" method="post" id="au1a" name="au1a" onsubmit="return _nl_ys_check()">
+ <input type="hidden" id="lucenenewssearchkey250077" name="lucenenewssearchkey" value=""><input type="hidden" id="_lucenesearchtype250077" name="_lucenesearchtype" value="1"><input type="hidden" id="searchScope250077" name="searchScope" value="0">
+ <div style="margin:0px;display:inline;font-family:宋体;font-size:12px;">
+     <input class="search_open" type="text" name="showkeycode" id="showkeycode250077" placeholder="查找关键字" onblur="searchClose()" style="color:#ffffff;">
+     <input id="sraechButton" type="image" src="../images/srarchGo.png" align="absmiddle" style="cursor: hand;margin-left:-37px;margin-top:-2px;width:22px;height:22px;"></i>
+ </div>
+</form><script language="javascript" src="/system/resource/js/base64.js"></script><script language="javascript" src="/system/resource/js/formfunc.js"></script>
+
+                    </div>
+            </li>
+        </ol>
+    </div>
+    <div class="head-nav wow fadeIn" id="Navigation">
+<ul>
+    <li>
+        <a href="javascript:;" class="trans ">学院概况<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../info/1106/1159.htm">学院简介</a></li>
+                        <li><a href="../info/1107/1165.htm">管理团队</a></li>
+                        <li><a href="../xygk/ghjdh.htm">工会教代会</a></li>
+                        <li><a href="../xygk/glzd/rsrc.htm">管理制度</a></li>
+                        <li><a href="../xygk/zyxz.htm">资源下载</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">师资力量<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../szll/zzjs.htm">在职教师</a></li>
+                        <li><a href="../szll/zlyjy.htm">助理研究员</a></li>
+                        <li><a href="../szll/tpjs.htm">特聘教授</a></li>
+                        <li><a href="../szll/fwxz.htm">访问学者</a></li>
+                        <li><a href="../szll/ltxjs.htm">离退休教师</a></li>
+                        <li><a href="../szll/rczp.htm">人才招聘</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">党的建设<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../ddjs/jcdj.htm">基层党建</a></li>
+                        <li><a href="../ddjs/xxyd.htm">学习园地</a></li>
+                        <li><a href="../ddjs/fdx.htm">分党校</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">人才培养<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../rcpy/bk/zyjs.htm">本科</a></li>
+                        <li><a href="../rcpy/ss/kxss.htm">硕士</a></li>
+                        <li><a href="../rcpy/bs/kxbs.htm">博士</a></li>
+                        <li><a href="https://taslab.nankai.edu.cn/">旅游实验教学中心</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">科学研究<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../kxyj/kydt.htm">科研动态</a></li>
+                        <li><a href="../kxyj/xshy.htm">学术会议</a></li>
+                        <li><a href="../kxyj/kyxx.htm">科研信息</a></li>
+                        <li><a href="../kxyj/kyjb.htm">科研简报</a></li>
+                        <li><a href="../kxyj/xkjs.htm">学科建设</a></li>
+                        <li><a href="../kxyj/qkml.htm">期刊目录</a></li>
+                        <li><a href="../kxyj/jzyg.htm">讲座预告</a></li>
+                        <li><a href="../kxyj/sblw.htm">硕博论文</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">产业合作<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../cyhz/cyhz.htm">产业合作</a></li>
+                        <li><a href="../cyhz/gdpx.htm">高端培训</a></li>
+                        <li><a href="../cyhz/ycjy.htm">远程教育</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">国际交流<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../gjjl/xwtz.htm">新闻通知</a></li>
+                        <li><a href="../gjjl/jlxm.htm">交流项目</a></li>
+                        <li><a href="../gjjl/wjxz.htm">文件下载</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">招生信息<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../zsxx/bk.htm">本科</a></li>
+                        <li><a href="../zsxx/ss.htm">硕士</a></li>
+                        <li><a href="../zsxx/bs.htm">博士</a></li>
+                        <li><a href="../zsxx/lxszs.htm">留学生招生</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans ">学生工作<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="../xsgz/xshd.htm">学生活动</a></li>
+                        <li><a href="../xsgz/xzfc.htm">学子风采</a></li>
+                        <li><a href="../xsgz/glsw.htm">管理事务</a></li>
+                </ul>
+            </div>
+    </li>
+    <li>
+        <a href="javascript:;" class="trans cur">校友工作<i class="lkjp lk-darrow pull-right pc-hidden"></i><span class="trans"></span></a>
+            <div class="nav-dropdown">
+                <ul class="clearfix">
+                        <li><a href="hdxw.htm">活动新闻</a></li>
+                        <li><a href="zjxy/xydt.htm">走进校友</a></li>
+                        <li><a href="xyh.htm">校友会</a></li>
+                        <li><a href="xqzl.htm">校庆专栏</a></li>
+                        <li><a href="xyjz.htm">校友捐赠</a></li>
+                        <li><a href="znjh.htm">值年聚会</a></li>
+                        <li><a href="rxjg.htm">荣休教工</a></li>
+                </ul>
+            </div>
+    </li>
+</ul>
+</div>
+<div class="mb-menu pc-hidden">
+    <i class="lkjp lk-daohang"></i>
+</div>
+</div>
+    <!-- ban start-->
+        <div class="mt-top"></div>
+            <script language="javascript" src="/system/resource/js/dynclicks.js"></script>        <div class="sub-ban  mb-hidden wow fadeIn" id="pcImg"><img src="../images/pcxyhd.jpg" /></div>
+        <div class="sub-ban  pc-hidden wow fadeIn"><img src="../images/mobilexyhd.jpg" /></div>
+
+    <!-- ban end-->
+    <div class="container clearfix">
+        <div class="sec-menu-area  sub-white mt24">    <div class="sec-men-in">
+        <h3 style="color:#782674;font-weight:bold;margin-bottom:15px;">校友工作</h3>
+        <div class="sec-mu-col wow fadeInDownBig">
+            <dl class="list_dl">
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                         <a href="hdxw.htm">
+                     <h4>活动新闻</h4>
+                     </a>
+                     
+                  </dt>
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                     <h4>走进校友</h4>
+                     
+                     <i class="list_dt_icon"></i>
+                  </dt>
+                       <dd class="list_dd">
+                          <ul>
+                              <a href="zjxy/xydt.htm" class="s-lk"><li class="list_li"><i class="sp"></i>校友动态</li></a>
+                              <a href="zjxy/xygs.htm" class="s-lk"><li class="list_li"><i class="sp"></i>校友故事</li></a>
+                              <a href="zjxy/byj.htm" class="s-lk"><li class="list_li"><i class="sp"></i>毕业季</li></a>
+                          </ul>
+                       </dd>
+                 <dt class="list_dt" id="open">
+                     <span class="_after"></span>
+                         <a href="xyh.htm" style="color:#782674;">
+                     <h4 style="color:#782674;">校友会</h4>
+                     </a>
+                     
+                  </dt>
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                         <a href="xqzl.htm">
+                     <h4>校庆专栏</h4>
+                     </a>
+                     
+                  </dt>
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                         <a href="xyjz.htm">
+                     <h4>校友捐赠</h4>
+                     </a>
+                     
+                  </dt>
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                         <a href="znjh.htm">
+                     <h4>值年聚会</h4>
+                     </a>
+                     
+                  </dt>
+                 <dt class="list_dt">
+                     <span class="_after"></span>
+                         <a href="rxjg.htm">
+                     <h4>荣休教工</h4>
+                     </a>
+                     
+                  </dt>
+         </dl>
+    </div>
+    </div>
+</div>
+
+        <div class="sub-white clearfix mt24 sec-cont-area">
+
+            <!-- 列表  start -->
+            <div class=" sec-l-view wow fadeInDownBig">
+                <div class="sec-l-name">
+
+
+
+<h4>校友会</h4>
+<a href="../index.htm" class="sec-back">返回首页</a>
+</div>
+                </div>
+                <div class=" sec-l-view wow fadeInDownBig">
+                
+
+<script language="javascript" src="/system/resource/js/centerCutImg.js"></script><script language="javascript" src="/system/resource/js/ajax.js"></script><div class="sec-list-m">
+<div class="project-List">
+    <ul>
+                    <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2021-05-28</span>
+                <a href="../info/1079/2990.htm"><i class="by"></i>旅游目的地系列线上分享——雄安红色旅游</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2019-05-16</span>
+                <a href="../info/1079/2797.htm"><i class="by"></i>南开旅游校友会代表参加第六届全球南开校友会会长论坛</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2018-06-12</span>
+                <a href="../info/1079/2897.htm"><i class="by"></i>南开旅游校友会代表参加第五届全球南开校友会会长论坛</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2018-06-12</span>
+                <a href="../info/1079/2896.htm"><i class="by"></i>南开旅游校友会举行2018年工作研讨会</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-11-20</span>
+                <a href="../info/1079/2899.htm"><i class="by"></i>拨开云雾探VR， 旅游人视角的虚拟现实 ——记南开旅游校友会首次校友沙龙</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-07-13</span>
+                <a href="../info/1079/2901.htm"><i class="by"></i>南开旅游校友会首届领导机构成员2017年第二次会议圆满召开</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-05-23</span>
+                <a href="../info/1079/2905.htm"><i class="by"></i>方永钦副会长参加南开校友总会第六届理事会2017年（扩大）会议暨第四届全球南开校友会会长论坛</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-03-20</span>
+                <a href="../info/1079/2910.htm"><i class="by"></i>南开旅游校友会成立大会暨首届南开旅游校友代表大会举行</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-03-20</span>
+                <a href="../info/1079/2909.htm"><i class="by"></i>南开旅游校友会首届领导机构成员名单公示</a>
+            </li>                    
+            <li class=" clearfix ell articleTitle">
+                <span class="pull-right">2017-03-20</span>
+                <a href="../info/1079/2908.htm"><i class="by"></i>南开旅游校友会召开首届领导成员2017年第一次会议</a>
+            </li>                    
+    </ul>
+</div>
+</div>
+<div class="loading-list">
+    <p id="show"></p> 
+    <div id="wrapper">
+            <div id="pullDown" style="display:none;">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+            </div>
+            <ul id="thelist">
+                <li class="projectLi">
+                    <span class="pull-right">2021-05-28</span>
+                    <a href="../info/1079/2990.htm"><i class="by"></i>旅游目的地系列线上分享——雄安红色旅游</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2019-05-16</span>
+                    <a href="../info/1079/2797.htm"><i class="by"></i>南开旅游校友会代表参加第六届全球南开校友会会长论坛</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2018-06-12</span>
+                    <a href="../info/1079/2897.htm"><i class="by"></i>南开旅游校友会代表参加第五届全球南开校友会会长论坛</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2018-06-12</span>
+                    <a href="../info/1079/2896.htm"><i class="by"></i>南开旅游校友会举行2018年工作研讨会</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-11-20</span>
+                    <a href="../info/1079/2899.htm"><i class="by"></i>拨开云雾探VR， 旅游人视角的虚拟现实 ——记南开旅游校友会首次校友沙龙</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-07-13</span>
+                    <a href="../info/1079/2901.htm"><i class="by"></i>南开旅游校友会首届领导机构成员2017年第二次会议圆满召开</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-05-23</span>
+                    <a href="../info/1079/2905.htm"><i class="by"></i>方永钦副会长参加南开校友总会第六届理事会2017年（扩大）会议暨第四届全球南开校友会会长论坛</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-03-20</span>
+                    <a href="../info/1079/2910.htm"><i class="by"></i>南开旅游校友会成立大会暨首届南开旅游校友代表大会举行</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-03-20</span>
+                    <a href="../info/1079/2909.htm"><i class="by"></i>南开旅游校友会首届领导机构成员名单公示</a>
+                </li>
+                <li class="projectLi">
+                    <span class="pull-right">2017-03-20</span>
+                    <a href="../info/1079/2908.htm"><i class="by"></i>南开旅游校友会召开首届领导成员2017年第一次会议</a>
+                </li>
+            </ul>
+            <div id="pullUp" style="display:none;">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+            </div>
+        </div>
+</div>
+<!-- PC分页  start -->
+<div class="pagin tc mt40 plr20">
+    <div class="pagebar" style="margin-top:40px;margin-bottom:40px;text-align:center;">
+        <span class="p_pages"><span class="p_first_d p_fun_d">首页</span><span class="p_prev_d p_fun_d">上一页</span><span class="p_no_d">1</span><span class="p_next_d p_fun_d">下一页</span><span class="p_last_d p_fun_d">尾页</span></span> 
+         <span class="pagin-txt">到</span>
+        <span class="p_goto"><script language="javascript" src="/system/resource/js/gotopage.js"></script><input type="text" class="p_goto_input" maxlength="10" id="u6_goto" onkeydown="if(event.keyCode==13){_simple_list_gotopage_fun(1,&quot;u6_goto&quot;,2)}" spellcheck="false"></span>
+        <span class="p_goto"><a href="javascript:;" onclick="_simple_list_gotopage_fun(1,&quot;u6_goto&quot;,2)">确定</a></span>
+        <span class="pagin-txt">页</span>
+     </div>
+</div>
+<!-- PC分页  end -->
+
+<!--手机分页 start-->
+<div class="pager mb-mt10 mb-pb10 mb-mlr10">
+    <link rel="stylesheet" Content-type="text/css" href="/system/resource/css/pagedown/sys.css">
+    <div class="pb_sys_common pb_sys_short2 pb_sys_style1" style="margin-top:10px;text-align:center;">
+        <span class="p_pages"><span class="p_first_d p_fun_d">首页</span><span class="p_prev_d p_fun_d">上一页</span><span class="p_no_d">1</span><span class="p_next_d p_fun_d">下一页</span><span class="p_last_d p_fun_d">尾页</span></span>
+    </div>
+</div>
+<!--手机分页 end-->
+
+<script type="text/javascript">
+     <!-- PC分页  start -->
+    $(".pagebar>.p_goto>input").focus(function(){
+        $(".pagebar>.p_goto>a").css("display","inline-block");
+    });
+    $(".pagebar>.p_goto").blur(function(){
+        $(".pagebar>.p_goto>a").css("display","none");
+    });
+    <!-- PC分页  end -->
+    <!--手机分页 start-->
+        $(".pager .p_prev_d").prepend("&larr;").css("float","left");
+        $(".pager .p_next>a").append("&rarr;").css("float","right");
+      
+        $(".pager .p_prev>a").prepend("&larr;").css("float","left");
+        $(".pager .p_next_d").append("&rarr;").css("float","right");
+        <!--手机分页 end-->
+</script>
+<script>_showDynClickBatch(['dynclicks_u6_2990','dynclicks_u6_2797','dynclicks_u6_2897','dynclicks_u6_2896','dynclicks_u6_2899','dynclicks_u6_2901','dynclicks_u6_2905','dynclicks_u6_2910','dynclicks_u6_2909','dynclicks_u6_2908'],[2990,2797,2897,2896,2899,2901,2905,2910,2909,2908],"wbnews", 1738754965)</script>
+                </div>
+        </div>
+    </div>
+    <div class="mt50"></div>
+    <!--footer start-->
+    
+
+
+<div class="footerbg wow fadeIn">
+        <div class="container clearfix">
+            <div class="footer1 pull-left"><img src="../images/footer-logo.png" /></div>
+
+            <div class="footer2 pull-left">
+                <ul class="clearfix">
+                    <li class="ell"><a href="https://www.nankai.edu.cn/" target="_blank"><i></i>南开大学</a></li>
+                    <li class="ell"><a href="https://tourism2011.nankai.edu.cn/" target="_blank"><i></i>现代旅游业发展协同创新中心</a></li>
+                    <li class="ell"><a href="http://www.psc.org.cn/" target="_blank"><i></i>中国太平洋学会海洋旅游专业委员会</a></li>
+                    <li class="ell"><a href="http://www.mta.edu.cn/" target="_blank"><i></i>全国MTA教育指导委员会</a></li>
+                </ul>
+            </div>
+
+            <div class="footer3 pull-left">
+                <ul class="clearfix">
+                    <!--<li><a href="javascript:"><img src="../images/footer-ico1.png" />
+                            <div class="footer3Code trans">
+                                <img src="../images/footer-code.jpg" />
+                            </div>
+                        </a></li>-->
+
+                    <li><a href="javascript:"><img src="../images/footer-ico2.png" />
+                            <div class="footer3Code trans">
+                                <img src="../images/footer-code.jpg" />
+                            </div>
+                        </a></li>
+
+                    <li><a href="javascript:"><img src="../images/footer-ico3.png" />
+                            <div class="footer3Code trans">
+                                <img src="../images/no-completed.png" />
+                            </div>
+                        </a></li>
+
+                    <li><a href="javascript:"><img src="../images/footer-ico4.png" />
+                            <div class="footer3Code trans">
+                                <img src="../images/no-completed.png" />
+                            </div>
+                        </a></li>
+                </ul>
+            </div>
+
+
+            <div class="footer4 pull-right">
+                <img src="../images/footer-code.jpg" />
+                <h2>南开大学<br>旅游与服务学院</h2>
+            </div>
+        </div>
+    </div>
+    <div class="copybg wow fadeIn">
+        <div class="container clearfix copy">
+            <ul>
+                <li>地址：天津市津南区同砚路38号 [300071]</li>
+                <li>版权所有 南开大学</li>
+                <li>津教备0061号</li>
+                <li>津ICP备12003308号-1</li>
+                <li>津公网安备12010402000967号</li>
+            </ul>
+        </div>
+    </div>
+    <!--footer end-->
+    <!--animate-->
+    <script type="text/javascript" src="../js/wow/wow.min.js"></script>
+    <script type="text/javascript">
+        $(".list_dt").on("click",function () {
+            $('.list_dd').stop();
+            $(this).siblings("dt").removeAttr("id");
+            if($(this).attr("id")=="open"){
+                $(this).removeAttr("id").siblings("dd").slideUp();
+            }else{
+                $(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
+            }
+        });
+    </script>   
+</body>
+
+</html>

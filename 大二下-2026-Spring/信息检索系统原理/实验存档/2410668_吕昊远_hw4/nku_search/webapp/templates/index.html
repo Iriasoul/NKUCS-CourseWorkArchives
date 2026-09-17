@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}南开搜索{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1 class="hero-title">南开<span class="hero-accent">搜索</span></h1>
+  <p class="hero-sub">校内资源 · 文档 · 公告 · 新闻 · 全部检索</p>
+
+  <form class="search-form" action="{{ url_for('search') }}" method="get" autocomplete="off">
+    <div class="search-box">
+      <input id="q-input" class="search-input" name="q"
+             placeholder='输入关键词、"双引号短语" 或带 * ? 的通配符' />
+      <button class="search-btn" type="submit">搜索</button>
+      <div id="suggest-box" class="suggest-box"></div>
+    </div>
+    <div class="search-tabs">
+      <label><input type="radio" name="type" value="auto" checked> 智能</label>
+      <label><input type="radio" name="type" value="phrase"> 短语</label>
+      <label><input type="radio" name="type" value="wildcard"> 通配</label>
+      <label><input type="radio" name="type" value="doc"> 文档</label>
+    </div>
+    <div class="search-scope">
+      <label>站内搜索：
+        <select name="site" class="site-select">
+          {% for val, label in site_options %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+        <select name="ext" class="site-select">
+          <option value="">全部类型</option>
+          <option value="pdf">PDF</option>
+          <option value="doc,docx">Word (doc/docx)</option>
+          <option value="xls,xlsx">Excel (xls/xlsx)</option>
+          <option value="ppt,pptx">PPT (ppt/pptx)</option>
+        </select>
+      </label>
+    </div>
+  </form>
+</section>
+
+{% if recommendations %}
+<section class="recs">
+  <h3 class="recs-title">为你推荐</h3>
+  <div class="recs-grid">
+    {% for r in recommendations %}
+      <a class="rec-card" href="{{ r.url }}" target="_blank" rel="noopener">
+        <div class="rec-title">{{ r.title or r.url }}</div>
+        <div class="rec-meta">
+          <span class="rec-site">{{ r.site }}</span>
+          <span class="rec-reason">{{ r.reason }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

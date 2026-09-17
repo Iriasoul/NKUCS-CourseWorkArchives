@@ -1,0 +1,32 @@
+# 爬虫
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.3.0
+urllib3==2.2.3
+chardet==5.2.0
+
+# 索引 / 搜索（推荐使用 Elasticsearch 8.x）
+elasticsearch==8.15.1
+
+# 文档解析
+python-docx==1.1.2
+openpyxl==3.1.5
+pdfminer.six==20240706
+
+# 中文分词
+jieba==0.42.1
+
+# Web 框架 & 用户系统
+Flask==3.0.3
+Flask-Login==0.6.3
+Werkzeug==3.0.4
+
+# 链接分析
+networkx==3.3
+numpy==1.26.4
+
+# 数据存储
+# sqlite3 是 Python 标准库, 无需安装
+
+# 可选: 进度条
+tqdm==4.66.5

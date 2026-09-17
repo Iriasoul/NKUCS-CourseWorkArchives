@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>学生论文</title>
+	<link href="css/global.css" rel="stylesheet" type="text/css" />
+	<script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+	<link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<script src="assets/bootstrap/js/jquery-3.5.1/jquery-3.5.1.js" type="text/javascript"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.js"></script>
+	<style type="text/css">
+		#left_td{
+			width: 80px !important;
+		}
+		#searchtable { table-layout : fixed }
+		.login-form{
+}
+
+.login-form tr{
+	height: 40px;
+	line-height: 40px;
+}
+.login-form .label{
+	width: 50%;
+	text-align: center;
+	font-size: 14px;
+}
+.login-form .ctrl{
+	text-align: left;
+}
+	</style>
+</head>
+
+<body>
+	<center>
+		<div id="container">
+			
+<script type="text/xml">
+<!--
+<oa:widgets>
+  <oa:widget wid="2102522" binding="#navigation" />
+</oa:widgets>
+-->
+</script>
+
+ <script type="text/javascript">
+ function show()
+ {
+	 var iWidth = document.documentElement.clientWidth;
+	 var iHeight = document.documentElement.clientHeight;
+	 var bgObj = document.createElement("div");
+	 bgObj.setAttribute("id","bgbox");
+	 bgObj.style.width = iWidth+"px";
+	 bgObj.style.height =Math.max(document.body.clientHeight+25, iHeight)+"px";
+	 bgObj.style.position = 'fixed';
+	 document.body.appendChild(bgObj);
+	 var oShow = document.getElementById('message_box');
+	 oShow.style.display = 'block';
+	 oShow.style.visibility= 'visible'
+	 oShow.style.left = (iWidth-700)/2+"px";
+	 oShow.style.top = (iHeight-450)/2+"px";
+	 oShow.style.zIndex=20;
+ }
+ </script>
+
+
+<link href="css/mail.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+#message_box .message div table {
+	text-align: left;
+}
+.add {
+	color: #F0F;
+}
+.add {
+	color: #F0F;
+}
+</style>
+<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+<script src="SpryAssets/SpryValidationTextarea.js" type="text/javascript"></script>
+<link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+<link href="SpryAssets/SpryValidationTextarea.css" rel="stylesheet" type="text/css" />
+
+
+
+<div id="header-link" class="header-link">
+	<a href="./">首页</a> | <a href="javascript:window.external.AddFavorite('http://202.113.16.218/lib/web/','商学院资料中心')" >加入收藏</a> | <a href="#" onclick="this.style.behavior='url(#default#homepage)';this.sethomepage('http://202.113.16.218/lib/web/');return false;">设为首页</a> | <a href="#" onClick="show()">联系我们</a>
+</div>
+
+<div id="header">
+
+<!--          <div style="width:inherit; height:82%; margin:0px; padding:0px"></div>
+      
+          <div style="width:80%; height:18%;  margin:0px; float:left; padding:0px" align="left" onclick="location.href='http://202.113.16.218/lib/web/'"></div>
+      
+          <div style="width:9%; height:18%; margin:0px; float:left; cursor:pointer" onClick="window.external.AddFavorite(document.location.href,document.title)">加入收藏</div>
+      
+          <div style="width:1%; height:18%; margin:0px; float:left;"></div>
+      
+          <div style="width:8%; height:18%; margin:0px; float:left; cursor: pointer" onClick="document.getElementById('mask').style.visibility='visible';document.getElementById('message_box').style.visibility='visible'">联系我们					</div>
+-->
+
+</div>
+
+<div id="miniNav">  
+    <div>
+          <a href="index.asp">首页</a>|<a href="./delievery/index.asp">在线借阅窗口</a>|<a href="booksearch.asp">书目检索</a>|<a href="readers.asp">续借文献</a>|<a href="magazine.asp">期刊查询</a>|<!-- <a href="edata.asp">电子数据</a> --><a href="http://www.lib.nankai.edu.cn/sjkjs_15469/list.htm">电子数据</a>|<a href="lecture.asp">管理讲坛</a>|<a href="teacher.asp">教师成果</a>|<a href="student.asp">学位论文</a>|<a href="postdoctor.asp" style="letter-spacing:-2px;">博士后报告</a>|<a href="publish.asp">新书公告</a>|<a href="suggest.asp">留言建议</a>
+    </div>
+</div>        
+
+
+
+
+
+
+
+<div id="message_box">
+        <div class="message">
+            <div class="mailheader">
+
+                <span onClick="message_box.style.visibility='hidden';document.getElementById('bgbox').style.visibility='hidden'; document.getElementById('bgbox').setAttribute('id','bak');" style="float: right; width:14px; height:5% display: inline; cursor: pointer; font-size:14px;"><font color="#FFFFFF">×</font></span>
+            </div>
+           <h1>联系我们</h1>
+             <div style="width: inherit; height:80%; text-align: left; padding-left:3px; padding-top: 3px">
+
+<h2 style="width: 80%;
+  height: 50%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;">方式一(推荐)：<a href="suggest.asp">点击跳转至留言建议</a>，您的留言将以短信方式发送至管理员，回复更快<br><br>方式二：发送邮件至 nktanglan@163.com</h2>
+
+
+           </div>
+      </div>
+</div>
+<script type="text/javascript">
+
+var browser=navigator.appName
+
+var b_version=navigator.appVersion
+
+var version=b_version.split(";");
+
+var trim_Version=version[1].replace(/[ ]/g,"");
+
+if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE6.0")
+
+{
+
+    document.getElementById('message_box').style.position='absolute';
+	document.write('<style>.bgbox{position: absolute;top: 0;left: 0;width: expression(body.scrollWidth);height:expression(body.scrollHeight);background: #666;filter: ALPHA(opacity=60);z-index:20;}</style>')
+
+}
+
+</script>
+
+
+
+<script type="text/javascript">
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+var sprytextarea1 = new Spry.Widget.ValidationTextarea("sprytextarea1");
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
+</script>
+
+			<div id="content">
+				<div id="links" style="height: 900px;">
+					<div id="lead-top" class="thin"><span>重要链接</span></div>
+					<div id="incontent">
+		<table height="390" width="220" align="center" cellpadding="0" cellspacing="0">
+			<tr height="5"></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://www.loc.gov/index.html" target="_blank">美国国会图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://www.britishlibrary.cn/zh-cn/" target="_blank">大英图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://library.harvard.edu/" target="_blank">哈佛大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://oxford.library.emory.edu/" target="_blank">牛津大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://www.nlc.cn/web/index.shtml" target="_blank">国家图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://www.lib.nankai.edu.cn" target="_blank">南开大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a"href="http://www.libnet.sh.cn/" target="_blank">上海图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://www.lib.tsinghua.edu.cn/" target="_blank">清华大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://www.lib.pku.edu.cn/portal/cn" target="_blank">北京大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://www.library.fudan.edu.cn/" target="_blank">复旦大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="database_stat.asp?type=1" target="_blank">Springer数据库</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="database_stat.asp?type=2" target="_blank">EPS数据库</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="http://www.cfrn.com.cn/" target="_blank">中国金融学术研究网</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://lib.sufe.edu.cn/" target="_blank">上海财经大学图书馆</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://www.cnki.net/" target="_blank">中国学术期刊全文数据库</a></td></tr>
+			<tr><td height="30"  align="center"><a class="link-a" href="https://www.51ifind.com/index.php?c=index&a=download" target="_blank">同花顺金融数据库</a></td></tr>
+		</table>
+
+</div>
+				</div>
+				<div id="content-m" style="height: 900px;">
+					<div id="lead-top" class="middle"><span>学生论文</span></div>
+					<div id="incontent">
+						<div id="TabbedPanels1" class="TabbedPanels">
+							<ul class="TabbedPanelsTabGroup">
+								<li class="TabbedPanelsTab" tabindex="0">论文查询</li>
+								<li class="TabbedPanelsTab" tabindex="1">论文上传</li>
+							</ul>
+							<div class="TabbedPanelsContentGroup" >
+								<div class="TabbedPanelsContent">
+									
+
+									<div style="width:inherit; text-align:right; font-family:楷体; font-size:13px">
+										本数据库目前共收录学位论文&nbsp;16041&nbsp;篇&nbsp;&nbsp;&nbsp;&nbsp;<br /><br /></div>
+									<div
+										style="float:left; width:260px; height:autos; border-right-color:#CCC; border-right-style:solid 1px; margin-right:3px">
+										<table id="searchtable" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+											<form method="post">
+												<tr height="35">
+													<td width="80" height="36" align="center" class="search">作者：</td>
+													<td width="180"><input class="input-medium" name="userid" /></td>
+												</tr>
+												<tr height="35">
+													<td height="34" align="center" class="search">学位：</td>
+													<td ><input  name="degree" type="radio" value="0" checked="checked" />
+														硕士
+														<input name="degree" type="radio" value="1" />
+														博士</td>
+												</tr>
+
+												<tr height="35">
+													<td  height="38" align="center" class="search">专业类别：</td>
+													<td >
+														
+
+														<select style = "width:158px;"  name="subject">
+															<option value="">不限</option>
+															
+															<option value="企业管理">企业管理</option>
+															
+															<option value="会计学">会计学</option>
+															
+															<option value="旅游管理">旅游管理</option>
+															
+															<option value="公司治理">公司治理</option>
+															
+															<option value="图书馆学">图书馆学</option>
+															
+															<option value="档案学">档案学</option>
+															
+															<option value="管理科学与工程">管理科学与工程</option>
+															
+															<option value="技术经济及管理">技术经济及管理</option>
+															
+															<option value="情报学">情报学</option>
+															
+															<option value="MBA">MBA</option>
+															
+															<option value="MPACC">MPACC</option>
+															
+															<option value="MPM">MPM</option>
+															
+															<option value="EMBA">EMBA</option>
+															
+															<option value="人力资源管理">人力资源管理</option>
+															
+															<option value="财务管理">财务管理</option>
+															
+															<option value="市场营销">市场营销</option>
+															
+															<option value="MEM">MEM</option>
+															
+															<option value="MV">MV</option>
+															
+															<option value="本科工商管理">本科工商管理</option>
+															
+															<option value="本科管理科学与工程">本科管理科学与工程</option>
+															
+															<option value="本科国际会计">本科国际会计</option>
+															
+															<option value="本科图书档案">本科图书档案</option>
+															
+															<option value="MLIS">MLIS</option>
+															
+															<option value="MBA沈阳班">MBA沈阳班</option>
+															
+															<option value="MBA台湾班">MBA台湾班</option>
+															
+															<option value="物流与供应链管理">物流与供应链管理</option>
+															
+															<option value="MBA滨海班">MBA滨海班</option>
+															
+															<option value="MBA青岛班">MBA青岛班</option>
+															
+															<option value="本科物流管理">本科物流管理</option>
+															
+															<option value="工业工程">工业工程</option>
+															
+															<option value="本科工业工程">本科工业工程</option>
+															
+															<option value="数学与科学学院">数学与科学学院</option>
+															
+															<option value="本科电子商务（中外合作办学）">本科电子商务（中外合作办学）</option>
+															
+															<option value="图书情报与档案管理">图书情报与档案管理</option>
+															
+															<option value="信息资源管理">信息资源管理</option>
+															
+														</select>
+
+													</td>
+												</tr>
+
+												<tr height="35">
+													<td class="left_td"  height="38" align="center" class="search">中文题目：</td>
+													<td><input class="input-medium" name="titlecn" /></td>
+												</tr>
+												<tr height="35">
+													<td   height="32" align="center" class="search">英文题目：</td>
+													<td><input class="input-medium" name="titleen" /></td>
+												</tr>
+												<tr height="35">
+													<td  height="35" align="center" class="search">指导老师:</td>
+													<td><input class="input-medium" name="PFID" /></td>
+												</tr>
+												<tr height="35">
+													<td  height="32" align="center" class="search">中文关键字:</td>
+													<td><input class="input-medium" name="KWCN" /></td>
+												</tr>
+												<tr height="35">
+													<td  height="33" class="input-small" align="center" class="search">英文关键字:</td>
+													<td><input class="input-medium" name="kwen" /></td>
+												</tr>
+												<tr>
+													<td></td>
+													<td><input name="action" type="hidden" value="search" />
+														<input class="button" type="submit" value="检索" />
+														<input class="button" type="reset" value="清除" /></td>
+												</tr>
+											</form>
+										</table>
+									</div>
+									<!--搜索层结束 -->
+
+									<div style="float:left; width: 478px; height:auto">
+										<table class="table table-bordered table-hover"  width="475" border="0" cellpadding="0" cellspacing="0">
+											<tr>
+												<th width="320">论文标题</th>
+												<th width="96">学生姓名</th>
+												<th width="59"></th>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>国企高管行政型治理对战略选择的影响研</td>
+												<td> 徐建</td>
+												<td><a href="student_paperinfo.asp?id=8433">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>采购代理公司的客户长期合作关系影响因</td>
+												<td>"MIKHAILOV ANDREY</td>
+												<td><a href="student_paperinfo.asp?id=14004">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>巴拿马华人家族企业二代继承选择差异化</td>
+												<td>"廖嘉明 （LIAO CHENG KAREN）</td>
+												<td><a href="student_paperinfo.asp?id=16133">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>中国跨国公司在尼日利亚的国际化:前因</td>
+												<td>Adedigba Gregory Olawoyin</td>
+												<td><a href="student_paperinfo.asp?id=12334">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>论文题目：CEO权力与公司绩效: 巴</td>
+												<td>Ashfaque Ali Banbhan</td>
+												<td><a href="student_paperinfo.asp?id=11506">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>电商平台信息茧房对用户持续使用意愿影</td>
+												<td>ATAMANOVA KAMILIA</td>
+												<td><a href="student_paperinfo.asp?id=13222">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>国际创业能力对中小国际创业企业绩效</td>
+												<td>CHEN XI  陈熹</td>
+												<td><a href="student_paperinfo.asp?id=8549">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>中国公共图书馆在弥合数字鸿沟中的作用</td>
+												<td>Christopher Clark</td>
+												<td><a href="student_paperinfo.asp?id=4530">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>哥伦比亚中国公司资本结构的决定因素</td>
+												<td>Daniel Monsalve Ortiz</td>
+												<td><a href="student_paperinfo.asp?id=10949">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>不断发展的组织：基于 holacra</td>
+												<td>Edgardo Antonio Cossu Paniza</td>
+												<td><a href="student_paperinfo.asp?id=8447">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>BEAUTY XXI公司产业转移中的</td>
+												<td>Estibaliz Varela Aller</td>
+												<td><a href="student_paperinfo.asp?id=8446">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="white">
+												<td>中国与西方的利基网站联盟营销</td>
+												<td>Georg Voge</td>
+												<td><a href="student_paperinfo.asp?id=8371">详细</a></td>
+											</tr>
+											
+											<tr height="26" bgcolor="ededed">
+												<td>撒哈拉以南的非洲地区企业对外投资分析</td>
+												<td>Jideofor Obichere Ahaneku</td>
+												<td><a href="student_paperinfo.asp?id=8444">详细</a></td>
+											</tr>
+											
+										</table>
+										<div align="right" style="margin-top:5px">
+											<table border="0">
+												<tr>
+													<td></td>
+													<td></td>
+													<td>
+														<a href="/lib/web/student.asp?offset=13">下一页</a>
+														</td>
+													<td>
+														<a href="/lib/web/student.asp?offset=-1">最后一页</a>
+														</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<!--记录显示层结束 -->
+
+								</div>
+								<div class="TabbedPanelsContent">
+									<!--登录层 -->
+
+									<table width="760" border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="310" align="left">
+												
+												<p><font size="3" color="black">论文上传使用说明：</font>&nbsp;</p>
+
+												<!--<li>首次使用请先进行注册，注册时需要提供预留码，请向研究生办查询</li>-->
+
+												<li>
+													<font color="red">上传论文的文件格式统一为PDF格式。</font>
+												</li>
+												<li>
+													<font color="green">论文上传后看到提示“上传成功”即可，如有问题我们将与作者联系
+														<!--论文提交后，我们将进行审核，如果审核通过，则通过论文查询可以查到你的论文，如果审核未通过，则会通过电子邮件的方式给以答复，请注意查收-->
+													</font>
+												</li>
+												<li>
+													<font color="green">在使用系统的过程中，如果出现页面显示不全，或者按钮无法点击等情况，请更换其他浏览器</font>
+												</li>
+												<li>
+													<font color="green">如果论文上传出现问题，可发邮件到nktanglan@163.com，或直接点右上角"联系我们",我们会尽量给以答复。</font>
+												</li>
+											</td>
+											<td width="20" valign="middle"></td>
+											<td align="center" width="400" >
+													<form name="StuLog" id="StuLog" method="post" action="login.asp">
+															<table id="searchtable" width="260" border="0" cellpadding="0" cellspacing="0" class="login-form"> 
+															      <tr>
+															      	<td width="60px" ></td>
+																	<td class="ctrl">
+																	</td>
+															      </tr>                 
+																<tr>
+																	<td width="60px" >学号 </td>
+																	<td class="ctrl">
+																			<input name="action" type="hidden" value="student" />
+																			<input type="text" size="16" name="username" />
+																	</td>
+																</tr>
+				
+																<tr>
+																	<td >密码</td>
+																	<td class="ctrl" >
+																			<input type="password" name="password" size="16" />
+																	</td>
+																</tr>
+																<tr>
+																	<td >验证码</td>
+																	<td class="ctrl">
+																		<input type="text" name="verify" style="width: 40%"/>
+																		<img src="/lib/web/images/chk.asp" alt="" class="verify" style="width: 40%" title="点击更新">
+																	</td>
+																</tr>
+																<tr>
+																	<td ></td>
+																	<td class="ctrl">
+																		<a href="forgetpwd_code.asp" style="color: red">忘记密码？点击找回</a>
+																	</td>
+																</tr>
+																<tr>
+																	<td></td>
+																	<td align="left">
+																			<input type="submit" style="width:100%; height:30px; font:宋体 18px" value="登录" />
+																	</td>
+																</tr>
+															</table>
+														</form>
+											</td>
+											<td></td>
+										</tr>
+									</table>
+								</div>
+								<!--登录层结束 -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</center>
+	<script type="text/javascript">
+		var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+	</script>
+	<script src="/lib/web/js/jquery-3.5.1/jquery-3.5.1.js"></script>
+	<script src="/lib/web/js/verify.js"></script>
+</body>
+
+</html>

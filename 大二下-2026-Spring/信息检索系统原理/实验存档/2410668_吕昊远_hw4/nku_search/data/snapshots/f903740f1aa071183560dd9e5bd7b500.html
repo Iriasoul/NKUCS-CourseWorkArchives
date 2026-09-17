@@ -1,0 +1,867 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=1250"/>
+<title>纪法讲堂</title>
+
+<link type="text/css" href="/_css/_system/system.css" rel="stylesheet"/>
+<link type="text/css" href="/_upload/site/1/style/6/6.css" rel="stylesheet"/>
+<link type="text/css" href="/_upload/site/00/88/136/style/124/124.css" rel="stylesheet"/>
+       <LINK href="/_css/tpl2/system.css" type="text/css" rel="stylesheet"> 
+<link type="text/css" href="/_js/_portletPlugs/sudyNavi/css/sudyNav.css" rel="stylesheet" />
+       <LINK href="/_css/tpl2/default/portlet/dtjt/8/dtjt8.css" type="text/css" rel="stylesheet">
+<link type="text/css" href="/_js/_portletPlugs/datepicker/css/datepicker.css" rel="stylesheet" />
+<link type="text/css" href="/_js/_portletPlugs/simpleNews/css/simplenews.css" rel="stylesheet" />
+       <LINK href="/_css/tpl2/default/default.css" type="text/css" rel="stylesheet"> 
+
+<script language="javascript" src="/_js/jquery.min.js" sudy-wp-context="" sudy-wp-siteId="136"></script>
+<script language="javascript" src="/_js/jquery.sudy.wp.visitcount.js"></script>
+<script type="text/javascript" src="/_js/_portletPlugs/sudyNavi/jquery.sudyNav.js"></script>
+<script type="text/javascript" src="/_js/_portletPlugs/datepicker/js/jquery.datepicker.js"></script>
+<script type="text/javascript" src="/_js/_portletPlugs/datepicker/js/datepicker_lang_HK.js"></script>
+<link rel="stylesheet" href="/_upload/tpl/01/15/277/template277/style.css" type="text/css" />
+<link rel="stylesheet" href="/_upload/tpl/01/15/277/template277/messageboard_portlet.css" type="text/css" />
+<link rel="stylesheet" href="/_upload/tpl/01/15/277/template277/extends/extends.css" type="text/css" media="all" />
+
+</head>
+<body class="main">
+<!--Start||head-->
+<div class="wrapper header" id="header">
+	<div class="inner clearfix">
+	    <!--头部信息-->
+		<div class="head" >
+			<!--logo开始-->
+			<div class="sitelogo" frag="面板01">
+				<div class="sitelogocon" frag="窗口01" portletmode="simpleSiteAttri">
+					<a href="/main.htm" title="返回南开大学附属医院首页"><img border='0' src='/_upload/site/00/88/136/logo.png' /></a> 
+				</div>
+			</div>
+			<!--搜索-->
+            
+			<div class="search_new" frag="面板02">
+				<div  frag="窗口02" >
+					
+    <div class="wp_search">
+        <table>
+            <tr>
+                <td height="25px">
+                    <input id="keyword" name="keyword" style="width: 150px" class="keyword" type="text" value="请输入关键字" onfocus="if (this.value === '请输入关键字') { this.value = ''; }"
+                           onblur="if (this.value === '') { this.value = '请输入关键字'; }" onkeydown="return onKeyEvent(event);"/>
+                </td>
+                <td>
+					<input type="hidden" id="securl" value="/_web/_search/api/search/new.rst?locale=zh_CN&request_locale=zh_CN&_p=YXM9MTM2JnQ9Mjc3JmQ9OTc3JnA9MiZmPTgzNzImbT1TTiZ8Ym5uQ29sdW1uVmlydHVhbE5hbWU9ODM3MiY_"/>
+                    <input name="btnsearch" class="search" type="submit" value="" onclick="checkValues();"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<script>
+    function onKeyEvent(event){
+        if (event.keyCode != '13') {
+            return;
+        }
+        checkValues();
+    }
+    function checkValues(){
+		var url = $("#securl").val();
+        var keyword = $("input[name='keyword']").val();
+		if (keyword === '请输入关键字') {
+			keyword = ''; 
+		}
+		if (keyword !== '') {
+			keyword = encodeURI(encodeURI(keyword));
+			url = url + "&keyword=" + keyword;
+		}
+        window.open(url);
+    }
+</script>
+				</div>
+			</div>
+            <div class="homepage">
+             <a href="http://www.nankai.edu.cn/" target="_blank"><span>返回学校主页</span></a>
+            </div>
+		</div>
+    </div>
+</div>
+<!--End||head-->
+
+<!--Start||nav-->
+<div class="wrapper nav" id="nav">
+	<div class="inner">
+	    <!--导航-->
+		<div class="navbar" frag="面板1">
+			<div class="navbox" frag="窗口1">
+				<div id="wp_nav_w1"> 
+
+ 
+<ul class="wp_nav" data-nav-config="{drop_v: 'down', drop_w: 'right', dir: 'y', opacity_main: '1', opacity_sub: '0.8', dWidth: '0'}">
+      
+     <li class="nav-item i1 "> 
+         <a href="http://fy.nankai.edu.cn/main.htm" title="首页" target="_self"><span class="item-name">首页</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i2 "> 
+         <a href="/8601/list.htm" title="医院简介" target="_self"><span class="item-name">医院简介</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i3 "> 
+         <a href="/8602/list.htm" title="医院动态" target="_self"><span class="item-name">医院动态</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i4 "> 
+         <a href="/8603/list.htm" title="医疗服务" target="_self"><span class="item-name">医疗服务</span></a><i class="mark"></i> 
+          
+         <ul class="sub-nav"> 
+              
+             <li class="nav-item i4-1 "> 
+                 <a href="/8653/list.htm" title="乘车路线" target="_self"><span class="item-name">乘车路线</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i4-2 "> 
+                 <a href="/8654/list.htm" title="医保信息" target="_self"><span class="item-name">医保信息</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i4-3 "> 
+                 <a href="/8656/list.htm" title="在线咨询" target="_self"><span class="item-name">在线咨询</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i4-4 "> 
+                 <a href="/8657/list.htm" title="预约挂号" target="_self"><span class="item-name">预约挂号</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i4-5 "> 
+                 <a href="/8658/list.htm" title="联系我们" target="_self"><span class="item-name">联系我们</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i4-6 "> 
+                 <a href="/zjcz/list.htm" title="出诊信息" target="_self"><span class="item-name">出诊信息</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+         </ul> 
+          
+     </li> 
+      
+     <li class="nav-item i5 "> 
+         <a href="/8604/list.htm" title="科室导航" target="_self"><span class="item-name">科室导航</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i6 "> 
+         <a href="/8605/list.htm" title="专家介绍" target="_self"><span class="item-name">专家介绍</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i7 "> 
+         <a href="/8606/list.htm" title="党建园地" target="_self"><span class="item-name">党建园地</span></a><i class="mark"></i> 
+          
+         <ul class="sub-nav"> 
+              
+             <li class="nav-item i7-1 "> 
+                 <a href="/38267/list.htm" title="党建动态" target="_self"><span class="item-name">党建动态</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2 "> 
+                 <a href="/38256/list.htm" title="学习教育" target="_self"><span class="item-name">学习教育</span></a><i class="mark"></i> 
+                  
+         <ul class="sub-nav"> 
+              
+             <li class="nav-item i7-2-1 "> 
+                 <a href="/38272/list.htm" title="树立和践行正确政绩观学习教育" target="_self"><span class="item-name">树立和践行正确政绩观...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2-2 "> 
+                 <a href="/38273/list.htm" title="深入学习领会习近平总书记中央纪委五次全会重要讲话精神" target="_self"><span class="item-name">深入学习领会习近平总...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2-3 "> 
+                 <a href="/38274/list.htm" title="深入学习贯彻党的二十届四中全会精神" target="_self"><span class="item-name">深入学习贯彻党的二十...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2-4 "> 
+                 <a href="/38275/list.htm" title="深入学习《习近平谈治国理政》 第五卷" target="_self"><span class="item-name">深入学习《习近平谈治...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2-5 "> 
+                 <a href="/38276/list.htm" title="深入贯彻中央八项规定精神学习教育" target="_self"><span class="item-name">深入贯彻中央八项规定...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-2-6 "> 
+                 <a href="/38280/list.htm" title="学习贯彻习近平总书记视察南开大学重要讲话精神" target="_self"><span class="item-name">学习贯彻习近平总书记...</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+         </ul> 
+          
+             </li> 
+              
+             <li class="nav-item i7-3 "> 
+                 <a href="/38257/list.htm" title="学思践悟" target="_self"><span class="item-name">学思践悟</span></a><i class="mark"></i> 
+                  
+         <ul class="sub-nav"> 
+              
+             <li class="nav-item i7-3-1 "> 
+                 <a href="/38269/list.htm" title="“研读经典”专栏" target="_self"><span class="item-name">“研读经典”专栏</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-3-2 "> 
+                 <a href="/38270/list.htm" title="上池·千金读书会" target="_self"><span class="item-name">上池·千金读书会</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-3-3 "> 
+                 <a href="/38357/list.htm" title="健康惠民" target="_self"><span class="item-name">健康惠民</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-3-4 "> 
+                 <a href="/38358/list.htm" title="参观研学" target="_self"><span class="item-name">参观研学</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+         </ul> 
+          
+             </li> 
+              
+             <li class="nav-item i7-4 "> 
+                 <a href="/38258/list.htm" title="清风医苑" target="_self"><span class="item-name">清风医苑</span></a><i class="mark"></i> 
+                  
+         <ul class="sub-nav"> 
+              
+             <li class="nav-item i7-4-1 "> 
+                 <a href="/38261/list.htm" title="党纪法规" target="_self"><span class="item-name">党纪法规</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-4-2 "> 
+                 <a href="/38260/list.htm" title="纪法讲堂" target="_self"><span class="item-name">纪法讲堂</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-4-3 "> 
+                 <a href="/38262/list.htm" title="医德医风" target="_self"><span class="item-name">医德医风</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-4-4 "> 
+                 <a href="/38263/list.htm" title="警钟长鸣" target="_self"><span class="item-name">警钟长鸣</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+         </ul> 
+          
+             </li> 
+              
+             <li class="nav-item i7-5 "> 
+                 <a href="/38259/list.htm" title="党务公开" target="_self"><span class="item-name">党务公开</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+             <li class="nav-item i7-6 "> 
+                 <a href="/38268/list.htm" title="医路先锋" target="_self"><span class="item-name">医路先锋</span></a><i class="mark"></i> 
+                  
+             </li> 
+              
+         </ul> 
+          
+     </li> 
+      
+     <li class="nav-item i8 "> 
+         <a href="/8607/list.htm" title="医学科研" target="_self"><span class="item-name">医学科研</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i9 "> 
+         <a href="/yxjy/list.htm" title="医学教育" target="_self"><span class="item-name">医学教育</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+     <li class="nav-item i10 "> 
+         <a href="/8609/list.htm" title="护理风采" target="_self"><span class="item-name">护理风采</span></a><i class="mark"></i> 
+          
+     </li> 
+      
+</ul> 
+ 
+ 
+ </div>
+		    </div>
+		</div>
+    </div>
+</div>
+<!--End||nav-->
+<div class="wrapper nav" id="lm">
+	<div class="lmt">
+	    <!--导航-->
+		<div frag="面板11">
+			<div frag="窗口11">
+				                <!-- 多图交替8 图片 切换 -->
+<div class="dtjt8_div_img" style="width:-1px;height:202px;">
+    <img id="w11imgShow" name="w11imgShow" onclick="w11openWindow();" style="FILTER: revealTrans(duration=2,transition=20); border: 0; cursor: pointer;" src="/..//_css/tpl/default/images/loading.gif" width="-1px" height="202px" vspace="0">
+    <div id='w11imgNumber' class="number"></div>
+</div>
+<script language="JavaScript" class="" >
+    var w11imgJsons = [
+    
+        
+            {
+            "src" : "/_upload/article/images/35/eb/a02e0a4e4b3ea5796ddcc014847f/608719ad-4ccc-4b83-b422-876a22d36ba7.jpg",
+            "url" : "/2018/0123/c8650a89517/page.htm"
+            }];
+        
+       
+</script>
+<script language="JavaScript">
+        var w11imgUrl = new Array();
+        var w11imgLink = new Array();
+
+        var w11count = 0;
+        var w11running = false;
+        var w11index = 0;
+        var w11nextAdTimer;
+        var w11k = 0;
+        function w11nextAd(num) {
+            if (num >= 0 && num <= w11count - 1) {
+                w11index = num;
+                clearTimeout(w11nextAdTimer);
+            } else {
+                num = w11index;
+            }
+            if (w11index > w11count - 1) {
+                w11index = 0;
+            }
+            if (!w11running) {
+                w11running = true;
+
+            } else if (document.all) {
+                w11imgShow.filters.revealTrans.Transition = 50;
+                w11imgShow.filters.revealTrans.apply();
+                w11imgShow.filters.revealTrans.play();
+            }
+            document.getElementById('w11imgShow').src = w11imgUrl[w11index];
+            document.getElementById('w11imgNumber').innerHTML = "";
+            w11k = 0;
+            for (var i = 0; i < w11count; i++) {
+                w11k++;
+                if (i !== w11index) {
+                    document.getElementById('w11imgNumber').innerHTML += '<a href="javascript:w11nextAd(' + i + ')" class="nomal">' + w11k + '</a>';
+                } else {
+                    document.getElementById('w11imgNumber').innerHTML += '<a href="javascript:w11nextAd(' + i + ')" class="current">' + w11k + '</a>';
+                }
+            }
+            w11index++;
+            if (w11count > 1) {
+                w11nextAdTimer = setTimeout("w11nextAd(-1)", 4000);
+            }
+        }
+
+        function w11openWindow() {
+            var jumpUrl = w11imgLink[w11index - 1];
+            if (jumpUrl && jumpUrl != '') {
+                window.open(jumpUrl);
+            }
+        }
+
+        $().ready(function() {
+            try {
+                var objs = w11imgJsons;
+                w11count = objs.length;
+                if (w11count == 0) {
+                    document.getElementById('w11imgShow').style.display = "none";
+                    document.getElementById('w11imgNumber').style.display = "none";
+                    return;
+                }
+                for (var i = 0; i < objs.length; i++) {
+                    w11imgUrl[i] = objs[i].src;
+                    w11imgLink[i] = objs[i].url;
+                }
+                w11nextAd(-1);
+            } catch (e) {
+            }
+        });
+</script>
+            
+		    </div>
+		</div>
+    </div>
+</div>
+<div class="wid clearfix">
+<div class="col_news_head" frag="面板51">
+					<ul class="col_metas clearfix" frag="窗口51" portletmode="simpleColumnAttri">
+						 
+							<li class="col_path"><span class="path_name">当前位置：</span><a href="/main.htm" target="_self">首页</a><span class='possplit'>&nbsp;&nbsp;</span><a href="/8606/list.htm" target="_self">党建园地</a><span class='possplit'>&nbsp;&nbsp;</span><a href="/38258/list.htm" target="_self">清风医苑</a><span class='possplit'>&nbsp;&nbsp;</span><a href="/38260/list.htm" target="_self">纪法讲堂</a></li>
+						 
+					</ul>
+				</div>
+                </div>
+<!--Start||content-->
+<div class="wrapper" id="container">
+	<div class="inner">
+		<div class="col_menu">
+			<!--位置栏目-->
+			<div class="col_menu_head" frag="面板3">
+				<h3 class="col_name" frag="窗口3" portletmode="simpleColumnAnchor">
+					<span class="col_name_text">
+						<span class='Column_Anchor'>党建园地</span>
+					</span>
+				</h3>
+			</div>
+			
+			<!--栏目列表-->
+			<div class="col_menu_con" frag="面板4">
+				<div class="col_list" frag="窗口4" portletmode="simpleColumnList">
+					<div id="wp_listcolumn_w4"> 
+
+ 
+<ul class="wp_listcolumn"> 
+      
+     <li class="wp_column column-1 "> 
+         <a href="/38267/list.htm" title="党建动态" class="" target="_self"><span class="column-name">党建动态</span></a> 
+          
+     </li> 
+      
+     <li class="wp_column column-2 "> 
+         <a href="/38256/list.htm" title="学习教育" class="" target="_self"><span class="column-name">学习教育</span></a> 
+          
+     </li> 
+      
+     <li class="wp_column column-3 "> 
+         <a href="/38257/list.htm" title="学思践悟" class="" target="_self"><span class="column-name">学思践悟</span></a> 
+          
+     </li> 
+      
+     <li class="wp_column column-4 parent"> 
+         <a href="/38258/list.htm" title="清风医苑" class="parent" target="_self"><span class="column-name">清风医苑</span></a> 
+          
+         <ul class="wp_subcolumn"> 
+              
+             <li class="wp_column column-4-1 "> 
+                 <a href="/38261/list.htm" title="党纪法规" class="" target="_self"><span class="column-name">党纪法规</span></a> 
+                  
+             </li> 
+              
+             <li class="wp_column column-4-2 selected"> 
+                 <a href="/38260/list.htm" title="纪法讲堂" class="selected" target="_self"><span class="column-name">纪法讲堂</span></a> 
+                  
+             </li> 
+              
+             <li class="wp_column column-4-3 "> 
+                 <a href="/38262/list.htm" title="医德医风" class="" target="_self"><span class="column-name">医德医风</span></a> 
+                  
+             </li> 
+              
+             <li class="wp_column column-4-4 "> 
+                 <a href="/38263/list.htm" title="警钟长鸣" class="" target="_self"><span class="column-name">警钟长鸣</span></a> 
+                  
+             </li> 
+              
+         </ul> 
+          
+     </li> 
+      
+     <li class="wp_column column-5 "> 
+         <a href="/38259/list.htm" title="党务公开" class="" target="_self"><span class="column-name">党务公开</span></a> 
+          
+     </li> 
+      
+     <li class="wp_column column-6 "> 
+         <a href="/38268/list.htm" title="医路先锋" class="" target="_self"><span class="column-name">医路先锋</span></a> 
+          
+     </li> 
+      
+</ul> 
+ 
+ 
+ </div>
+				</div>
+			</div>
+		</div>
+		<div class="col_news">
+			<div class="col_news_box">
+				<!--栏目名称-->
+				<div class="col_news_head" frag="面板5">
+					<ul class="col_metas clearfix" frag="窗口5" portletmode="simpleColumnAttri">
+						 
+							<li class="col_title"><h2>纪法讲堂</h2></li>
+							
+						 
+					</ul>
+				</div>
+				<!--文章列表-->
+				<div class="col_news_con" frag="面板6">
+					<div class="col_news_list" frag="窗口6" portletmode="simpleList">
+						<div id="wp_news_w6"> 
+ 
+<ul class="wp_article_list"> 
+      
+     <li class="list_item i1"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>1</span> 
+             <span class='Article_Title'><a href='/2026/0527/c38260a596361/page.htm' target='_blank' title='清 风 附 院 第2期'>清 风 附 院 第2期</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-27</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i2"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>2</span> 
+             <span class='Article_Title'><a href='https://www.ccdi.gov.cn/hdjln/ywtt/202403/t20240321_336056_m.html' target='_blank' title='公立医疗机构工作人员收受回扣如何定性 '>公立医疗机构工作人员收受回扣如何定性 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i3"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>3</span> 
+             <span class='Article_Title'><a href='https://www.ccdi.gov.cn/specialn/jfbk/jjctjfbk/202605/t20260515_490699.html' target='_blank' title='纪法百科丨公职人员包括哪些人员？ '>纪法百科丨公职人员包括哪些人员？ </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i4"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>4</span> 
+             <span class='Article_Title'><a href='https://www.ccdi.gov.cn/specialn/jfbk/jjctjfbk/202605/t20260513_490303.html' target='_blank' title='纪法百科丨如何理解“利用职务上的影响” '>纪法百科丨如何理解“利用职务上的影响” </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i5"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>5</span> 
+             <span class='Article_Title'><a href='https://www.ccdi.gov.cn/specialn/jfbk/jjctjfbk/202605/t20260509_489515.html' target='_blank' title='纪法百科丨如何理解“利用职权” '>纪法百科丨如何理解“利用职权” </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i6"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>6</span> 
+             <span class='Article_Title'><a href='https://www.ccdi.gov.cn/specialn/jfbk/jjctjfbk/202605/t20260508_489324.html' target='_blank' title='纪法百科丨特定关系人 '>纪法百科丨特定关系人 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i7"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>7</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/wS_sPgArR7s1J36phdIAYA' target='_blank' title='纪法小课丨收了这张卡，你就违纪了！ '>纪法小课丨收了这张卡，你就违纪了！ </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i8"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>8</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/u-CXiT-UHdrBkJFrH7yt1A' target='_blank' title='明纪释法 | 严格教育管理监督 拧紧年轻干部“纪律弦”'>明纪释法 | 严格教育管理监督 拧紧年轻干部“纪律弦”</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-05-21</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i9"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>9</span> 
+             <span class='Article_Title'><a href='/2026/0430/c38260a595409/page.htm' target='_blank' title='筑牢纪法防线 防范执业风险 '>筑牢纪法防线 防范执业风险 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-30</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i10"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>10</span> 
+             <span class='Article_Title'><a href='/2026/0427/c38260a593815/page.htm' target='_blank' title='清 风 附 院 第1期'>清 风 附 院 第1期</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-27</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i11"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>11</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/ScF9cM6O84er5fOUAeeonQ' target='_blank' title='明纪释法 | 警惕以讲课费、课题费、咨询费等名义变相收送礼 '>明纪释法 | 警惕以讲课费、课题费、咨询费等名义变相收送礼 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-27</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i12"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>12</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/1ITpz_pF4ifXVt7_XKeytw' target='_blank' title='纪法小课丨警惕借出差、培训之机公款旅游问题 '>纪法小课丨警惕借出差、培训之机公款旅游问题 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-27</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i13"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>13</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/nPwaU_YLe7gdOZr9Jdq0OA' target='_blank' title='纪法小课丨整治违规收送礼④坚决纠治以讲课费、课题费、咨询费等名义变相收送礼行为 '>纪法小课丨整治违规收送礼④坚决纠治以讲课费、课题费、咨询费等...</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-27</span> 
+              
+         </div> 
+     </li> 
+      
+     <li class="list_item i14"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>14</span> 
+             <span class='Article_Title'><a href='https://mp.weixin.qq.com/s/6L92H9L7SkJA9ve1d6iGbw' target='_blank' title='纪法小课丨整治违规收送礼③切莫借婚丧喜庆事宜敛财 '>纪法小课丨整治违规收送礼③切莫借婚丧喜庆事宜敛财 </a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+             <span class='Article_PublishDate'>2026-04-27</span> 
+              
+         </div> 
+     </li> 
+      
+</ul> 
+</div> 
+
+ <div id="wp_paging_w6"> 
+<ul class="wp_paging clearfix"> 
+     <li class="pages_count"> 
+         <span class="per_page">每页&nbsp;<em class="per_count">14</em>&nbsp;记录&nbsp;</span> 
+         <span class="all_count">总共&nbsp;<em class="all_count">21</em>&nbsp;记录&nbsp;</span> 
+     </li> 
+     <li class="page_nav"> 
+         <a class="first" href="javascript:void(0);" target="_self"><span>第一页</span></a> 
+         <a class="prev" href="javascript:void(0);" target="_self"><span>&lt;&lt;上一页</span></a> 
+         <a class="next" href="/38260/list2.htm" target="_self"><span>下一页&gt;&gt;</span></a> 
+         <a class="last" href="/38260/list2.htm" target="_self"><span>尾页</span></a> 
+     </li> 
+     <li class="page_jump"> 
+         <span class="pages">页码&nbsp;<em class="curr_page">1</em>/<em class="all_pages">2</em></span> 
+         <span><input class="pageNum" type="text" /><input type="hidden" class="currPageURL" value=""></span></span> 
+         <span><a class="pagingJump" href="javascript:void(0);" target="_self">跳转到&nbsp;</a></span> 
+     </li> 
+</ul> 
+</div> 
+<script type="text/javascript"> 
+     $().ready(function() { 
+         $("#wp_paging_w6 .pagingJump").click(function() { 
+             var pageNum = $("#wp_paging_w6 .pageNum").val(); 
+             if (pageNum === "") { alert('请输入页码！'); return; } 
+             if (isNaN(pageNum) || pageNum <= 0 || pageNum > 2) { alert('请输入正确页码！'); return; } 
+             var reg = new RegExp("/list", "g"); 
+             var url = "/38260/list.htm"; 
+             window.location.href = url.replace(reg, "/list" + pageNum); 
+         }); 
+     }); 
+</script> 
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<!--End||content-->
+
+<!--Start||footer-->
+<div class="wrapper footer" id="footer">
+	<div class="inner clearfix">
+     <div class="foot_left">
+      <div class="yqlj" frag="面板50">
+  <div class="post post-50 mbox" frag="窗口50">
+				<div class="tt">
+					<h3 class="tit"><span class="title" frag="标题">友情链接</span></h3>
+					
+				</div>
+				<div class="con">
+					<div id="wp_news_w50"> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wp_article_list_table"> 
+<tr> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i1"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>1</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89504/page.htm' target='_blank' title='天津卫生监督'>天津卫生监督</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i2"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>2</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89503/page.htm' target='_blank' title='全国百姓放心示范医院大讲堂'>全国百姓放心示范医院大讲堂</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i3"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>3</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89502/page.htm' target='_blank' title='天津市卫生局综合信息网'>天津市卫生局综合信息网</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i4"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>4</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89501/page.htm' target='_blank' title='天津市疾病预防控制中心'>天津市疾病预防控制中心</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i5"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>5</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89500/page.htm' target='_blank' title='国家卫生和计划生育委员会'>国家卫生和计划生育委员会</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+<td> 
+ 
+<ul class="wp_article_list"> 
+     <li class="list_item i6"> 
+         <div class="fields pr_fields"> 
+             <span class='Article_Index'>6</span> 
+             <span class='Article_Title'><a href='/2018/0123/c8613a89499/page.htm' target='_blank' title='天津卫生人才网'>天津卫生人才网</a></span> 
+         </div> 
+         <div class="fields ex_fields"> 
+              
+         </div> 
+     </li> 
+</ul> 
+</td> 
+</tr> 
+</table></div> 
+
+				</div>
+			</div>
+  </div>
+     </div>
+    <div class="foot_right">
+    <div class="weixin clearfix">
+      <ul class="share">
+        <li class="add-qq">
+          <p><a  href="javascript:void(0)" target="_blank"><span ></span><br/>
+            <img  src="/_upload/tpl/01/15/277/template277/images/weixin.png"  class="imgh"></a></p>
+        </li>
+        <li class="add-wb">
+          <p><a href="javascript:void(0)" target="_blank"><span ></span><br/>
+            <img src="/_upload/tpl/01/15/277/template277/images/weixin.png" class="imgh0"></a></p>
+        </li>
+        <li class="add-wx">
+          <p><a  href="javascript:void(0)" target="_blank"><span></span><br/>
+            <img src="/_upload/tpl/01/15/277/template277/images/weixin.png" class="imgh1"></a></p>
+        </li>
+        <li class="add-tx">
+          <p><a  href="javascript:void(0)" target="_blank"><span></span><br/>
+            <img src="/_upload/tpl/01/15/277/template277/images/weixin.png" class="imgh2"></a></p>
+        </li>
+      </ul>
+    </div>
+    <div class="foot" frag="面板09">
+			<p>Copyright © 2018 南开大学附属医院版权所有</p>
+               
+		</div>
+    </div>
+		
+	</div>
+</div>
+<!--End||footer-->
+</body>
+</html>
+ <img src="/_visitcount?siteId=136&type=2&columnId=38260" style="display:none" width="0" height="0"/>

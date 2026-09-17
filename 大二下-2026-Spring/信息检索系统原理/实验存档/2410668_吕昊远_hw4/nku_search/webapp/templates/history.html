@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}查询日志{% endblock %}
+{% block content %}
+<section class="hist">
+  <h2>我的查询日志</h2>
+  {% if not logs %}
+    <p class="empty">还没有查询历史。回到首页搜一搜吧。</p>
+  {% else %}
+    <ul class="hist-list">
+      {% for l in logs %}
+        <li class="hist-item">
+          <a class="hist-q" href="{{ url_for('search', q=l.query) }}">
+            {{ l.query }}
+          </a>
+          <span class="hist-ts">{{ l.ts }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
+{% endblock %}

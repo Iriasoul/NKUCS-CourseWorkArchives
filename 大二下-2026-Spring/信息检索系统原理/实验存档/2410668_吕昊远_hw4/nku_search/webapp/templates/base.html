@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}南开搜索 NKU Search{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="logo" href="{{ url_for('index') }}">
+    <span class="logo-mark">N</span><span class="logo-text">南开搜索</span>
+  </a>
+  <nav class="nav">
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('history') }}">查询日志</a>
+      <a href="{{ url_for('profile') }}">{{ current_user.username }}</a>
+      <a href="{{ url_for('logout') }}">退出</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">登录</a>
+      <a href="{{ url_for('register') }}">注册</a>
+    {% endif %}
+  </nav>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main class="main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <p>南开大学 · 信息检索 hw4 · 2026</p>
+</footer>
+
+<script>
+// 简单的联想下拉
+(function(){
+  const inp = document.getElementById('q-input');
+  const box = document.getElementById('suggest-box');
+  if(!inp || !box) return;
+  let timer = null;
+  inp.addEventListener('input', function(){
+    const q = inp.value.trim();
+    if(!q){ box.innerHTML=''; box.style.display='none'; return; }
+    clearTimeout(timer);
+    timer = setTimeout(()=>{
+      fetch('/api/suggest?q=' + encodeURIComponent(q))
+        .then(r => r.json())
+        .then(items => {
+          if(!items.length){ box.style.display='none'; return; }
+          box.innerHTML = items.map(t =>
+            `<div class="suggest-item">${t}</div>`).join('');
+          box.style.display = 'block';
+          box.querySelectorAll('.suggest-item').forEach(el=>{
+            el.addEventListener('click', ()=>{
+              inp.value = el.textContent;
+              inp.form.submit();
+            });
+          });
+        })
+        .catch(err => { console.error('suggest failed:', err); });
+    }, 150);
+  });
+  document.addEventListener('click', e=>{
+    if(!box.contains(e.target) && e.target !== inp) box.style.display='none';
+  });
+})();
+</script>
+</body>
+</html>
