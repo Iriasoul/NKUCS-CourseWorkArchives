@@ -1,0 +1,26 @@
+// ===========================================================================
+// 并行程序设计 Lab 3 - Pthread/OpenMP 编程 (ANN 选题)
+// 在 Lab2 SIMD 实验基础上, 引入多线程并行优化.
+//
+// 策略列表 (通过 main 中的 strategy 变量切换):
+//   0  = Flat-SIMD baseline        (Lab2 等价, 单线程多线程加速比的起点)
+//   1  = Flat-SIMD + OpenMP        (base 分块并行)
+//   2  = Flat-SIMD + Pthread       (手动线程, 用于对比)
+//   3  = PQ-Rerank-SIMD baseline   (Lab2 策略4 风格: 逐 centroid + AoS, 单线程)
+//   4  = PQ-Final baseline (单线程)(跨 centroid SIMD + SoA, 不含多线程)
+//   5  = PQ-SIMD + OpenMP          (在 4 基础上加 OpenMP)
+//   6  = PQ-SIMD + Pthread         (在 4 基础上加 Pthread)
+//   7  = IVF-SIMD baseline         (单线程, IVF + 内存重排)
+//   8  = IVF-SIMD + OpenMP         (簇级并行, dynamic schedule)
+//   9  = IVF-SIMD + Pthread        (手动实现动态任务队列)
+//   10 = IVF-PQ-SIMD baseline      (方法 1: 全局 PQ, 单线程)
+//   11 = IVF-PQ-SIMD + OpenMP      (方法 1: 完整多线程流水线)
+//   12 = IVF-PQ-SIMD + Pthread     (方法 1: 完整 pthread 流水线)
+//   13 = IVF-PQ-v2-SIMD baseline   (方法 2: 簇内独立 PQ, 单线程)
+//   14 = IVF-PQ-v2-SIMD + OpenMP   (方法 2: 簇级并行)
+//   15 = IVF-PQ-v2-SIMD + Pthread  (方法 2: 簇级 pthread 动态调度)
+// ----- 进阶要求 (2 分) -----
+//   16 = HNSW baseline             (hnswlib searchKnn, 单线程)
+//   17 = HNSW 多入口 + OpenMP      (T 线程从不同起点贪心搜索, merge)
+//   18 = HNSW 多入口 + Pthread     (同上, Pthread 版本)
+// ===========================================================================

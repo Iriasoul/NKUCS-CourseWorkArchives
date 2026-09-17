@@ -1,0 +1,616 @@
+实验报告我在进行改稿的时候有点改乱了，忘了都改啥了。我把上一版本和现在的版本给你，你帮我看看都改了哪里。（表格数据啥的不用着重在意）
+
+%================================================================
+\section{实验背景}
+%================================================================
+
+在上一次的 SIMD 实验中，我们围绕近似最近邻搜索（ANNS）完成了基于 ARM NEON 的向量化优化，通过 Flat-SIMD、SQ-SIMD 以及最终的 PQ-Final 方案，在保持召回率的前提下取得了 15 倍以上的加速比。然而，这些优化均局限于单核的指令级并行，并未充分挖掘多核处理器的潜力。
+
+本次实验在 SIMD 实验 的基础上引入多线程并行优化，主要包含以下内容：
+
+\begin{itemize}
+    \item 在已有的 Flat-SIMD 与 PQ-Final 算法基础上（详见lab2），分别使用 \textbf{OpenMP} 和 \textbf{Pthread} 实现多线程并行，测量多线程带来的加速比，并分析两种并行框架的特性差异；
+    \item 实现 \textbf{IVF（Inverted File Index）}算法，探索簇级并行策略与动态任务调度的效果；
+    \item 将 IVF 与 PQ 结合，提出 \textbf{IVF-PQ} 的两种实现方案（全局 PQ 与簇内独立 PQ），并分析二者在召回率与性能上的差异；
+    \item 作为进阶要求，实现基于 \textbf{HNSW} 图索引的多入口点并行搜索，探索图索引在多线程场景下的加速潜力与实际优化效果；
+\end{itemize}
+
+实验使用 DEEP100K 数据集，在实验提供的服务器环境上（ARM架构）运行与测试，以已经实现了SIMD的 S0（Flat-SIMD 单线程）作为本次实验的基准，对上述的实验内容进行实现以及系统性的分析与评估。
+% 的平均延迟 \textbf{6298.21 $\mu$s} 
+
+
+
+
+
+
+
+%================================================================
+\section{实验原理}
+%================================================================
+
+\subsection{多线程并行化}
+
+\paragraph{OpenMP：}
+OpenMP 是一种基于编译器指令（pragma）的共享内存并行编程模型。其核心优势在于其内置了线程池，线程仅需创建一次，后续每次进入 \texttt{\#pragma omp parallel} 区域时直接唤醒，避免了重复创建与销毁的开销。调度策略也由运行时库自动管理，实际使用中简单便捷，代码复杂度较低，适合对规则的数据块进行并行化。
+
+\paragraph{Pthread：}
+POSIX 线程（Pthread）提供了更底层的线程控制接口。与 OpenMP 相比，Pthread 需要手动管理线程的创建、同步（mutex / barrier / condition variable）和销毁。在本实验中，Pthread 的动态调度通过共享计数器加互斥锁实现，即每个线程在循环中原子地取出下一个任务编号，从而模拟 OpenMP \texttt{schedule(dynamic, 1)} 的行为。Pthread 的优势在于其自身的灵活性，在实际编程中，可以根据实际问题来精确控制调度策略与同步粒度等。
+
+\paragraph{两种框架的对比：}
+OpenMP 代码简洁，隐式维护线程池，在计算量较大、任务粒度均匀的场景下优势明显；Pthread 则在任务粒度不均（如 IVF 中各簇大小差异显著）时，通过手动动态调度取得更好的负载均衡效果，在线程数较多时往往能优于 OpenMP。
+
+\vspace{0.25cm}
+
+多线程加速比用 $S_p = T_1 / T_p$ 衡量，其中 $T_1$ 为单线程基线延迟，$T_p$ 为 $p$ 线程下的延迟。根据 Amdahl 定律，若程序中串行部分占比为 $\alpha$，则理论上的加速上限为：
+ 
+\[
+S_p \leq \frac{1}{\alpha + \dfrac{1-\alpha}{p}}
+\]
+
+在本次实验中，将对两种多线程技术分别进行实现，通过对比两者的实际实现与优化效果，深入分析不同多线程策略带来的差异与特征。
+
+\subsection{线程池}
+
+在实际编程过程中，我们可以发现，每次查询都会创建若干线程、执行计算、再销毁线程。对于 2000 次查询、4 个线程的典型场景，这意味着 \textbf{8000 次} \texttt{pthread\_create / pthread\_join} 调用。而每次的线程创建都需陷入内核态并分配栈空间，开销可达 50\textasciitilde300 $\mu$s，足以完全掩盖并行计算的收益，从而导致 Pthread 版本的多线程编程出现严重负优化。
+
+对于这一问题，我们可以使用线程池来进行解决。在查询循环外一次性创建所有所需的线程，让它们在条件变量（\texttt{pthread\_cond\_t}）上休眠。每次查询只需调用 \texttt{pool.dispatch(fn)}，内部通过 \texttt{pthread\_cond\_broadcast} 唤醒线程、执行任务，再通过 \texttt{cv\_done} 等待所有工作线程完成，来大幅减少线程创建与销毁的开销。实际上，这一模式与 OpenMP 内部的线程池完全等效，只是对于Pthread来说需要我们来手动实现。
+
+\begin{lstlisting}[title=线程池核心调度逻辑（thread\_pool.h）,frame=trbl,language={C++}]
+void dispatch(std::function<void(int)> work) {
+    pthread_mutex_lock(&mu);
+    fn = work; pending = n; work_ver++;
+    pthread_cond_broadcast(&cv_work);    // 唤醒所有工作线程
+    while (pending > 0)
+        pthread_cond_wait(&cv_done, &mu); // 等待全部完成
+    pthread_mutex_unlock(&mu);
+}
+\end{lstlisting}
+
+\subsection{IVF（Inverted File Index）算法}
+
+IVF 是一种基于聚类的近似最近邻搜索索引结构，其核心思想是将向量空间划分为若干个簇，查询时只扫描最相近的少数几个簇，从而大幅减少距离计算次数。
+
+\paragraph{离线构建阶段：}~{}
+
+\vspace{0.25cm}
+
+对 基向量 进行 KMeans 聚类，得到 \texttt{nlist} 个簇心 $\{c_1, c_2, \ldots, c_L\}$（$L = \texttt{nlist}$）。每个 基向量被分配到距离最近的簇：
+ 
+\[
+j^*(v_i) = \mathop{\arg\min}_{j \in [L]} \|v_i - c_j\|^2
+\]
+ 
+随后将所有 base 向量按其所属的簇进行\textbf{内存重排}，使得相同簇内的向量在内存中连续存储。这一操作可有效降低在线扫描时的 cache miss 率，是 IVF 性能的关键保障之一。
+
+\paragraph{在线查询阶段：}
+\begin{itemize}
+    \item \textbf{粗排}：计算 query 与所有 \texttt{nlist} 个簇心的距离，选出最近的 \texttt{nprobe} 个簇。
+    \[
+        d(q, c_j) = 1 - \langle q, c_j \rangle
+    \]
+    \[
+    \mathcal{P} = \mathop{\mathrm{top\text{-}nprobe}}_{j \in [L]} \bigl\{d(q, c_j)\bigr\}
+    \]
+    
+    在这里，\texttt{nprobe} 会同时影响精度与性能，是我们需要进行trade-off的主要参数之一，\texttt{nprobe} 越大召回率越高，但是相应地带来的延迟就越大。
+    
+    \item \textbf{精排}：扫描所选 \texttt{nprobe} 个簇内的所有向量，用 SIMD 加速的内积计算精确排序，维护局部 top-$k$ 优先队列。这部分与SIMD实验中的重排逻辑类似，此处不再赘述。
+\end{itemize}
+
+\paragraph{多线程并行策略：}
+对于IVF来说，粗排计算量较小（仅 \texttt{nlist} 个簇心，通常 $\leq 256$），并行化后线程创建与销毁带来的开销反而占主导，多线程并行带来的收益过少，在这部分我们保持单线程即可。在精排阶段中，对 \texttt{nprobe} 个簇进行扫描，是该算法主要的计算瓶颈，这里我们采用\textbf{簇级动态并行}：每个线程从共享任务队列中动态领取一个簇进行扫描，完成后继续取下一个，直到所有簇被处理完毕。这种动态调度策略能有效应对各簇大小不均的问题。
+
+\subsection{IVF-PQ 算法}
+
+IVF-PQ 是将 IVF 与 PQ 的相结合的混合索引结构。在查询时，利用 IVF 将候选范围缩减至 \texttt{nprobe} 个簇后，再在候选簇内用 PQ 快速估算近似距离。从整体流程来看，我们考虑两种思路，分别实现了对应的方案：
+
+\begin{itemize}
+    \item \textbf{全局 PQ：}
+        先对所有基向量（按 IVF 重排后的顺序）进行统一的 PQ 编码；查询时在 \texttt{nprobe} 个候选簇内，先用 ADC查表得到近似距离，筛选出 \texttt{rerank\_k} 个候选，再用原始浮点向量进行精排。
+    
+    \item \textbf{簇内独立PQ：}
+        先构建 IVF 索引，再在每个簇内分别计算向量相对于该簇心的\textbf{残差}$r_i = v_i - c_{j^*(v_i)}$，然后在残差上独立训练各簇自己的 PQ 量化器。由于每个簇内的向量分布更集中，PQ 量化误差更小，召回率通常优于全局PQ；但代价是需要为每个簇分别存储 PQ 质心，内存占用和索引构建开销更大。
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{ivf-pq-a.jpg}
+    \caption{IVF-PQ流程图-方法二（簇内独立PQ）}
+\end{figure}
+
+
+\subsection{HNSW（Hierarchical Navigable Small World）算法}
+
+HNSW 是一种基于图的近似最近邻索引结构，其核心在于构建一个层次化的小世界图，利用图的导航性质实现对数级别的搜索复杂度。在一个同时具有\textbf{高聚类系数}和\textbf{短平均路径长度}的图上，贪心导航可以高效地逼近最近邻；HNSW 在此基础上引入层次结构，通过指数衰减的节点采样在不同层构建具有较粗细粒度的导航图，使得单次查询的时间复杂度从线性降至对数级。本实验使用 hnswlib 库提供的索引，在此基础上探索算法的原理及其多线程优化的并行策略。
+
+\paragraph{索引结构：}
+HNSW 构建一个包含 $L_{\max}+1$ 层（$l = 0, 1, \ldots, L_{\max}$）的层次图。第 $l$ 层是一个近邻图 $G_l = (V_l, E_l)$，其中 $V_0 = \{v_1, \ldots, v_N\}$ 包含全部 $N$ 个向量节点，高层节点数按指数递减。每个节点 $v$ 在第 $l$ 层最多连接 $M$ 个近邻边（第 0 层最多连接 $2M$ 个），这些边近似地指向该层中距离最近的若干节点。
+ 
+\paragraph{层分配：}
+插入新节点 $v$ 时，其所在最高层 $\ell(v)$ 由以下公式随机采样：
+ 
+\[
+\ell(v) = \left\lfloor -\ln\bigl(U(0,1)\bigr) \cdot m_L \right\rfloor, \quad m_L = \frac{1}{\ln M}
+\]
+其中 $U(0,1)$ 为均匀分布随机数，$m_L$ 为层级乘数。由此，节点出现在第 $l$ 层的概率为：
+\[
+P\bigl(\ell(v) \geq l\bigr) = e^{-l/m_L}
+\]
+即节点层级服从参数为 $m_L$ 的指数分布，高层节点数量呈指数衰减，形成类似跳表的稀疏结构。
+ 
+\paragraph{搜索算法：}
+查询向量 $q$ 的搜索过程从最顶层 $L_{\max}$ 出发，逐层向下贪心导航。在每一层 $l > 0$，以当前最近节点为入口执行单次贪心搜索（$\texttt{ef}=1$），将找到的最近点作为下一层的入口；在底层（$l=0$）执行宽度为 $\texttt{ef\_search}$ 的集束搜索，维护大小为 $\texttt{ef\_search}$ 的候选集 $\mathcal{W}$。底层的集束搜索是决定召回率的核心步骤，其终止条件为：
+\[
+d(q,\, c_{\min}) > d(q,\, w_{\max})
+\]
+即候选集 $\mathcal{C}$ 中最近节点的距离已超过结果集 $\mathcal{W}$ 中最远节点的距离，此时继续探索不会再对结果有所提升，搜索停止。最终从 $\mathcal{W}$ 中取出前 $k$ 个最近节点作为查询结果。
+
+整个查询过程的时间复杂度为：
+\[
+T_{\text{search}} = O\!\left(\log N\right)
+\]
+ 
+\paragraph{参数 ef\_search 的作用：}
+$\texttt{ef\_search}$（候选集大小）是控制搜索精度与延迟的核心参数。较大的 $\texttt{ef\_search}$ 可以使算法探索更多的节点，召回率提升但是延迟增加，是后续实验进行参数分析的重点之一。
+
+
+\paragraph{多入口点并行搜索策略：}
+
+单个查询在 HNSW 底层图上的搜索过程依赖贪心路径，具有较强的串行依赖，直接并行化具有一定的难度。本实验采用\textbf{多入口点并行}方案：将 基向量 划分为 $T$ 个子集，分别构建 $T$ 个独立的子图索引；每次查询时，$T$ 个线程各自在其负责的子图上进行贪心搜索，最后再去归并各线程的 top-$k$ 结果。该策略以较小的召回率开销换取显著的延迟降低，特别是在 $\text{ef\_search}$ 较大时优势明显。
+
+
+%考虑相同召回率作为标准时，相比单图在高 $\texttt{ef\_search}$ 下的搜索，多子图在较小的 $\texttt{ef\_search}$下即可通过多线程覆盖更大的空间范围，在相近召回率下取得更低的整体延迟。
+
+
+
+
+
+
+
+
+
+
+
+
+%================================================================
+\section{程序设计与实现}
+%================================================================
+
+为了全面探讨各个算法的细节与特点，本实验一共实现了 S0\textasciitilde S18 共 19 个策略，按算法类型分组如下：
+
+\begin{itemize}
+    \item \textbf{S0\textasciitilde S2}：Flat-SIMD 基线与多线程并行（\texttt{flat\_thread.h}）
+    \item \textbf{S3\textasciitilde S6}：PQ-SIMD 基线与多线程并行（\texttt{pq\_thread.h}）
+    \item \textbf{S7\textasciitilde S9}：IVF-SIMD 基线与多线程并行（\texttt{ivf.h}）
+    \item \textbf{S10\textasciitilde S15}：IVF-PQ 基线与多线程（\texttt{ivf\_pq.h}、\texttt{ivf\_pq\_v2.h}两种方案）
+    \item \textbf{S16\textasciitilde S18}：HNSW 进阶（\texttt{hnsw.h}）
+\end{itemize}
+
+接下来将逐步讲解各个算法及其多线程编程的具体实现。
+
+\subsection{Flat-SIMD 多线程编程（S0\textasciitilde S2）}
+
+在本次实验，我们选取\textbf{S0} 作为本次多线程实验的全局基线，即lab2-SIMD实验中已经实现的 Flat-SIMD 单线程版本。在实验框架下进行测试，得到结果与上次实验中的数据基本一致，延迟约 6298 $\mu$s，召回率 0.99995。
+
+在\textbf{S0}的基础上，我们开始本次实验的多线程编程。\textbf{S1}（OpenMP）和 \textbf{S2}（Pthread）依照基向量的下标进行静态分块实现并行。每个线程负责一段连续的区间，并在内部维护局部 top-$k$ 优先队列，全部线程完成后将各个线程内的局部队列归并为全局 top-$k$，即可得到最终结果。
+
+\begin{breakablealgorithm}
+\caption{Flat-SIMD 多线程并行（S1/S2）}
+\begin{algorithmic}[1]
+\Require base 向量库 $Base[N]$, 查询向量 $q$, 维度 $D$, 线程数 $T$, 返回数量 $k$
+\Ensure 全局 top-$k$ 结果队列 $final\_q$
+\State 将 $[0, N)$ 均匀划分为 $T$ 个连续分块 $\{[s_t, e_t)\}_{t=0}^{T-1}$
+\State \textbf{Parallel}（各线程 $t$ 独立执行）：
+\For{$i = s_t$ \textbf{to} $e_t - 1$}
+    \State $ip \gets \text{NEON\_IP}(q,\ Base[i])$ \Comment{SIMD 加速内积}
+    \State $dis \gets 1.0 - ip$
+    \State 用 $dis$ 更新线程局部优先队列 $local\_q_t$（维持大小 $\leq k$）
+\EndFor
+\State \textbf{Barrier}（等待所有线程完成）
+\State $final\_q \gets \text{MergeTopK}(local\_q_0, local\_q_1, \ldots, local\_q_{T-1},\ k)$
+\State \Return $final\_q$
+\end{algorithmic}
+\end{breakablealgorithm}
+
+Pthread 版本（S2）逻辑类似，但在实际的实现过程中，我们发现线程管理是很重要一个问题。在最初的编写中，我们直接调用了Pthread进行多线程编程，但在测试时发现其延迟明显慢于OpenMP，在T=4时，S2平均延迟2322.86 us，而S1则为1500.00us。
+
+这一延迟实际上来自于线程调度带来的开销。在最开始的策略里，每次查询时会经历创建线程-计算-销毁线程的流程，这意味着线程会在循环内频繁地创建与销毁，这无疑带来了很多不必要的开销。为了解决这一问题，我们考虑在线程管理上进行改进，采用线程池来维护线程的调用。
+
+在具体实现上，线程管理由 \texttt{ThreadPool} 接管，通过 \texttt{pool.dispatch()} 分发任务，从而消除 per-query 线程创建开销。经过测试，修改后的S2明显恢复正常，平均延迟与OpenMP相近。
+
+\begin{lstlisting}[title=线程池核心实现（thread\_pool.h）,frame=trbl,language={C++}]
+// 工作线程：在 cv_work 上休眠，通过 work_ver 判断是否有新任务
+static void* worker_loop(void* raw) {
+    WorkerArg* wa = (WorkerArg*)raw;
+    ThreadPool* p = wa->pool;
+    int tid = wa->tid, seen = 0;
+    while (true) {
+        pthread_mutex_lock(&p->mu);
+        while (p->work_ver == seen && !p->shutdown)
+            pthread_cond_wait(&p->cv_work, &p->mu);  // 无任务时休眠，不占用 CPU
+        if (p->shutdown) { pthread_mutex_unlock(&p->mu); return nullptr; }
+        seen = p->work_ver;
+        auto f = p->fn;
+        pthread_mutex_unlock(&p->mu);  // 释放锁后再执行，不阻塞其他 worker
+        f(tid);  // 执行本次查询分配的任务
+        pthread_mutex_lock(&p->mu);
+        if (--p->pending == 0)
+            pthread_cond_signal(&p->cv_done);// 最后完成的 worker 通知主线程
+        pthread_mutex_unlock(&p->mu);
+    }
+}
+// 主线程调用：分发任务并阻塞等待所有 worker 完成
+void dispatch(std::function<void(int)> work) {
+    pthread_mutex_lock(&mu);
+    fn = work;  pending = n;  work_ver++;     // 递增版本号，触发 worker 唤醒
+    pthread_cond_broadcast(&cv_work);         // 广播唤醒所有休眠 worker
+    while (pending > 0)
+        pthread_cond_wait(&cv_done, &mu);     // 主线程阻塞，直到全部完成
+    pthread_mutex_unlock(&mu);
+}
+\end{lstlisting}
+
+在这部分，由于 Flat 扫描属于计算密集型任务，基向量均匀分块后负载天然均衡，静态调度已经可以实现接近线性的加速比。但是，受制于硬件层面真实的物理核数，当线程过多时（$T>8$），依然存在加速瓶颈，甚至出现负优化的情况。
+
+\subsection{PQ-SIMD 多线程编程（S3\textasciitilde S6）}
+
+在上次的SIMD实验中，我们已经实现了PQ-Rerank-SIMD这一算法，可以直接作为本次实验的基线。但我们在上一次实验中，其实还完成了更进一步的优化，实现了跨质心的并行以及较为基础的OPM优化。两者在计算量较大时具有明显差异（详见lab2）。为了保持实验的连贯性，这里我们将PQ-Final还原为串行版本，以实现了SoA与跨质心并行的PQ作为这部分的基线，并在其基础上，进一步引入多线程编程进行优化。
+
+\textbf{S3}（PQ-Rerank-SIMD）采用 AoS 编码布局，单线程串行扫描全库，LUT 构建按子空间逐个计算，和在SIMD实验中实现的基本一致。\textbf{S4}（PQ-Final）则采用 SoA 编码布局（\texttt{pq\_codes\_soa[M][N]}）和 SoA 质心布局（\texttt{pq\_centroids\_soa[M][sub\_dim][K]}），LUT 构建使用跨质心 4路 SIMD 并行，扫描阶段通过循环交换实现连续内存访问。这里我们使用S4作为S5/S6 多线程优化的基准。
+
+在前一小结，我们已经深入探讨了线程池的重要性，在后续的编程中，两种多线程编程的实现逻辑基本趋于一致，在Pthread部分，将默认使用我们手动构建的线程池进行线程调度。在这部分，\textbf{S5}（OpenMP）和 \textbf{S6}（Pthread）参考S4的基础流程，主要有以下三阶段的并行流水线：
+
+\begin{enumerate}
+    \item \textbf{LUT 构建}：以子空间 $m$ 为粒度进行外层并行（$M=8$ 个子空间分配给各线程），内层仍用跨质心 SIMD 加速。
+    \item \textbf{ADC 粗排 + 线程内精排}：对基向量按线程数进行静态分块，每线程独立维护局部的粗排队列（大小 \texttt{rerank\_k}）；扫描完自己分块后立即在线程内触发精排，无需任何锁或原子操作。
+    \item \textbf{全局归并}：汇总各线程的局部 top-$k$ 精排结果，合并为最终 top-$k$。
+\end{enumerate}
+
+\vspace{0.25cm}
+
+\begin{breakablealgorithm}
+\caption{PQ-Final 多线程并行流水线（S5/S6）}
+\begin{algorithmic}[1]
+\Require $q$, SoA编码表 $Codes[M][N]$, SoA质心 $Cents[M][SubDim][K]$, $k$, \texttt{rerank\_k}, 线程数 $T$
+\Ensure 全局 top-$k$ 结果队列 $final\_q$
+\State \Comment{\textbf{阶段 1：LUT 构建（子空间级并行）}}
+\State \textbf{Parallel for} $m = 0$ \textbf{to} $M-1$（每线程负责若干子空间）：
+\For{$c = 0$ \textbf{to} $K-1$ \textbf{step} 4}
+    \State $\text{LUT}[m][c\!:\!c\!+\!3] \gets \text{SIMD4\_IP}\bigl(q_m,\ Cents[m][\cdot][c\!:\!c\!+\!3]\bigr)$
+    \Comment{跨质心 4路SIMD}
+\EndFor
+\State \textbf{Barrier}（等待 LUT 完整构建）
+\State \Comment{\textbf{阶段 2：ADC 粗排 + 线程内精排（向量级并行）}}
+\State 将 $[0, N)$ 均匀划分为 $T$ 块；\textbf{Parallel}（各线程 $t$ 独立执行）：
+\For{$i \in \text{线程} t \text{ 负责的块}$}
+    \State $ip \gets \sum_{m=0}^{M-1} \text{LUT}[m][Codes[m][i]]$
+    \Comment{SoA 连续访存}
+    \State 更新 $local\_coarse\_q_t$（维持大小 $\leq \texttt{rerank\_k}$）
+\EndFor
+\While{$local\_coarse\_q_t \neq \emptyset$}
+    \State $idx \gets local\_coarse\_q_t.\text{pop}().index$
+    \State $exact\_dis \gets 1 - \text{NEON\_IP}(q,\ Base[idx])$
+    \State 更新 $local\_fine\_q_t$（维持大小 $\leq k$）
+\EndWhile
+\State \Comment{\textbf{阶段 3：全局归并}}
+\State $final\_q \gets \text{MergeTopK}(local\_fine\_q_0, \ldots, local\_fine\_q_{T-1},\ k)$
+\State \Return $final\_q$
+\end{algorithmic}
+\end{breakablealgorithm}
+
+Pthread 版本（S6）在 LUT 构建阶段采用 \texttt{pthread\_barrier\_t} 显式同步：仅由 tid=0 的线程完成 LUT 构建，其余线程在 barrier 处等待，随后所有线程并行进入 ADC 扫描阶段。
+
+\vspace{0.25cm}
+
+值得注意的是，在测试时发现，随线程数提升召回率也会相应增加。这一现象我们其实已经在上一次的实验中进行了解释，这里简单地回顾一下。当单线程时，只有 \texttt{rerank\_k} 个候选进入重排；引入多线程后，每个线程各自从 $N/T$ 的子集中取出 \texttt{rerank\_k} 个候选，从全局来看，实际的候选集具有 $T \times \text{rerank\_k}$ 个独立样本，且其分布也比单线程更加均匀，这将使精排时的候选集多样性增加，从而大幅提升了最终的召回率。
+
+
+\subsection{IVF-SIMD 多线程编程（S7\textasciitilde S9）}
+
+\textbf{S7}（IVF-SIMD baseline）为单线程 IVF 实现，依然分为粗排和精排两步，是 S8/S9 进行多线程优化的基础。
+
+\begin{breakablealgorithm}
+\caption{IVF 多线程精排（Pthread 动态调度，ivf.h）}
+\begin{algorithmic}[1]
+\Require query, vecdim, $k$, probe\_list[$nprobe$], 共享计数器 next\_task\_idx, 互斥锁 mtx
+\Ensure 线程局部 top-$k$ 优先队列 $q$
+\While{\textbf{true}}
+    \State \textbf{lock}(mtx)
+    \State $task \gets$ next\_task\_idx\texttt{++}
+    \State \textbf{unlock}(mtx)
+    \If{$task \geq nprobe$}  \textbf{break}  \EndIf
+    \State $c \gets$ probe\_list[$task$]
+    \For{$i = \text{cluster\_starts}[c]$ \textbf{to} $\text{cluster\_starts}[c+1]-1$}
+        \State $ip \gets \text{NEON\_IP}(\text{query},\ \text{reordered\_base}[i])$
+        \State $dis \gets 1 - ip$
+        \If{$q.\text{size}() < k$ \textbf{or} $dis < q.\text{top}()$}
+            \State $q.\text{push}(\{dis,\ \text{reordered\_ids}[i]\})$
+            \If{$q.\text{size}() > k$}  $q.\text{pop}()$  \EndIf
+        \EndIf
+    \EndFor
+\EndWhile
+\end{algorithmic}
+\end{breakablealgorithm}
+
+\vspace{0.25cm}
+
+\textbf{S8}（OpenMP）使用 \texttt{\#pragma omp for schedule(dynamic, 1) nowait} 对 \texttt{probe\_list} 中的簇进行动态调度。每个线程维护独立的局部 top-$k$，全部簇处理完毕后再进行统一的归并。
+
+\begin{lstlisting}[title=S8 OpenMP 动态调度精排（ivf.h）,frame=trbl,language={C++}]
+#pragma omp parallel num_threads(nthr)
+{
+    int tid = omp_get_thread_num();
+    auto& q = local_q[tid];
+    // nowait：各线程完成自己分配的簇后不等待，直接进入归并
+    #pragma omp for schedule(dynamic, 1) nowait
+    for (int pi = 0; pi < (int)probe_list.size(); ++pi) {
+        int c = probe_list[pi];
+        for (size_t i = cluster_starts[c]; i < cluster_starts[c+1]; ++i) {
+            float ip  = ivf_neon_ip(query, reordered_base + i*vecdim, vecdim);
+            float dis = 1.0f - ip;
+            if (q.size() < k || dis < q.top().first) {
+                q.push({dis, reordered_ids[i]});
+                if (q.size() > k) q.pop();
+            }
+        }
+    }
+}
+// 归并 local_q[0..nthr-1] -> final_q
+\end{lstlisting}
+
+\vspace{0.25cm}
+
+\textbf{S9}（Pthread）则需要我们手动实现线程的动态调度：通过共享整型计数器 \texttt{next\_task\_idx} 和互斥锁，模拟线程从任务队列中动态领取簇的行为。
+
+\begin{breakablealgorithm}
+\caption{IVF Pthread 动态调度精排（S9，ivf.h）}
+\begin{algorithmic}[1]
+\Require query, $k$, probe\_list[$nprobe$], 共享计数器 \texttt{next\_idx}（初始为 0），互斥锁 \texttt{mtx}
+\Ensure 线程局部 top-$k$ 优先队列 $q$
+\While{\textbf{true}}
+    \State \textbf{lock}(\texttt{mtx})
+    \State $task \gets \texttt{next\_idx}\texttt{++}$
+    \State \textbf{unlock}(\texttt{mtx})
+    \If{$task \geq nprobe$} \textbf{break} \EndIf
+    \State $c \gets \text{probe\_list}[task]$
+    \For{$i = \text{cluster\_starts}[c]$ \textbf{to} $\text{cluster\_starts}[c+1]-1$}
+        \State $ip \gets \text{NEON\_IP}(\text{query},\ \text{reordered\_base}[i])$
+        \State 更新 $q$（维持大小 $\leq k$）
+    \EndFor
+\EndWhile
+\end{algorithmic}
+\end{breakablealgorithm}
+
+这种动态调度的优势在于，当 \texttt{nprobe} 较少（如 16）而线程数较多（如 T=8）时， OpenMP 的静态划分会导致部分线程出现空闲的情况，而 Pthread 的动态调度仍能保证每个线程都有较为活跃的任务，从而在特定参数场景下具有一定的优势。
+
+
+\subsection{IVF-PQ（S10\textasciitilde S15）}
+
+IVF-PQ 在 IVF 粗筛基础上，用 PQ 的 ADC 查表替代精确内积计算，实现进一步加速。本实验实现两种方案，其在线查询流程存在本质差异（详见实验原理）。
+ 
+\textbf{方法一（S10\textasciitilde S12）：全局 PQ。}全库共享一套 PQ 量化器，LUT 构建只需一次，随后在所有候选簇上复用同一张 LUT 查表。
+ 
+\begin{breakablealgorithm}
+\caption{IVF-PQ 方法一在线查询（S10 单线程，S11/S12 多线程）}
+\begin{algorithmic}[1]
+\Require $q$, \texttt{nprobe}, \texttt{rerank\_k}, $k$
+\Ensure top-$k$ 结果
+\State \Comment{\textbf{步骤 1：IVF 粗排（单线程）}}
+\State $\mathcal{P} \gets \text{top-nprobe}\ \bigl\{d(q, c_j)\bigr\}_{j=1}^{L}$
+\State \Comment{\textbf{步骤 2：LUT 构建（仅一次，全局共享）}}
+\For{$m = 0$ \textbf{to} $M-1$}
+    \For{$c = 0$ \textbf{to} $K-1$}
+        \State $\text{LUT}[m][c] \gets \langle q_m,\ \mu_m^c \rangle$
+    \EndFor
+\EndFor
+\State \Comment{\textbf{步骤 3：ADC 粗排（多线程并行，按候选簇动态分配）}}
+\State \textbf{Parallel for} $j \in \mathcal{P}$（S11 OMP dynamic / S12 Pthread 共享计数器）：
+\For{$v_i \in \text{簇}\ j$}
+    \State $\tilde{d}(q, v_i) \gets 1 - \sum_{m=0}^{M-1} \text{LUT}[m][b_m^{(i)}]$
+    \State 更新线程局部 $coarse\_q$（大小 $\leq \texttt{rerank\_k}$）
+\EndFor
+\State 归并各线程 $coarse\_q$ 得全局 top-\texttt{rerank\_k} 候选
+\State \Comment{\textbf{步骤 4：精排（原始浮点向量精确计算）}}
+\For{$idx \in \text{top-rerank\_k 候选}$}
+    \State $d_{\text{exact}} \gets 1 - \text{NEON\_IP}(q,\ Base[idx])$
+    \State 更新 $fine\_q$（维持大小 $\leq k$）
+\EndFor
+\State \Return $fine\_q$
+\end{algorithmic}
+\end{breakablealgorithm}
+ 
+\textbf{方法二（S13\textasciitilde S15）：簇内独立 PQ。}每个簇有独立的 PQ 量化器，LUT 需对每个候选簇分别构建。其在线查询流程在步骤 2\textasciitilde 3 上与方法一有本质差异：
+ 
+\begin{breakablealgorithm}
+\caption{IVF-PQ 方法二在线查询（S13 单线程，S14/S15 多线程）}
+\begin{algorithmic}[1]
+\Require $q$, \texttt{nprobe}, \texttt{rerank\_k}, $k$，每簇独立量化器 $\{\text{PQ}_j\}$
+\Ensure top-$k$ 结果
+\State \Comment{\textbf{步骤 1：IVF 粗排（同方法一）}}
+\State $\mathcal{P} \gets \text{top-nprobe}\ \bigl\{d(q, c_j)\bigr\}_{j=1}^{L}$
+\State \Comment{\textbf{步骤 2\textasciitilde 3：按候选簇循环，逐簇构建 LUT 后 ADC（多线程并行）}}
+\State \textbf{Parallel for} $j \in \mathcal{P}$（S14 OMP dynamic / S15 Pthread 共享计数器）：
+\State \quad $\tilde{q}_j \gets q - c_j$ \Comment{计算 query 关于簇心 $c_j$ 的残差}
+\For{$m = 0$ \textbf{to} $M-1$}
+    \For{$c = 0$ \textbf{to} $K-1$}
+        \State $\text{LUT}_j[m][c] \gets \langle (\tilde{q}_j)_m,\ (\mu_j)_m^c \rangle$
+        \Comment{使用簇 $j$ 自己的质心}
+    \EndFor
+\EndFor
+\For{$v_i \in \text{簇}\ j$（残差已用 $\text{PQ}_j$ 编码）}
+    \State $\tilde{d}(\tilde{q}_j, r_i) \gets 1 - \sum_{m=0}^{M-1} \text{LUT}_j[m][b_m^{(i)}]$
+    \State 更新线程局部 $coarse\_q$
+\EndFor
+\State 归并 $\to$ 精排（同方法一步骤 4）
+\State \Return $fine\_q$
+\end{algorithmic}
+\end{breakablealgorithm}
+ 
+方法二中每个候选簇都需要独立构建一次 LUT，故 LUT 构建总开销是方法一的 \texttt{nprobe} 倍，这是方法二单线程延迟更高的直接原因；但由于残差的方差更小，量化误差更低，召回率通常优于方法一。
+
+
+\subsection{HNSW 进阶（S16\textasciitilde S18）}
+
+\textbf{S16}（HNSW 单线程基线）直接调用 hnswlib 的标准搜索接口，以 \texttt{ef\_search} 参数控制集束搜索的候选集大小，进而权衡召回率与延迟。
+ 
+\textbf{S17}（OpenMP）和 \textbf{S18}（Pthread）均采用多入口点并行策略，其完整实现流程如下：
+ 
+\begin{breakablealgorithm}
+\caption{HNSW 多入口点并行搜索（S17/S18）}
+\begin{algorithmic}[1]
+\Require 查询 $q$，$T$ 个独立子图 $\{G_t\}_{t=1}^{T}$（各覆盖 $N/T$ 个向量），$k$，ef=64
+\Ensure 全局 top-$k$ 结果 $R$
+\State \Comment{\textbf{并行阶段：各线程在各自子图上独立贪心搜索}}
+\State \textbf{Parallel for} $t = 1$ \textbf{to} $T$（S17 OpenMP / S18 Pthread 线程池）：
+\State \quad 从 $G_t$ 的入口点 $ep_t$ 出发，执行 HNSW 贪心搜索：
+\State \quad \quad 自顶层逐层导航，每层取当前最近点作为下一层入口
+\State \quad \quad 底层执行 ef-集束搜索，维护候选集 $\mathcal{W}_t$（大小 $\leq \text{ef}$）：
+\State \quad \quad \quad 终止条件：$d(q, c_{\min}) > d(q, w_{\max})$
+\State \quad $R_t \gets \text{top-}k\ \mathcal{W}_t$ \Comment{线程 $t$ 的局部 top-$k$}
+\State \Comment{\textbf{归并阶段（主线程）}}
+\State $R \gets \text{top-}k \displaystyle\bigcup_{t=1}^{T} R_t$
+\State \Return $R$
+\end{algorithmic}
+\end{breakablealgorithm}
+ 
+\begin{lstlisting}[title=S17 OpenMP 多入口点搜索（hnsw.h）,frame=trbl,language={C++}]
+std::vector<std::priority_queue<std::pair<float,uint32_t>>> local_res(nthr);
+#pragma omp parallel for num_threads(nthr) schedule(static, 1)
+for (int t = 0; t < nthr; ++t) {
+    // 在子图 t 上执行 hnswlib 标准搜索（ef=64）
+    auto knn = sub_indices[t]->searchKnn(query, k);
+    while (!knn.empty()) {
+        local_res[t].push({knn.top().first, knn.top().second});
+        knn.pop();
+    }
+}
+// 归并 local_res[0..nthr-1] -> final top-k
+\end{lstlisting}
+ 
+多入口点策略的核心优势在于：每个子图使用较小的 ef=64，单次搜索路径短；但 $T$ 个线程集成后能覆盖更大范围，使得在与 S16 同等召回率下，整体延迟显著降低。
+
+
+\subsection{离线索引构建的并行策略}
+
+在实验过程中，我们也发现，很多策略在离线的索引构建阶段（KMeans 聚类、向量编码、内存重排等）也有一定的多线程优化空间。由于索引构建的时间不参与查询延迟的统计，这里我们仅对其进行简单的并行优化。
+
+所有策略的离线索引构建阶段统一使用 \textbf{OpenMP 4 线程}完成，与在线查询的并行方式相互独立，确保各策略的在线测试在相同的索引质量下进行，减少额外变量的引入。
+
+实际上，虽然离线阶段的优化无法减少查询的平均延迟，但它能让我们程序运行的总时长减少，这在本次实验流程中也是很重要的。由于涉及的策略算法较多，且具有多种参数需要分析讨论，这部分的优化可以大大加快我们进行后续测试的效率。
+
+%================================================================
+\section{实验结果分析}
+%================================================================
+
+\subsection{数据总览}
+
+本实验在 DEEP100K 数据集上对全部 19 个策略进行测试（2000 次查询，$k=10$）。
+
+在测试过程中，由于服务器多人共享，实际性能存在一定程度的波动。为了让我们的数据尽可能地接近真实性能作为标准，我们采取多次测量取最小值的方法，并在凌晨使用人数较少时进行集中的测试。同时，由于策略较多，参数较为复杂，我们还借助AI大模型，改写了一版便于使用脚本批量测试的main以及对应的测试脚本run\_batch.py（详见代码仓库）。借助这两项工具，我们可以更加方便、更加精确地得出测试结果。
+
+经过测试整理数据，主要有以下各个算法具有代表性的测试结果。这里我们以 S0（Flat-SIMD 单线程，6298.21 $\mu$s）作为全局基线，并同时对于各算法内的单线程基线进行比较。
+
+
+\begin{table}[H]
+  \wuhao
+  \centering
+  \caption{实验数据总览}
+  \label{tab:overall_results}
+    \begin{threeparttable}
+  \begin{tabular}{lccccc}
+    \toprule
+    \midrule
+    策略编号 & 算法名称 & 线程数 & 召回率 & 延迟 ($\mu$s) & 加速比(vs S0) \\
+    \midrule
+    S0 & Flat-SIMD 单线程基线 & -- & 0.99995 & 5761.17 & 1.00× \\
+    S1 & Flat-SIMD OpenMP & 4 & 0.99995 & 1069.40 & 5.39× \\
+    S2 & Flat-SIMD Pthread & 4 & 0.99995 & 1714.55 & 3.36× \\
+    \midrule
+    S3 & PQ-SIMD(AoS)单线程基线\tnote{1} & -- & 0.9461 & 1475.09 & 3.91× \\
+    S4 & PQ-SIMD(SoA)单线程基线 & -- & 0.9461 & 1486.28 & 3.88× \\
+    S5 & PQ-SIMD OpenMP & 4 & 0.9950 & 566.57 & 10.17× \\
+    S6 & PQ-SIMD Pthread & 4 & 0.9950 & 656.75 & 8.77× \\
+    \midrule
+    S7 & IVF 单线程基线(nprobe=16)\tnote{2} & -- & 0.9583 & 336.28 & 17.13× \\
+    S7 & IVF 单线程基线(nprobe=32) & -- & 0.9876 & 645.48 & 8.93× \\
+    S8 & IVF OpenMP(nprobe=16) & 4 & 0.9583 & 136.95 & \textbf{42.07×} \\
+    S9 & IVF Pthread(nprobe=16) & 4 & 0.9583 & 176.61 & 32.62× \\
+    \midrule
+    S10 & IVF-PQ-M1 单线程基线\tnote{3} & -- & 0.9107 & 435.80 & 13.22× \\
+    S11 & IVF-PQ-M1 OpenMP & 4 & 0.9535 & 259.78 & 22.18× \\
+    S12 & IVF-PQ-M1 Pthread & 4 & 0.9535 & 315.29 & 18.27× \\
+    S13 & IVF-PQ-M2 单线程基线 & -- & 0.9368 & 742.73 & 7.76× \\
+    S14 & IVF-PQ-M2 OpenMP & 4 & 0.9575 & 380.13 & 15.16× \\
+    S15 & IVF-PQ-M2 Pthread & 4 & 0.9575 & 416.22 & 13.84× \\
+    \midrule
+    S16 & HNSW 单线程基线(ef=32)\tnote{4} & -- & 0.9464 & 193.91 & 29.71× \\
+    S16 & HNSW 单线程基线(ef=64) & -- & 0.9813 & 315.70 & 18.25× \\
+    S17 & HNSW OpenMP(ef=64)  & 4 & 0.9963 & 267.68 & 21.52× \\
+    S18 & HNSW Pthread(ef=64) & 4 & 0.9963 & 336.50 & 17.12× \\
+    \midrule
+    \bottomrule
+  \end{tabular}
+  \tnote{1} PQ-SIMD系列实验取rerank\_k=500;
+  \tnote{2} IVF系列实验取nlist=256;
+  \tnote{3} IVF-PQ系列实验取nlist=256,nprobe=16,rerank\_k=500;
+  \tnote{4} HNSW系列实验取M=16,ef\_construction=200。
+  \end{threeparttable}
+\end{table}
+
+总体来看，各项策略的优化效果较为显著，使用更优的策略与多线程的并行优化可以带来明显的效率提升，且均能维持在较高的精度水平。
+
+%！！！！ 此处需要一张加速比柱状图！！！！！！！%
+
+考虑到线程数与策略中相应的参数较为复杂，会同时影响召回率与平均延迟，接下来我们将对各项参数进行进一步的深入分析，分析各个参数的影响，并对参数的权衡进行探讨。
+
+\subsection{线程数分析}
+
+%！！！！此处讲一下多线程加速瓶颈的问题，然后再插一张曲线图尽量覆盖和多线程的线程数有关的所有算法！！！！！！！%
+
+
+\subsection{参数权衡}
+
+%！随便讲两句，然后提一下rerank_k已经在上一次的实验中谈论过了这里不做重点
+
+\paragraph{IVF/IVF-PQ：nprobe}
+
+%！！！这里要有表格与对应的散点图图像（坐标轴体现召回率与延迟，参数标注在点上，点与点之间从左到右连线）！！！！！！！！！！！！！！%
+%！！！！！此外，可以简要谈谈nlist的事情%
+
+\paragraph{HNSW：ef}
+
+%要求同上%
+
+\subsection{问题探讨}
+
+\textbf{1. 为什么 IVF OMP 在 T=8 时出现严重负优化，而 Pthread 动态调度没有？}
+
+根源在于两种框架在任务数与线程数接近时的行为差异。对于 nprobe=16、T=8 的情况：
+
+OpenMP 的 \texttt{schedule(dynamic, 1)} 通过运行时库内部队列分发任务，T=8 个线程同时争抢 16 个簇任务，导致线程间的锁竞争频率极高（每个簇处理完毕即触发一次竞争），同步开销远超簇扫描本身的计算量（尤其在 nprobe 较小、单簇向量数仅约 390 个时）。
+
+Pthread 版本的共享计数器虽然也用互斥锁保护，但其实现更轻量（无运行时库层面的额外间接开销），且线程已提前在线程池中就绪，无唤醒延迟，故 T=8 时仍保持有效并行。这一现象说明，\textbf{任务粒度较小、任务数与线程数之比接近 2 时，Pthread 手动动态调度的实际效率优于 OpenMP schedule(dynamic)}。
+
+
+%第2点考虑IVF中聚类使用L2聚类的问题
+
+%或者你也可以再想一个问题
+
+%================================================================
+\section{总结与体会}
+%================================================================
+
+在本次实验中，我们在 Lab 2 SIMD 优化的基础上，系统地探索了多线程并行编程在 ANN 问题中的应用，实现并对比了 OpenMP 与 Pthread 两种并行框架在多种算法中的表现。
+
+从实验结果来看，多线程优化带来了显著的性能提升：\textbf{Flat T=4 OMP 达到 3.94× 加速，IVF OMP T=4 达到 27.56× 全局加速（相比 S0 基线），IVF-PQ M1 OMP T=4 达到 18.74×}。与此同时，实验也揭示了多线程优化的局限性——当算法从 compute-bound 转向 memory-bound（如 IVF-PQ），或任务粒度过小（如 IVF nprobe=16、T=8），线程数的增加反而会导致负优化。
+
+本次实验最大的工程收获在于\textbf{线程池}的设计与实现。在未引入线程池之前，Pthread 版本在 IVF 等算法上出现了严重负优化，误导了对并行框架优劣的判断。引入线程池后，Pthread 的实际性能与 OpenMP 趋于一致，甚至在动态调度场景（T=8，IVF）中优于 OMP，这使我深刻理解了"减少不必要的同步开销"这一并行优化的基本原则。
+
+在算法层面，\textbf{IVF} 的内存重排与粗精两阶段架构令人印象深刻：通过将搜索范围从全库 100K 缩减至若干个簇（nprobe=16 时约 6400 个向量），在几乎不损失召回率的前提下，单线程即可获得 14× 的全局加速比，再结合 T=4 多线程，最终达到 27.56×，远超 Lab 2 的最优方案（PQ-Final 约 15×）。\textbf{HNSW} 的多入口点并行也展示了图索引的独特之处：通过子图集成，在相近召回率下取得比单图高 ef 更低的延迟，体现了分布式搜索的优势。
+
+总体而言，本次实验让我完整体验了从串行到多线程的并行化过程，包括负载均衡、动态调度、线程同步与线程池等核心议题，进一步加深了对并行系统设计的理解，也为今后在实际工程中进行多核优化提供了宝贵的实践经验。
+
+
+
+现在的稿子我给你用文件提供
+

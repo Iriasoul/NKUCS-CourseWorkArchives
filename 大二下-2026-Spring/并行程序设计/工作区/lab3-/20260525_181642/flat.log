@@ -1,0 +1,228 @@
+
+=== S0  [run 1/3] ===
+Running Strategy: 0  [Online: single-thread]
+Avg Recall: 0.99995
+Avg Latency: 7510.71 us
+
+====================
+
+
+=== S0  [run 2/3] ===
+Running Strategy: 0  [Online: single-thread]
+Avg Recall: 0.99995
+Avg Latency: 7652.32 us
+
+====================
+
+
+=== S0  [run 3/3] ===
+Running Strategy: 0  [Online: single-thread]
+Avg Recall: 0.99995
+Avg Latency: 6298.21 us
+
+====================
+
+
+=== S1 --omp 1 [run 1/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 8930.08 us
+
+====================
+
+
+=== S1 --omp 1 [run 2/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 8890.09 us
+
+====================
+
+
+=== S1 --omp 1 [run 3/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 5616.41 us
+
+====================
+
+
+=== S2 --pthreads 1 [run 1/3] ===
+Running Strategy: 2  [Online: Pthread, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 7918.16 us
+pthreads = 1
+
+====================
+
+
+=== S2 --pthreads 1 [run 2/3] ===
+Running Strategy: 2  [Online: Pthread, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 7832.21 us
+pthreads = 1
+
+====================
+
+
+=== S2 --pthreads 1 [run 3/3] ===
+Running Strategy: 2  [Online: Pthread, threads=1]
+Avg Recall: 0.99995
+Avg Latency: 6715.98 us
+pthreads = 1
+
+====================
+
+
+=== S1 --omp 2 [run 1/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3325.02 us
+
+====================
+
+
+=== S1 --omp 2 [run 2/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3687.64 us
+
+====================
+
+
+=== S1 --omp 2 [run 3/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3121.04 us
+
+====================
+
+
+=== S2 --pthreads 2 [run 1/3] ===
+Running Strategy: 2  [Online: Pthread, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3817.52 us
+pthreads = 2
+
+====================
+
+
+=== S2 --pthreads 2 [run 2/3] ===
+Running Strategy: 2  [Online: Pthread, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3889.63 us
+pthreads = 2
+
+====================
+
+
+=== S2 --pthreads 2 [run 3/3] ===
+Running Strategy: 2  [Online: Pthread, threads=2]
+Avg Recall: 0.99995
+Avg Latency: 3659.47 us
+pthreads = 2
+
+====================
+
+
+=== S1 --omp 4 [run 1/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 1701.6 us
+
+====================
+
+
+=== S1 --omp 4 [run 2/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 1831.44 us
+
+====================
+
+
+=== S1 --omp 4 [run 3/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 1598.68 us
+
+====================
+
+
+=== S2 --pthreads 4 [run 1/3] ===
+Running Strategy: 2  [Online: Pthread, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 2041.61 us
+pthreads = 4
+
+====================
+
+
+=== S2 --pthreads 4 [run 2/3] ===
+Running Strategy: 2  [Online: Pthread, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 1919.37 us
+pthreads = 4
+
+====================
+
+
+=== S2 --pthreads 4 [run 3/3] ===
+Running Strategy: 2  [Online: Pthread, threads=4]
+Avg Recall: 0.99995
+Avg Latency: 1940.12 us
+pthreads = 4
+
+====================
+
+
+=== S1 --omp 8 [run 1/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 2229.82 us
+
+====================
+
+
+=== S1 --omp 8 [run 2/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 2795.67 us
+
+====================
+
+
+=== S1 --omp 8 [run 3/3] ===
+Running Strategy: 1  [Online: OpenMP, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 2384.61 us
+
+====================
+
+
+=== S2 --pthreads 8 [run 1/3] ===
+Running Strategy: 2  [Online: Pthread, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 1996.56 us
+pthreads = 8
+
+====================
+
+
+=== S2 --pthreads 8 [run 2/3] ===
+Running Strategy: 2  [Online: Pthread, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 1934.43 us
+pthreads = 8
+
+====================
+
+
+=== S2 --pthreads 8 [run 3/3] ===
+Running Strategy: 2  [Online: Pthread, threads=8]
+Avg Recall: 0.99995
+Avg Latency: 1810.01 us
+pthreads = 8
+
+====================
+

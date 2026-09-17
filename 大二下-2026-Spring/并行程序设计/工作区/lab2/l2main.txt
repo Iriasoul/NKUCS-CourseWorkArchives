@@ -1,0 +1,347 @@
+#include <vector>
+#include <cstring>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+#include <sys/time.h>
+#include <omp.h>
+#include <queue>
+#include <cmath>
+#include <algorithm>
+#include <arm_neon.h> 
+
+#include "hnswlib/hnswlib/hnswlib.h"
+#include "flat_scan.h"
+
+using namespace hnswlib;
+
+template<typename T>
+T *LoadData(std::string data_path, size_t& n, size_t& d)
+{
+    std::ifstream fin;
+    fin.open(data_path, std::ios::in | std::ios::binary);
+    if(!fin.is_open()) {
+        std::cerr << "Failed to open " << data_path << std::endl;
+        exit(-1);
+    }
+    fin.read((char*)&n,4);
+    fin.read((char*)&d,4);
+    T* data = new T[n*d];
+    int sz = sizeof(T);
+    for(size_t i = 0; i < n; ++i){
+        fin.read(((char*)data + i*d*sz), d*sz);
+    }
+    fin.close();
+    std::cerr<<"load data "<<data_path<<"\n";
+    return data;
+}
+
+struct SearchResult {
+    float recall;
+    int64_t latency; 
+};
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+// 1. Flat SIMD
+std::priority_queue<std::pair<float, uint32_t> > flat_search_simd(float* base, float* query, size_t base_number, size_t vecdim, size_t k) {
+    std::priority_queue<std::pair<float, uint32_t> > q;
+    for(size_t i = 0; i < base_number; ++i) {
+        float32x4_t sum_vec = vdupq_n_f32(0.0f);
+        float* current_base = base + i * vecdim;
+        for(size_t d = 0; d + 3 < vecdim; d += 4) {
+            sum_vec = vfmaq_f32(sum_vec, vld1q_f32(current_base + d), vld1q_f32(query + d));
+        }
+        float dis = 1.0f - vaddvq_f32(sum_vec); 
+        if(q.size() < k || dis < q.top().first) {
+            q.push({dis, (uint32_t)i});
+            if(q.size() > k) q.pop();
+        }
+    }
+    return q;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+// 2. SQ SIMD
+int8_t* sq_base = nullptr;
+float sq_scale = 1.0f;
+
+void offline_sq(float* base, size_t base_number, size_t vecdim) {
+    sq_base = new int8_t[base_number * vecdim];
+    float max_val = 0;
+    for (size_t i = 0; i < base_number * vecdim; ++i) max_val = std::max(max_val, std::abs(base[i]));
+    sq_scale = 127.0f / max_val; // 对称量化，不使用偏移以保证 IP 排名正确
+    #pragma omp parallel for
+    for (size_t i = 0; i < base_number * vecdim; ++i) {
+        sq_base[i] = (int8_t)(base[i] * sq_scale);
+    }
+}
+
+std::priority_queue<std::pair<float, uint32_t> > sq_search_simd(int8_t* base_i8, float* query, size_t base_number, size_t vecdim, size_t k) {
+    std::priority_queue<std::pair<float, uint32_t> > q;
+    int8_t q_i8[vecdim];
+    for(size_t d = 0; d < vecdim; ++d) q_i8[d] = (int8_t)(query[d] * sq_scale);
+
+    for(size_t i = 0; i < base_number; ++i) {
+        int8_t* cb = base_i8 + i * vecdim;
+        int32x4_t sum_v = vdupq_n_s32(0);
+        for(size_t d = 0; d + 15 < vecdim; d += 16) {
+            int8x16_t b_v = vld1q_s8(cb + d);
+            int8x16_t q_v = vld1q_s8(q_i8 + d);
+            // 点乘累加到 32位 寄存器以防溢出
+            int16x8_t prod_l = vmull_s8(vget_low_s8(b_v), vget_low_s8(q_v));
+            int16x8_t prod_h = vmull_s8(vget_high_s8(b_v), vget_high_s8(q_v));
+            sum_v = vpadalq_s16(sum_v, prod_l);
+            sum_v = vpadalq_s16(sum_v, prod_h);
+        }
+        float dis = 1.0f - (float)vaddvq_s32(sum_v) / (sq_scale * sq_scale);
+        if(q.size() < k || dis < q.top().first) {
+            q.push({dis, (uint32_t)i});
+            if(q.size() > k) q.pop();
+        }
+    }
+    return q;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+// 3. PQ-SIMD 
+const int PQ_M = 8; // 参数调整
+const int PQ_K = 256; 
+uint8_t* pq_codes = nullptr;
+float* pq_centroids = nullptr; 
+
+inline float calc_sub_dist(float* a, float* b, size_t dim) {
+    float32x4_t sum_vec = vdupq_n_f32(0.0f);
+    size_t d = 0;
+    // 每次处理 4 个 float (128位)
+    for (; d + 3 < dim; d += 4) {
+        sum_vec = vfmaq_f32(sum_vec, vld1q_f32(a + d), vld1q_f32(b + d));
+    }
+    float sum = vaddvq_f32(sum_vec);
+    // 处理不足 4 个的剩余维度
+    for (; d < dim; ++d) {
+        sum += a[d] * b[d];
+    }
+    return sum;
+}
+
+void simple_kmeans(float* data, size_t n, size_t dim, float* cents) {
+    for(int i=0; i<PQ_K; ++i) std::memcpy(cents + i*dim, data + (rand()%n)*dim, dim*sizeof(float));
+    for(int iter=0; iter<50; ++iter) { // cishu
+        std::vector<float> next_cents(PQ_K*dim, 0);
+        std::vector<int> counts(PQ_K, 0);
+        for(size_t i=0; i<n; ++i) {
+            float max_ip = -1e9; int best = 0;
+            for(int c=0; c<PQ_K; ++c) {
+                float ip = calc_sub_dist(data+i*dim, cents+c*dim, dim);
+                if(ip > max_ip) { max_ip = ip; best = c; }
+            }
+            counts[best]++;
+            for(size_t d=0; d<dim; ++d) next_cents[best*dim+d] += data[i*dim+d];
+        }
+        for(int c=0; c<PQ_K; ++c) if(counts[c]) for(size_t d=0; d<dim; ++d) cents[c*dim+d] = next_cents[c*dim+d]/counts[c];
+    }
+}
+
+void offline_pq(float* base, size_t base_number, size_t vecdim) {
+    size_t sub_dim = vecdim / PQ_M;
+    pq_codes = new uint8_t[base_number * PQ_M];
+    pq_centroids = new float[PQ_M * PQ_K * sub_dim];
+    for(int m=0; m<PQ_M; ++m) {
+        std::vector<float> sub_data(base_number * sub_dim);
+        for(size_t i=0; i<base_number; ++i) std::memcpy(&sub_data[i*sub_dim], base+i*vecdim+m*sub_dim, sub_dim*sizeof(float));
+        simple_kmeans(sub_data.data(), base_number, sub_dim, pq_centroids + m*PQ_K*sub_dim);
+        #pragma omp parallel for
+        for(size_t i=0; i<base_number; ++i) {
+            float max_ip = -1e9; int best = 0;
+            for(int c=0; c<PQ_K; ++c) {
+                float ip = calc_sub_dist(base+i*vecdim+m*sub_dim, pq_centroids+m*PQ_K*sub_dim+c*sub_dim, sub_dim);
+                if(ip > max_ip) { max_ip = ip; best = c; }
+            }
+            pq_codes[i*PQ_M + m] = best;
+        }
+    }
+}
+
+std::priority_queue<std::pair<float, uint32_t> > pq_search_simd(float* query, size_t base_number, size_t vecdim, size_t k) {
+    size_t sub_dim = vecdim / PQ_M;
+    float lut[PQ_M][PQ_K];
+    for(int m=0; m<PQ_M; ++m) 
+        for(int c=0; c<PQ_K; ++c) 
+            lut[m][c] = calc_sub_dist(query+m*sub_dim, pq_centroids+m*PQ_K*sub_dim+c*sub_dim, sub_dim);
+
+    std::priority_queue<std::pair<float, uint32_t> > q;
+    for(size_t i = 0; i < base_number; ++i) {
+        float ip = 0;
+        uint8_t* code = pq_codes + i*PQ_M;
+        for(int m=0; m<PQ_M; ++m) ip += lut[m][code[m]];
+        float dis = 1.0f - ip;
+        if(q.size() < k || dis < q.top().first) {
+            q.push({dis, (uint32_t)i});
+            if(q.size() > k) q.pop();
+        }
+    }
+    return q;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+// ==========================================
+// 4. Strategy 4: PQ + Re-ranking SIMD
+// 纯内积距离，通过重排提升召回率
+// ==========================================
+
+// --- 离线阶段（完全使用内积） ---
+void offline_pq_ip(float* base, size_t base_number, size_t vecdim) {
+    size_t sub_dim = vecdim / PQ_M;
+    pq_codes = new uint8_t[base_number * PQ_M];
+    pq_centroids = new float[PQ_M * PQ_K * sub_dim];
+    
+    // 随机采样 20000 条数据训练 KMeans 加快速度
+    size_t train_n = std::min((size_t)20000, base_number); 
+    
+    for(int m=0; m<PQ_M; ++m) {
+        std::vector<float> sub_data(train_n * sub_dim);
+        for(size_t i=0; i<train_n; ++i) 
+            std::memcpy(&sub_data[i*sub_dim], base+i*vecdim+m*sub_dim, sub_dim*sizeof(float));
+            
+        // 复用你原来的内积版 simple_kmeans (确保里面使用的是 calc_sub_dist)
+        simple_kmeans(sub_data.data(), train_n, sub_dim, pq_centroids + m*PQ_K*sub_dim);
+        
+        #pragma omp parallel for // 这里强烈建议开启 OpenMP 提高离线速度[cite: 3]
+        for(size_t i=0; i<base_number; ++i) {
+            for(int m=0; m<PQ_M; ++m) {
+                float max_ip = -1e9;
+                int best = 0;
+                float* sub_vec = base + i * vecdim + m * sub_dim;
+                float* centers = pq_centroids + m * PQ_K * sub_dim;
+                
+                for(int c=0; c<PQ_K; ++c) {
+                    // 这里现在通过 SIMD 函数加速了子空间的内积计算[cite: 3]
+                    float ip = calc_sub_dist(sub_vec, centers + c * sub_dim, sub_dim);
+                    if(ip > max_ip) { max_ip = ip; best = c; }
+                }
+                pq_codes[i * PQ_M + m] = (uint8_t)best;
+            }
+        }
+    }
+}
+
+// --- 在线查询阶段：粗排 + 精排 ---
+std::priority_queue<std::pair<float, uint32_t> > pq_rerank_search_simd(
+    float* query, float* base, size_t base_number, size_t vecdim, size_t k, size_t rerank_k = 500) {
+    
+    size_t sub_dim = vecdim / PQ_M;
+    float lut[PQ_M][PQ_K];
+    
+    // 1. 构建 LUT (内积)
+    for(int m=0; m<PQ_M; ++m) {
+        for(int c=0; c<PQ_K; ++c) {
+            lut[m][c] = calc_sub_dist(query+m*sub_dim, pq_centroids+m*PQ_K*sub_dim+c*sub_dim, sub_dim);
+        }
+    }
+
+    // 2. ADC 粗排：找出前 rerank_k 个候选者
+    std::priority_queue<std::pair<float, uint32_t> > coarse_q;
+    for(size_t i = 0; i < base_number; ++i) {
+        float ip = 0;
+        uint8_t* code = pq_codes + i*PQ_M;
+        for(int m=0; m<PQ_M; ++m) ip += lut[m][code[m]];
+        
+        float dis = 1.0f - ip;
+        if(coarse_q.size() < rerank_k || dis < coarse_q.top().first) {
+            coarse_q.push({dis, (uint32_t)i});
+            if(coarse_q.size() > rerank_k) coarse_q.pop();
+        }
+    }
+
+    // 3. 精排 (Re-ranking)：读取原向量计算精确 SIMD 内积
+    std::priority_queue<std::pair<float, uint32_t> > fine_q;
+    while(!coarse_q.empty()) {
+        uint32_t idx = coarse_q.top().second;
+        coarse_q.pop();
+
+        // 提取该候选者的原始浮点向量
+        float exact_ip = calc_sub_dist(query, base + idx * vecdim, vecdim);
+        float exact_dis = 1.0f - exact_ip;
+
+        // 压入最终的 Top-k 队列
+        if(fine_q.size() < k || exact_dis < fine_q.top().first) {
+            fine_q.push({exact_dis, idx});
+            if(fine_q.size() > k) fine_q.pop();
+        }
+    }
+    
+    return fine_q;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+int main(int argc, char *argv[]) {
+    size_t test_number = 0, base_number = 0, test_gt_d = 0, vecdim = 0;
+    std::string data_path = "/anndata/"; 
+    auto test_query = LoadData<float>(data_path + "DEEP100K.query.fbin", test_number, vecdim);
+    auto test_gt = LoadData<int>(data_path + "DEEP100K.gt.query.100k.top100.bin", test_number, test_gt_d);
+    auto base = LoadData<float>(data_path + "DEEP100K.base.100k.fbin", base_number, vecdim);
+    
+    test_number = 2000;
+    const size_t k = 10;
+    std::vector<SearchResult> results(test_number);
+
+    int strategy = 4; // 对比不同算法：0 = Flat, 1 = Flat-SIMD, 2 = SQ-SIMD, 3 = PQ-SIMD
+
+    std::cout << "Running Strategy: " << strategy << std::endl;
+
+    if (strategy == 2) offline_sq(base, base_number, vecdim);
+    if (strategy == 3) offline_pq(base, base_number, vecdim);
+    if (strategy == 4) offline_pq_ip(base, base_number, vecdim);
+
+    for(size_t i = 0; i < test_number; ++i) {
+        struct timeval start, end;
+        gettimeofday(&start, NULL);
+
+        std::priority_queue<std::pair<float, uint32_t>> res;
+        if (strategy == 1) res = flat_search_simd(base, test_query + i*vecdim, base_number, vecdim, k);
+        else if (strategy == 2) res = sq_search_simd(sq_base, test_query + i*vecdim, base_number, vecdim, k);
+        else if (strategy == 3) res = pq_search_simd(test_query + i*vecdim, base_number, vecdim, k);
+        else if (strategy == 4) res = pq_rerank_search_simd(test_query + i*vecdim, base, base_number, vecdim, k, 500); // 500 是 rerank_k，你可以调整它来观察 Latency 和 Recall 的权衡
+        gettimeofday(&end, NULL);
+        int64_t diff = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+
+        std::set<uint32_t> gtset;
+        for(size_t j = 0; j < k; ++j) gtset.insert(test_gt[j + i*test_gt_d]);
+
+        size_t acc = 0;
+        while (!res.empty()) {
+            if(gtset.count(res.top().second)) ++acc;
+            res.pop();
+        }
+        results[i] = {(float)acc/k, diff};
+    }
+
+    float avg_recall = 0, avg_latency = 0;
+    for(auto& r : results) { avg_recall += r.recall; avg_latency += r.latency; }
+    std::cout << "Avg Recall: " << avg_recall / test_number << "\nAvg Latency: " << avg_latency / test_number << " us\n";
+
+    delete[] test_query; delete[] test_gt; delete[] base;
+    if(sq_base) delete[] sq_base; if(pq_codes) delete[] pq_codes; if(pq_centroids) delete[] pq_centroids;
+    return 0;
+}

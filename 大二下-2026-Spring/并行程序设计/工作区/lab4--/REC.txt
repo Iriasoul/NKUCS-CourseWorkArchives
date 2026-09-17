@@ -1,0 +1,70 @@
+[s2410668@master_ubss1 ann]$ mpiexec -np 1 ./main
+Running Strategy: 11  P=1
+Avg Recall: 0.981002
+Avg Latency: 439.159 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 11  P=2
+Avg Recall: 0.992151
+Avg Latency: 8418.72 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 11  P=4
+Avg Recall: 0.9969
+Avg Latency: 4869.75 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 11  P=8
+Avg Recall: 0.9987
+Avg Latency: 1192.97 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 12  P=2
+Avg Recall: 0.99875
+Avg Latency: 462.775 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64, n_sub = 4
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 1 ./main
+Running Strategy: 13  P=1
+Avg Recall: 0.958003
+Avg Latency: 2416.36 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 13  P=2
+Avg Recall: 0.958003
+Avg Latency: 1360.33 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 13  P=4
+Avg Recall: 0.958003
+Avg Latency: 1194.88 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 13  P=8
+Avg Recall: 0.958003
+Avg Latency: 1327.22 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 14  P=4
+Avg Recall: 0.958003
+Avg Latency: 1276.31 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, ef_search = 64
+
+====================

@@ -1,0 +1,74 @@
+[s2410668@master_ubss1 ann]$ mpiexec -np 1 ./main
+Running Strategy: 7  P=1
+Avg Recall: 0.910653
+Avg Latency: 456.323 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 1
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 7  P=2
+Avg Recall: 0.949304
+Avg Latency: 355.492 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 1
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 7  P=4
+Avg Recall: 0.961802
+Avg Latency: 284.19 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 1
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 7  P=8
+Avg Recall: 0.968003
+Avg Latency: 291.082 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 1
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 8  P=2
+Avg Recall: 0.961003
+Avg Latency: 278.945 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, omp_threads = 4, rerank_k = 500, PQ_M = 8, method = 1
+
+====================
+
+
+
+
+[s2410668@master_ubss1 ann]$ mpiexec -np 1 ./main
+Running Strategy: 9  P=1
+Avg Recall: 0.937454
+Avg Latency: 713.735 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 2
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 9  P=2
+Avg Recall: 0.948653
+Avg Latency: 737.702 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 2
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 9  P=4
+Avg Recall: 0.962802
+Avg Latency: 688.341 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 2
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 9  P=8
+Avg Recall: 0.968003
+Avg Latency: 722.984 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, rerank_k = 500, PQ_M = 8, method = 2
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 10  P=2
+Avg Recall: 0.961053
+Avg Latency: 398.658 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, omp_threads = 4, rerank_k = 500, PQ_M = 8, method = 2
+
+====================

@@ -1,0 +1,49 @@
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 1
+Avg Recall: 0.99995
+Avg Latency: 14335.2 us
+
+==================================================
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 2
+Avg Recall: 0.963406
+Avg Latency: 7136.43 us
+
+==================================================
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 3
+Avg Recall: 0.11645
+Avg Latency: 892.651 us
+
+（4）
+==================================================
+==================================================
+PQ_M = 12
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 3
+Avg Recall: 0.3611
+Avg Latency: 4279.01 us
+
+==================================================
+==================================================
+PQ_M = 16
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 3
+Avg Recall: 0.44105
+Avg Latency: 5840.17 us
+
+

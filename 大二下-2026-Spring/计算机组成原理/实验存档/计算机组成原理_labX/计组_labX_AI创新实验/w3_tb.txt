@@ -1,0 +1,51 @@
+`timescale 1ns / 1ps
+
+module tb_week3();
+    reg  [199:0] img_in;
+    reg  [71:0]  weight_in;
+    wire [31:0]  cnn_out;
+
+    cnn_core_top_opt u_top (
+        .img_5x5(img_in),
+        .weight_3x3(weight_in),
+        .out_2x2(cnn_out)
+    );
+
+    initial begin
+        // --- Test 1: 全均匀图像测试 ---
+        img_in = {25{8'd10}};
+        weight_in = {9{8'd1}};
+        #100;
+        $display("Test1 | weight: %h | img: %h | out: %d, %d, %d, %d", 
+                 weight_in, img_in, cnn_out[31:24], cnn_out[23:16], cnn_out[15:8], cnn_out[7:0]);
+
+        // --- Test 2: 孤点特征测试 ---
+        img_in = 200'b0; 
+        img_in[7:0] = 8'd40; // 左上角第一个点为40
+        weight_in = {9{8'd1}};
+        #100;
+        $display("Test2 | weight: %h | img: %h | out: %d, %d, %d, %d", 
+                 weight_in, img_in, cnn_out[31:24], cnn_out[23:16], cnn_out[15:8], cnn_out[7:0]);
+
+        // --- Test 3: 权重倍增测试 ---
+        img_in = {25{8'd10}};
+        weight_in = {9{8'd2}}; // 权重变为2
+        #100;
+        $display("Test3 | weight: %h | img: %h | out: %d, %d, %d, %d", 
+                 weight_in, img_in, cnn_out[31:24], cnn_out[23:16], cnn_out[15:8], cnn_out[7:0]);
+
+        // --- Test 4: 对角线特征测试 ---
+        img_in = 200'b0;
+        img_in[7:0]   = 8'd10; // Pixel 0
+        img_in[55:48] = 8'd10; // Pixel 6
+        img_in[103:96]= 8'd10; // Pixel 12
+        img_in[151:144]=8'd10; // Pixel 18
+        img_in[199:192]=8'd10; // Pixel 24
+        weight_in = {9{8'd1}};
+        #100;
+        $display("Test4 | weight: %h | img: %h | out: %d, %d, %d, %d", 
+                 weight_in, img_in, cnn_out[31:24], cnn_out[23:16], cnn_out[15:8], cnn_out[7:0]);
+
+        $finish;
+    end
+endmodule

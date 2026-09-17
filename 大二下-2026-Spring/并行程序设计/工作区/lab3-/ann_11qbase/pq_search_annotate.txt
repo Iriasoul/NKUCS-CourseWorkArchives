@@ -1,0 +1,481 @@
+ Percent |	Source code & Disassembly of my_program_debug for cycles:u (3699 samples, percent: local period)
+----------------------------------------------------------------------------------------------------------------
+         :
+         :
+         :
+         :            Disassembly of section .text:
+         :
+         :            000000000040705c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)>:
+         :            pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long):
+         :            // ===========================================================================
+         :            inline std::priority_queue<std::pair<float, uint32_t>>
+         :            pq_search_final_baseline(float* query, float* base,
+         :            size_t base_number, size_t vecdim,
+         :            size_t k, size_t rerank_k)
+         :            {
+    0.00 :   40705c: mov     x12, #0x41c0                    // #16832
+    0.00 :   407060: sub     sp, sp, x12
+    0.00 :   407064: stp     x29, x30, [sp]
+    0.00 :   407068: mov     x29, sp
+    0.00 :   40706c: stp     x19, x20, [sp, #16]
+    0.00 :   407070: mov     x19, x8
+    0.00 :   407074: str     x0, [sp, #72]
+    0.00 :   407078: str     x1, [sp, #64]
+    0.00 :   40707c: str     x2, [sp, #56]
+    0.00 :   407080: str     x3, [sp, #48]
+    0.00 :   407084: str     x4, [sp, #40]
+    0.00 :   407088: str     x5, [sp, #32]
+    0.00 :   40708c: add     x1, sp, #0x4, lsl #12
+    0.00 :   407090: add     x1, x1, #0x1c0
+    0.00 :   407094: mov     x0, #0xffffffffffffbe90         // #-16752
+    0.00 :   407098: add     x0, x1, x0
+    0.00 :   40709c: add     x0, x0, #0x3f
+    0.00 :   4070a0: lsr     x0, x0, #6
+    0.00 :   4070a4: lsl     x20, x0, #6
+         :            using namespace pq_ns;
+         :            size_t sub_dim = vecdim / PQ_M;
+    0.00 :   4070a8: ldr     x0, [sp, #48]
+    0.00 :   4070ac: lsr     x0, x0, #4
+    0.00 :   4070b0: str     x0, [sp, #16760]
+         :            alignas(64) float lut[PQ_M][PQ_K];
+         :
+         :            // ===== 阶段 1: LUT 构建 (跨 centroid SIMD, 单线程) =====
+         :            for (int m = 0; m < PQ_M; ++m) {
+    0.00 :   4070b4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4070b8: str     wzr, [x0, #444]
+    0.00 :   4070bc: add     x0, sp, #0x4, lsl #12
+    0.00 :   4070c0: ldr     w0, [x0, #444]
+    0.00 :   4070c4: cmp     w0, #0xf
+    0.00 :   4070c8: b.gt    407258 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x1fc>
+         :            float* sub_q = query + m * sub_dim;
+    0.00 :   4070cc: add     x0, sp, #0x4, lsl #12
+    0.00 :   4070d0: ldrsw   x1, [x0, #444]
+    0.00 :   4070d4: ldr     x0, [sp, #16760]
+    0.00 :   4070d8: mul     x0, x1, x0
+    0.00 :   4070dc: lsl     x0, x0, #2
+    0.00 :   4070e0: ldr     x1, [sp, #72]
+    0.00 :   4070e4: add     x0, x1, x0
+    0.00 :   4070e8: str     x0, [sp, #16752]
+         :            float* m_soa = pq_centroids_soa + m * sub_dim * PQ_K;
+    0.00 :   4070ec: adrp    x0, 470000 <operator new[](unsigned long)@GLIBCXX_3.4>
+    0.00 :   4070f0: add     x0, x0, #0x540
+    0.00 :   4070f4: ldr     x1, [x0]
+    0.00 :   4070f8: add     x0, sp, #0x4, lsl #12
+    0.00 :   4070fc: ldrsw   x2, [x0, #444]
+    0.00 :   407100: ldr     x0, [sp, #16760]
+    0.00 :   407104: mul     x0, x2, x0
+    0.00 :   407108: lsl     x0, x0, #10
+    0.00 :   40710c: add     x0, x1, x0
+    0.00 :   407110: str     x0, [sp, #16744]
+         :            for (int c = 0; c < PQ_K; c += 4) {
+    0.00 :   407114: add     x0, sp, #0x4, lsl #12
+    0.00 :   407118: str     wzr, [x0, #440]
+    0.00 :   40711c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407120: ldr     w0, [x0, #440]
+    0.00 :   407124: cmp     w0, #0xff
+    0.00 :   407128: b.gt    407240 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x1e4>
+    0.00 :   40712c: add     x0, sp, #0x4, lsl #12
+    0.03 :   407130: str     wzr, [x0, #348]
+         :            vdupq_n_f32(float):
+         :
+         :            __extension__ extern __inline float32x4_t
+         :            __attribute__ ((__always_inline__, __gnu_inline__, __artificial__))
+         :            vdupq_n_f32 (float32_t __a)
+         :            {
+         :            return (float32x4_t) {__a, __a, __a, __a};
+    0.00 :   407134: add     x0, sp, #0x4, lsl #12
+    0.00 :   407138: ldr     s0, [x0, #348]
+    0.00 :   40713c: dup     v0.4s, v0.s[0]
+         :            pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long):
+         :            float32x4_t acc = vdupq_n_f32(0.0f);
+    0.00 :   407140: str     q0, [sp, #16800]
+         :            for (size_t d = 0; d < sub_dim; ++d) {
+    0.00 :   407144: str     xzr, [sp, #16792]
+    0.03 :   407148: ldr     x1, [sp, #16792]
+    0.03 :   40714c: ldr     x0, [sp, #16760]
+    0.00 :   407150: cmp     x1, x0
+    0.00 :   407154: b.cs    4071ec <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x190>  // b.hs, b.nlast
+         :            acc = vfmaq_f32(acc, vdupq_n_f32(sub_q[d]),
+    0.00 :   407158: ldr     x0, [sp, #16792]
+    0.00 :   40715c: lsl     x0, x0, #2
+    0.03 :   407160: ldr     x1, [sp, #16752]
+    0.00 :   407164: add     x0, x1, x0
+    0.00 :   407168: ldr     s0, [x0]
+    0.00 :   40716c: add     x0, sp, #0x4, lsl #12
+    0.03 :   407170: str     s0, [x0, #332]
+         :            vdupq_n_f32(float):
+    0.00 :   407174: add     x0, sp, #0x4, lsl #12
+    0.00 :   407178: ldr     s0, [x0, #332]
+    0.00 :   40717c: dup     v0.4s, v0.s[0]
+    0.00 :   407180: mov     v2.16b, v0.16b
+         :            pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long):
+         :            vld1q_f32(m_soa + d * PQ_K + c));
+    0.05 :   407184: ldr     x0, [sp, #16792]
+    0.00 :   407188: lsl     x1, x0, #8
+    0.00 :   40718c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407190: ldrsw   x0, [x0, #440]
+    0.00 :   407194: add     x0, x1, x0
+    0.00 :   407198: lsl     x0, x0, #2
+    0.00 :   40719c: ldr     x1, [sp, #16744]
+    0.00 :   4071a0: add     x0, x1, x0
+    0.00 :   4071a4: str     x0, [sp, #16720]
+         :            vld1q_f32(float const*):
+         :
+         :            __extension__ extern __inline float32x4_t
+         :            __attribute__ ((__always_inline__, __gnu_inline__, __artificial__))
+         :            vld1q_f32 (const float32_t *__a)
+         :            {
+         :            return __builtin_aarch64_ld1v4sf ((const __builtin_aarch64_simd_sf *) __a);
+    0.00 :   4071a8: ldr     x0, [sp, #16720]
+    0.00 :   4071ac: ldr     q0, [x0]
+    0.00 :   4071b0: nop
+    0.27 :   4071b4: ldr     q1, [sp, #16800]
+    0.19 :   4071b8: str     q1, [sp, #16688]
+    0.00 :   4071bc: str     q2, [sp, #16672]
+    0.00 :   4071c0: str     q0, [sp, #16656]
+         :            vfmaq_f32(__Float32x4_t, __Float32x4_t, __Float32x4_t):
+         :            return __builtin_aarch64_fmav4sf (__b, __c, __a);
+    0.00 :   4071c4: ldr     q2, [sp, #16672]
+    0.14 :   4071c8: ldr     q1, [sp, #16656]
+    0.03 :   4071cc: ldr     q0, [sp, #16688]
+    0.00 :   4071d0: fmla    v0.4s, v2.4s, v1.4s
+    0.00 :   4071d4: nop
+         :            pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long):
+         :            acc = vfmaq_f32(acc, vdupq_n_f32(sub_q[d]),
+    0.05 :   4071d8: str     q0, [sp, #16800]
+         :            for (size_t d = 0; d < sub_dim; ++d) {
+    0.00 :   4071dc: ldr     x0, [sp, #16792]
+    0.00 :   4071e0: add     x0, x0, #0x1
+    0.00 :   4071e4: str     x0, [sp, #16792]
+    0.00 :   4071e8: b       407148 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0xec>
+         :            }
+         :            vst1q_f32(&lut[m][c], acc);
+    0.00 :   4071ec: add     x0, sp, #0x4, lsl #12
+    0.00 :   4071f0: ldrsw   x1, [x0, #440]
+    0.00 :   4071f4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4071f8: ldrsw   x0, [x0, #444]
+    0.00 :   4071fc: lsl     x0, x0, #8
+    0.00 :   407200: add     x0, x1, x0
+    0.00 :   407204: lsl     x0, x0, #2
+    0.00 :   407208: add     x0, x20, x0
+    0.00 :   40720c: str     x0, [sp, #16648]
+    0.00 :   407210: ldr     q0, [sp, #16800]
+    0.05 :   407214: str     q0, [sp, #16624]
+         :            vst1q_f32(float*, __Float32x4_t):
+         :
+         :            __extension__ extern __inline void
+         :            __attribute__ ((__always_inline__, __gnu_inline__, __artificial__))
+         :            vst1q_f32 (float32_t *__a, float32x4_t __b)
+         :            {
+         :            __builtin_aarch64_st1v4sf ((__builtin_aarch64_simd_sf *) __a, __b);
+    0.00 :   407218: ldr     x0, [sp, #16648]
+    0.00 :   40721c: ldr     q0, [sp, #16624]
+    0.05 :   407220: str     q0, [x0]
+         :            }
+    0.00 :   407224: nop
+         :            pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long):
+         :            for (int c = 0; c < PQ_K; c += 4) {
+    0.00 :   407228: add     x0, sp, #0x4, lsl #12
+    0.00 :   40722c: ldr     w0, [x0, #440]
+    0.00 :   407230: add     w0, w0, #0x4
+    0.00 :   407234: add     x1, sp, #0x4, lsl #12
+    0.00 :   407238: str     w0, [x1, #440]
+    0.00 :   40723c: b       40711c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0xc0>
+         :            for (int m = 0; m < PQ_M; ++m) {
+    0.00 :   407240: add     x0, sp, #0x4, lsl #12
+    0.00 :   407244: ldr     w0, [x0, #444]
+    0.00 :   407248: add     w0, w0, #0x1
+    0.00 :   40724c: add     x1, sp, #0x4, lsl #12
+    0.00 :   407250: str     w0, [x1, #444]
+    0.00 :   407254: b       4070bc <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x60>
+         :            //   导致每次内层循环都 cache miss, 硬件预取完全失效.
+         :            //
+         :            // 修复后 (外层 m, 内层 i): col[i] 是纯顺序读取, 硬件预取全速工作.
+         :            //   lut[m] 只有 256 × 4 = 1 KB, 全程驻留 L1 cache.
+         :            //   代价: 需要额外 base_number × 4 = 400 KB 的 dists 数组 (驻 L3 可接受).
+         :            std::vector<float> dists(base_number, 0.0f);
+    0.00 :   407258: add     x0, sp, #0x4, lsl #12
+    0.00 :   40725c: str     wzr, [x0, #204]
+    0.00 :   407260: add     x0, sp, #0x4, lsl #12
+    0.00 :   407264: add     x0, x0, #0xd0
+    0.00 :   407268: bl      410724 <std::allocator<float>::allocator()>
+    0.00 :   40726c: add     x2, sp, #0x4, lsl #12
+    0.00 :   407270: add     x2, x2, #0xd0
+    0.00 :   407274: add     x1, sp, #0x4, lsl #12
+    0.00 :   407278: add     x1, x1, #0xcc
+    0.00 :   40727c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407280: add     x0, x0, #0xb0
+    0.00 :   407284: mov     x3, x2
+    0.00 :   407288: mov     x2, x1
+    0.00 :   40728c: ldr     x1, [sp, #56]
+    0.00 :   407290: bl      410764 <std::vector<float, std::allocator<float> >::vector(unsigned long, float const&, std::allocator<float> const&)>
+    0.00 :   407294: add     x0, sp, #0x4, lsl #12
+    0.00 :   407298: add     x0, x0, #0xd0
+    0.00 :   40729c: bl      410744 <std::allocator<float>::~allocator()>
+         :            for (int m = 0; m < PQ_M; ++m) {
+    0.00 :   4072a0: add     x0, sp, #0x4, lsl #12
+    0.00 :   4072a4: str     wzr, [x0, #404]
+    0.00 :   4072a8: add     x0, sp, #0x4, lsl #12
+    0.00 :   4072ac: ldr     w0, [x0, #404]
+    0.00 :   4072b0: cmp     w0, #0xf
+    0.00 :   4072b4: b.gt    40735c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x300>
+         :            const uint8_t* col = pq_codes_soa + (size_t)m * base_number;
+    0.00 :   4072b8: adrp    x0, 470000 <operator new[](unsigned long)@GLIBCXX_3.4>
+    0.00 :   4072bc: add     x0, x0, #0x530
+    0.00 :   4072c0: ldr     x1, [x0]
+    0.00 :   4072c4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4072c8: ldrsw   x2, [x0, #404]
+    0.00 :   4072cc: ldr     x0, [sp, #56]
+    0.00 :   4072d0: mul     x0, x2, x0
+    0.00 :   4072d4: add     x0, x1, x0
+    0.00 :   4072d8: str     x0, [sp, #16736]
+         :            for (size_t i = 0; i < base_number; ++i)
+    0.00 :   4072dc: str     xzr, [sp, #16776]
+    2.19 :   4072e0: ldr     x1, [sp, #16776]
+    6.51 :   4072e4: ldr     x0, [sp, #56]
+    0.00 :   4072e8: cmp     x1, x0
+    0.00 :   4072ec: b.cs    407344 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x2e8>  // b.hs, b.nlast
+         :            dists[i] += lut[m][col[i]];
+    0.62 :   4072f0: add     x0, sp, #0x4, lsl #12
+    0.46 :   4072f4: add     x0, x0, #0xb0
+    2.46 :   4072f8: ldr     x1, [sp, #16776]
+    0.00 :   4072fc: bl      41094c <std::vector<float, std::allocator<float> >::operator[](unsigned long)>
+    1.43 :   407300: ldr     s1, [x0]
+   40.09 :   407304: ldr     x2, [sp, #16736]
+    0.79 :   407308: ldr     x1, [sp, #16776]
+    0.00 :   40730c: add     x1, x2, x1
+    0.27 :   407310: ldrb    w1, [x1]
+    0.05 :   407314: sxtw    x1, w1
+    0.14 :   407318: add     x2, sp, #0x4, lsl #12
+    4.35 :   40731c: ldrsw   x2, [x2, #404]
+    0.76 :   407320: lsl     x2, x2, #8
+    0.70 :   407324: add     x1, x2, x1
+    4.41 :   407328: ldr     s0, [x20, x1, lsl #2]
+    0.68 :   40732c: fadd    s0, s1, s0
+   24.52 :   407330: str     s0, [x0]
+         :            for (size_t i = 0; i < base_number; ++i)
+    0.11 :   407334: ldr     x0, [sp, #16776]
+    0.00 :   407338: add     x0, x0, #0x1
+    1.13 :   40733c: str     x0, [sp, #16776]
+    0.13 :   407340: b       4072e0 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x284>
+         :            for (int m = 0; m < PQ_M; ++m) {
+    0.00 :   407344: add     x0, sp, #0x4, lsl #12
+    0.00 :   407348: ldr     w0, [x0, #404]
+    0.00 :   40734c: add     w0, w0, #0x1
+    0.00 :   407350: add     x1, sp, #0x4, lsl #12
+    0.00 :   407354: str     w0, [x1, #404]
+    0.00 :   407358: b       4072a8 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x24c>
+         :            }
+         :
+         :            std::priority_queue<std::pair<float, uint32_t>> coarse_q;
+    0.00 :   40735c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407360: add     x0, x0, #0x90
+    0.00 :   407364: bl      40fbf0 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::priority_queue<std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, void>()>
+         :            for (size_t i = 0; i < base_number; ++i) {
+    0.00 :   407368: str     xzr, [sp, #16768]
+    0.00 :   40736c: ldr     x1, [sp, #16768]
+    0.43 :   407370: ldr     x0, [sp, #56]
+    0.00 :   407374: cmp     x1, x0
+    0.00 :   407378: b.cs    407474 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x418>  // b.hs, b.nlast
+         :            float dis = 1.0f - dists[i];
+    0.00 :   40737c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407380: add     x0, x0, #0xb0
+    0.00 :   407384: ldr     x1, [sp, #16768]
+    0.00 :   407388: bl      41094c <std::vector<float, std::allocator<float> >::operator[](unsigned long)>
+    0.00 :   40738c: ldr     s0, [x0]
+    0.00 :   407390: fmov    s1, #1.000000000000000000e+00
+    0.00 :   407394: fsub    s0, s1, s0
+    0.00 :   407398: add     x0, sp, #0x4, lsl #12
+    0.65 :   40739c: str     s0, [x0, #140]
+         :            if (coarse_q.size() < rerank_k || dis < coarse_q.top().first) {
+    0.00 :   4073a0: add     x0, sp, #0x4, lsl #12
+    0.00 :   4073a4: add     x0, x0, #0x90
+    0.00 :   4073a8: bl      40fc78 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::size() const>
+    0.05 :   4073ac: mov     x1, x0
+    0.19 :   4073b0: ldr     x0, [sp, #32]
+    0.00 :   4073b4: cmp     x0, x1
+    0.00 :   4073b8: b.hi    4073e0 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x384>  // b.pmore
+    0.16 :   4073bc: add     x0, sp, #0x4, lsl #12
+    0.00 :   4073c0: add     x0, x0, #0x90
+    0.11 :   4073c4: bl      40fd54 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::top() const>
+    0.00 :   4073c8: ldr     s1, [x0]
+    0.00 :   4073cc: add     x0, sp, #0x4, lsl #12
+    3.22 :   4073d0: ldr     s0, [x0, #140]
+    0.00 :   4073d4: fcmpe   s1, s0
+    0.00 :   4073d8: b.gt    4073e0 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x384>
+    0.00 :   4073dc: b       4073e8 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x38c>
+    0.00 :   4073e0: mov     w0, #0x1                        // #1
+    0.00 :   4073e4: b       4073ec <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x390>
+    2.38 :   4073e8: mov     w0, #0x0                        // #0
+    0.00 :   4073ec: cmp     w0, #0x0
+    0.00 :   4073f0: b.eq    407464 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x408>  // b.none
+         :            coarse_q.push({dis, (uint32_t)i});
+    0.00 :   4073f4: ldr     x0, [sp, #16768]
+    0.00 :   4073f8: add     x1, sp, #0x4, lsl #12
+    0.03 :   4073fc: str     w0, [x1, #228]
+    0.00 :   407400: add     x2, sp, #0x4, lsl #12
+    0.00 :   407404: add     x2, x2, #0xe4
+    0.00 :   407408: add     x1, sp, #0x4, lsl #12
+    0.00 :   40740c: add     x1, x1, #0x8c
+    0.00 :   407410: add     x0, sp, #0x4, lsl #12
+    0.00 :   407414: add     x0, x0, #0xd8
+    0.00 :   407418: bl      4101c4 <std::pair<float, unsigned int>::pair<float&, unsigned int, true>(float&, unsigned int&&)>
+    0.00 :   40741c: add     x1, sp, #0x4, lsl #12
+    0.00 :   407420: add     x1, x1, #0xd8
+    0.00 :   407424: add     x0, sp, #0x4, lsl #12
+    0.00 :   407428: add     x0, x0, #0x90
+    0.00 :   40742c: bl      40fcf4 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::push(std::pair<float, unsigned int>&&)>
+         :            if (coarse_q.size() > rerank_k) coarse_q.pop();
+    0.00 :   407430: add     x0, sp, #0x4, lsl #12
+    0.00 :   407434: add     x0, x0, #0x90
+    0.00 :   407438: bl      40fc78 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::size() const>
+    0.00 :   40743c: mov     x1, x0
+    0.00 :   407440: ldr     x0, [sp, #32]
+    0.00 :   407444: cmp     x0, x1
+    0.00 :   407448: cset    w0, cc  // cc = lo, ul, last
+    0.00 :   40744c: and     w0, w0, #0xff
+    0.00 :   407450: cmp     w0, #0x0
+    0.00 :   407454: b.eq    407464 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x408>  // b.none
+    0.00 :   407458: add     x0, sp, #0x4, lsl #12
+    0.00 :   40745c: add     x0, x0, #0x90
+    0.00 :   407460: bl      40fd70 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::pop()>
+         :            for (size_t i = 0; i < base_number; ++i) {
+    0.00 :   407464: ldr     x0, [sp, #16768]
+    0.00 :   407468: add     x0, x0, #0x1
+    0.00 :   40746c: str     x0, [sp, #16768]
+    0.00 :   407470: b       40736c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x310>
+         :            }
+         :            }
+         :
+         :            // ===== 阶段 3: 精排 (单线程) =====
+         :            std::priority_queue<std::pair<float, uint32_t>> fine_q;
+    0.00 :   407474: mov     x0, x19
+    0.00 :   407478: bl      40fbf0 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::priority_queue<std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, void>()>
+         :            while (!coarse_q.empty()) {
+    0.00 :   40747c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407480: add     x0, x0, #0x90
+    0.00 :   407484: bl      4103fc <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::empty() const>
+    0.00 :   407488: and     w0, w0, #0xff
+    0.00 :   40748c: eor     w0, w0, #0x1
+    0.00 :   407490: and     w0, w0, #0xff
+    0.00 :   407494: cmp     w0, #0x0
+    0.00 :   407498: b.eq    4075b0 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x554>  // b.none
+         :            uint32_t idx = coarse_q.top().second;
+    0.00 :   40749c: add     x0, sp, #0x4, lsl #12
+    0.00 :   4074a0: add     x0, x0, #0x90
+    0.00 :   4074a4: bl      40fd54 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::top() const>
+    0.00 :   4074a8: ldr     w0, [x0, #4]
+    0.00 :   4074ac: add     x1, sp, #0x4, lsl #12
+    0.00 :   4074b0: str     w0, [x1, #136]
+         :            coarse_q.pop();
+    0.00 :   4074b4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4074b8: add     x0, x0, #0x90
+    0.00 :   4074bc: bl      40fd70 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::pop()>
+         :            float exact_dis = 1.0f - pq_neon_ip(query, base + idx * vecdim, vecdim);
+    0.00 :   4074c0: add     x0, sp, #0x4, lsl #12
+    0.00 :   4074c4: ldr     w0, [x0, #136]
+    0.00 :   4074c8: mov     w1, w0
+    0.00 :   4074cc: ldr     x0, [sp, #48]
+    0.00 :   4074d0: mul     x0, x1, x0
+    0.00 :   4074d4: lsl     x0, x0, #2
+    0.00 :   4074d8: ldr     x1, [sp, #64]
+    0.00 :   4074dc: add     x0, x1, x0
+    0.00 :   4074e0: ldr     x2, [sp, #48]
+    0.00 :   4074e4: mov     x1, x0
+    0.00 :   4074e8: ldr     x0, [sp, #72]
+    0.00 :   4074ec: bl      402ea4 <pq_neon_ip(float const*, float const*, unsigned long)>
+    0.00 :   4074f0: fmov    s1, s0
+    0.00 :   4074f4: fmov    s0, #1.000000000000000000e+00
+    0.00 :   4074f8: fsub    s0, s0, s1
+    0.00 :   4074fc: add     x0, sp, #0x4, lsl #12
+    0.00 :   407500: str     s0, [x0, #132]
+         :            if (fine_q.size() < k || exact_dis < fine_q.top().first) {
+    0.00 :   407504: mov     x0, x19
+    0.00 :   407508: bl      40fc78 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::size() const>
+    0.00 :   40750c: mov     x1, x0
+    0.00 :   407510: ldr     x0, [sp, #40]
+    0.00 :   407514: cmp     x0, x1
+    0.00 :   407518: b.hi    40753c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x4e0>  // b.pmore
+    0.00 :   40751c: mov     x0, x19
+    0.00 :   407520: bl      40fd54 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::top() const>
+    0.00 :   407524: ldr     s1, [x0]
+    0.00 :   407528: add     x0, sp, #0x4, lsl #12
+    0.00 :   40752c: ldr     s0, [x0, #132]
+    0.00 :   407530: fcmpe   s1, s0
+    0.00 :   407534: b.gt    40753c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x4e0>
+    0.00 :   407538: b       407544 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x4e8>
+    0.00 :   40753c: mov     w0, #0x1                        // #1
+    0.00 :   407540: b       407548 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x4ec>
+    0.00 :   407544: mov     w0, #0x0                        // #0
+    0.00 :   407548: cmp     w0, #0x0
+    0.00 :   40754c: b.eq    40747c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x420>  // b.none
+         :            fine_q.push({exact_dis, idx});
+    0.00 :   407550: add     x2, sp, #0x4, lsl #12
+    0.00 :   407554: add     x2, x2, #0x88
+    0.00 :   407558: add     x1, sp, #0x4, lsl #12
+    0.00 :   40755c: add     x1, x1, #0x84
+    0.00 :   407560: add     x0, sp, #0x4, lsl #12
+    0.00 :   407564: add     x0, x0, #0xe8
+    0.00 :   407568: bl      410a04 <std::pair<float, unsigned int>::pair<float&, unsigned int&, true>(float&, unsigned int&)>
+    0.00 :   40756c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407570: add     x0, x0, #0xe8
+    0.00 :   407574: mov     x1, x0
+    0.00 :   407578: mov     x0, x19
+    0.00 :   40757c: bl      40fcf4 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::push(std::pair<float, unsigned int>&&)>
+         :            if (fine_q.size() > k) fine_q.pop();
+    0.00 :   407580: mov     x0, x19
+    0.00 :   407584: bl      40fc78 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::size() const>
+    0.00 :   407588: mov     x1, x0
+    0.00 :   40758c: ldr     x0, [sp, #40]
+    0.00 :   407590: cmp     x0, x1
+    0.00 :   407594: cset    w0, cc  // cc = lo, ul, last
+    0.00 :   407598: and     w0, w0, #0xff
+    0.00 :   40759c: cmp     w0, #0x0
+    0.00 :   4075a0: b.eq    40747c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x420>  // b.none
+    0.00 :   4075a4: mov     x0, x19
+    0.00 :   4075a8: bl      40fd70 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::pop()>
+         :            while (!coarse_q.empty()) {
+    0.00 :   4075ac: b       40747c <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x420>
+         :            }
+         :            }
+         :            return fine_q;
+    0.00 :   4075b0: nop
+         :            std::priority_queue<std::pair<float, uint32_t>> coarse_q;
+    0.00 :   4075b4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4075b8: add     x0, x0, #0x90
+    0.00 :   4075bc: bl      405330 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::~priority_queue()>
+         :            std::vector<float> dists(base_number, 0.0f);
+    0.00 :   4075c0: add     x0, sp, #0x4, lsl #12
+    0.00 :   4075c4: add     x0, x0, #0xb0
+    0.00 :   4075c8: bl      4107d4 <std::vector<float, std::allocator<float> >::~vector()>
+         :            return fine_q;
+    0.00 :   4075cc: b       407620 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x5c4>
+    0.00 :   4075d0: mov     x19, x0
+    0.00 :   4075d4: add     x0, sp, #0x4, lsl #12
+    0.00 :   4075d8: add     x0, x0, #0xd0
+    0.00 :   4075dc: bl      410744 <std::allocator<float>::~allocator()>
+    0.00 :   4075e0: mov     x0, x19
+    0.00 :   4075e4: bl      402720 <_Unwind_Resume@plt>
+    0.00 :   4075e8: mov     x20, x0
+    0.00 :   4075ec: mov     x0, x19
+    0.00 :   4075f0: bl      405330 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::~priority_queue()>
+    0.00 :   4075f4: mov     x19, x20
+    0.00 :   4075f8: b       407600 <pq_search_final_baseline(float*, float*, unsigned long, unsigned long, unsigned long, unsigned long)+0x5a4>
+         :            std::priority_queue<std::pair<float, uint32_t>> coarse_q;
+    0.00 :   4075fc: mov     x19, x0
+    0.00 :   407600: add     x0, sp, #0x4, lsl #12
+    0.00 :   407604: add     x0, x0, #0x90
+    0.00 :   407608: bl      405330 <std::priority_queue<std::pair<float, unsigned int>, std::vector<std::pair<float, unsigned int>, std::allocator<std::pair<float, unsigned int> > >, std::less<std::pair<float, unsigned int> > >::~priority_queue()>
+         :            std::vector<float> dists(base_number, 0.0f);
+    0.00 :   40760c: add     x0, sp, #0x4, lsl #12
+    0.00 :   407610: add     x0, x0, #0xb0
+    0.00 :   407614: bl      4107d4 <std::vector<float, std::allocator<float> >::~vector()>
+    0.00 :   407618: mov     x0, x19
+    0.00 :   40761c: bl      402720 <_Unwind_Resume@plt>
+         :            }
+    0.00 :   407620: mov     x0, x19
+    0.00 :   407624: ldp     x19, x20, [sp, #16]
+    0.00 :   407628: ldp     x29, x30, [sp]
+    0.00 :   40762c: mov     x12, #0x41c0                    // #16832
+    0.00 :   407630: add     sp, sp, x12
+    0.00 :   407634: ret

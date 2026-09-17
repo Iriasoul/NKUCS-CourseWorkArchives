@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1774784255 source:d:\codeblocksproject\bx01_1\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<windows.h>
+	<fstream>
+	<cstdlib>
+
+1775114999 source:c:\users\lenovo\desktop\并行程序设计\杂项\bx01_1\main.cpp
+	<iostream>
+	<string>
+	<windows.h>
+	<fstream>
+	<cstdlib>
+

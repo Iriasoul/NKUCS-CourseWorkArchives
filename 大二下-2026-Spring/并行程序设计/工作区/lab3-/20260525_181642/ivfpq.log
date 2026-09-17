@@ -1,0 +1,726 @@
+
+=== S10 --nprobe 4 --rerank_k 500 [run 1/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.783602
+Avg Latency: 299.935 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 4 --rerank_k 500 [run 2/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.783602
+Avg Latency: 303.038 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 4 --rerank_k 500 [run 3/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.783602
+Avg Latency: 276.689 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S13 --nprobe 4 --rerank_k 500 [run 1/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.794902
+Avg Latency: 341.891 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 4 --rerank_k 500 [run 2/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.795102
+Avg Latency: 349.147 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 4 --rerank_k 500 [run 3/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.793702
+Avg Latency: 348.461 us
+nlist = 256, nprobe = 4, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S10 --nprobe 8 --rerank_k 500 [run 1/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.865403
+Avg Latency: 399.847 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 8 --rerank_k 500 [run 2/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.865403
+Avg Latency: 389.418 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 8 --rerank_k 500 [run 3/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.865403
+Avg Latency: 366.528 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S13 --nprobe 8 --rerank_k 500 [run 1/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.885853
+Avg Latency: 527.219 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 8 --rerank_k 500 [run 2/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.886853
+Avg Latency: 528.359 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 8 --rerank_k 500 [run 3/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.886453
+Avg Latency: 525.035 us
+nlist = 256, nprobe = 8, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S10 --nprobe 16 --rerank_k 500 [run 1/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.910653
+Avg Latency: 510.484 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 16 --rerank_k 500 [run 2/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.910653
+Avg Latency: 481.931 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 16 --rerank_k 500 [run 3/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.910653
+Avg Latency: 482.331 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S13 --nprobe 16 --rerank_k 500 [run 1/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.940054
+Avg Latency: 887.702 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 16 --rerank_k 500 [run 2/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.938704
+Avg Latency: 883.709 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 16 --rerank_k 500 [run 3/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.936403
+Avg Latency: 799.369 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S10 --nprobe 32 --rerank_k 500 [run 1/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.931104
+Avg Latency: 648.343 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 32 --rerank_k 500 [run 2/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.931104
+Avg Latency: 659.307 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 32 --rerank_k 500 [run 3/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.931104
+Avg Latency: 654.308 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S13 --nprobe 32 --rerank_k 500 [run 1/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.961904
+Avg Latency: 1333.12 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 32 --rerank_k 500 [run 2/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.962554
+Avg Latency: 1227.65 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 32 --rerank_k 500 [run 3/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.958104
+Avg Latency: 1274.47 us
+nlist = 256, nprobe = 32, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S10 --nprobe 64 --rerank_k 500 [run 1/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.935904
+Avg Latency: 900.836 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 64 --rerank_k 500 [run 2/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.935904
+Avg Latency: 924.75 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S10 --nprobe 64 --rerank_k 500 [run 3/3] ===
+Running Strategy: 10  [Online: single-thread]
+Avg Recall: 0.935904
+Avg Latency: 894.763 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S13 --nprobe 64 --rerank_k 500 [run 1/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.968903
+Avg Latency: 2003.78 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 64 --rerank_k 500 [run 2/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.967153
+Avg Latency: 2779.02 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S13 --nprobe 64 --rerank_k 500 [run 3/3] ===
+Running Strategy: 13  [Online: single-thread]
+Avg Recall: 0.965553
+Avg Latency: 2478.64 us
+nlist = 256, nprobe = 64, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 1 [run 1/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 493.577 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 1 [run 2/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 537.984 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 1 [run 3/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 518.125 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 1 [run 1/3] ===
+Running Strategy: 12  [Online: Pthread, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 583.375 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 1 [run 2/3] ===
+Running Strategy: 12  [Online: Pthread, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 549.091 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 1 [run 3/3] ===
+Running Strategy: 12  [Online: Pthread, threads=1]
+Avg Recall: 0.910653
+Avg Latency: 607.531 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 1 [run 1/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=1]
+Avg Recall: 0.937104
+Avg Latency: 870.334 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 1 [run 2/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=1]
+Avg Recall: 0.935153
+Avg Latency: 886.996 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 1 [run 3/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=1]
+Avg Recall: 0.935454
+Avg Latency: 895.129 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 1 [run 1/3] ===
+Running Strategy: 15  [Online: Pthread, threads=1]
+Avg Recall: 0.938054
+Avg Latency: 958.266 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 1 [run 2/3] ===
+Running Strategy: 15  [Online: Pthread, threads=1]
+Avg Recall: 0.935854
+Avg Latency: 982.389 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 1 [run 3/3] ===
+Running Strategy: 15  [Online: Pthread, threads=1]
+Avg Recall: 0.934853
+Avg Latency: 977.492 us
+pthreads = 1
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 2 [run 1/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=2]
+Avg Recall: 0.942103
+Avg Latency: 404.853 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 2 [run 2/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=2]
+Avg Recall: 0.942203
+Avg Latency: 376.846 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 2 [run 3/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=2]
+Avg Recall: 0.942553
+Avg Latency: 377.763 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 2 [run 1/3] ===
+Running Strategy: 12  [Online: Pthread, threads=2]
+Avg Recall: 0.941853
+Avg Latency: 458.17 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 2 [run 2/3] ===
+Running Strategy: 12  [Online: Pthread, threads=2]
+Avg Recall: 0.942003
+Avg Latency: 497.69 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 2 [run 3/3] ===
+Running Strategy: 12  [Online: Pthread, threads=2]
+Avg Recall: 0.942153
+Avg Latency: 453.181 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 2 [run 1/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=2]
+Avg Recall: 0.953353
+Avg Latency: 705.208 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 2 [run 2/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=2]
+Avg Recall: 0.952403
+Avg Latency: 660.786 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 2 [run 3/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=2]
+Avg Recall: 0.953353
+Avg Latency: 620.421 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 2 [run 1/3] ===
+Running Strategy: 15  [Online: Pthread, threads=2]
+Avg Recall: 0.954103
+Avg Latency: 774.385 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 2 [run 2/3] ===
+Running Strategy: 15  [Online: Pthread, threads=2]
+Avg Recall: 0.954053
+Avg Latency: 683.474 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 2 [run 3/3] ===
+Running Strategy: 15  [Online: Pthread, threads=2]
+Avg Recall: 0.953503
+Avg Latency: 738.495 us
+pthreads = 2
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 4 [run 1/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=4]
+Avg Recall: 0.953753
+Avg Latency: 348.75 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 4 [run 2/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=4]
+Avg Recall: 0.953503
+Avg Latency: 366.194 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 4 [run 3/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=4]
+Avg Recall: 0.953803
+Avg Latency: 336.137 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 4 [run 1/3] ===
+Running Strategy: 12  [Online: Pthread, threads=4]
+Avg Recall: 0.953253
+Avg Latency: 438.633 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 4 [run 2/3] ===
+Running Strategy: 12  [Online: Pthread, threads=4]
+Avg Recall: 0.953703
+Avg Latency: 415.045 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 4 [run 3/3] ===
+Running Strategy: 12  [Online: Pthread, threads=4]
+Avg Recall: 0.953603
+Avg Latency: 429.58 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 4 [run 1/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=4]
+Avg Recall: 0.957553
+Avg Latency: 554.417 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 4 [run 2/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=4]
+Avg Recall: 0.957203
+Avg Latency: 472.219 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 4 [run 3/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=4]
+Avg Recall: 0.957503
+Avg Latency: 477.801 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 4 [run 1/3] ===
+Running Strategy: 15  [Online: Pthread, threads=4]
+Avg Recall: 0.957653
+Avg Latency: 532.431 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 4 [run 2/3] ===
+Running Strategy: 15  [Online: Pthread, threads=4]
+Avg Recall: 0.957003
+Avg Latency: 555.209 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 4 [run 3/3] ===
+Running Strategy: 15  [Online: Pthread, threads=4]
+Avg Recall: 0.957153
+Avg Latency: 701.229 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 8 [run 1/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=8]
+Avg Recall: 0.955153
+Avg Latency: 1349.07 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 8 [run 2/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=8]
+Avg Recall: 0.955453
+Avg Latency: 1362.31 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S11 --nprobe 16 --rerank_k 500 --omp 8 [run 3/3] ===
+Running Strategy: 11  [Online: OpenMP, threads=8]
+Avg Recall: 0.954903
+Avg Latency: 1478.49 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 8 [run 1/3] ===
+Running Strategy: 12  [Online: Pthread, threads=8]
+Avg Recall: 0.955303
+Avg Latency: 511.811 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 8 [run 2/3] ===
+Running Strategy: 12  [Online: Pthread, threads=8]
+Avg Recall: 0.955153
+Avg Latency: 440.65 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S12 --nprobe 16 --rerank_k 500 --pthreads 8 [run 3/3] ===
+Running Strategy: 12  [Online: Pthread, threads=8]
+Avg Recall: 0.954803
+Avg Latency: 545.349 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 1]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 8 [run 1/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=8]
+Avg Recall: 0.957903
+Avg Latency: 1018.15 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 8 [run 2/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=8]
+Avg Recall: 0.958053
+Avg Latency: 940.76 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S14 --nprobe 16 --rerank_k 500 --omp 8 [run 3/3] ===
+Running Strategy: 14  [Online: OpenMP, threads=8]
+Avg Recall: 0.957903
+Avg Latency: 1011.06 us
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 8 [run 1/3] ===
+Running Strategy: 15  [Online: Pthread, threads=8]
+Avg Recall: 0.957803
+Avg Latency: 653.049 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 8 [run 2/3] ===
+Running Strategy: 15  [Online: Pthread, threads=8]
+Avg Recall: 0.957503
+Avg Latency: 544.841 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+
+=== S15 --nprobe 16 --rerank_k 500 --pthreads 8 [run 3/3] ===
+Running Strategy: 15  [Online: Pthread, threads=8]
+Avg Recall: 0.957603
+Avg Latency: 484.102 us
+pthreads = 8
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+

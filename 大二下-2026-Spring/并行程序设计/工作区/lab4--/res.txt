@@ -1,0 +1,108 @@
+[s2410668@master_ubss1 ann]$ mpiexec -np 1 ./main
+Running Strategy: 1  P=1
+Avg Recall: 0.958303
+Avg Latency: 405.169 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 1  P=2
+Avg Recall: 0.961103
+Avg Latency: 202.652 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 1  P=4
+Avg Recall: 0.962853
+Avg Latency: 150.303 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 1  P=8
+Avg Recall: 0.968003
+Avg Latency: 249.281 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+
+
+
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 2  P=4
+Avg Recall: 0.964453
+Avg Latency: 138.626 us
+nlist = 256, nprobe = 16, part = cyclic, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 3  P=4
+Avg Recall: 0.962853
+Avg Latency: 132.421 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 3  P=8
+Avg Recall: 0.968003
+Avg Latency: 105.531 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+
+
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 6  P=4
+Avg Recall: 0.96285
+Avg Latency: 131.434 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 6  P=8
+Avg Recall: 0.968
+Avg Latency: 89.4505 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+
+
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 4  P=2
+Avg Recall: 0.961103
+Avg Latency: 165.738 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, omp_threads = 4
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 4  P=4
+Avg Recall: 0.962853
+Avg Latency: 525.991 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10, omp_threads = 2
+
+====================
+
+
+[s2410668@master_ubss1 ann]$ mpiexec -np 2 ./main
+Running Strategy: 5  P=2
+Avg Recall: 0.9611
+Avg Latency: 201.643 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 4 ./main
+Running Strategy: 5  P=4
+Avg Recall: 0.96285
+Avg Latency: 110.849 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+[s2410668@master_ubss1 ann]$ mpiexec -np 8 ./main
+Running Strategy: 5  P=8
+Avg Recall: 0.968
+Avg Latency: 63.6565 us
+nlist = 256, nprobe = 16, part = block, local_topk = 10
+
+====================
+

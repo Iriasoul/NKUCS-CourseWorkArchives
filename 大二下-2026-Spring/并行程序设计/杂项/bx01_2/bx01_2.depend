@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1774787245 source:d:\codeblocksproject\bx01_2\main.cpp
+	<iostream>
+	<string>
+	<windows.h>
+	<fstream>
+	<cstdlib>
+

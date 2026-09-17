@@ -1,0 +1,35 @@
+`timescale 1ns / 1ps
+
+// 8位无符号乘法器 (卷积乘算)
+module mult_8 (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    output wire [7:0] p
+);
+    assign p = a * b; 
+endmodule
+
+// 8位加法器 (卷积累加、池化求和)
+module adder_8 (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    output wire [7:0] sum
+);
+    assign sum = a + b;
+endmodule
+
+// ReLU 激活模块
+module relu (
+    input  wire [7:0] in_data,
+    output wire [7:0] out_data
+);
+    assign out_data = in_data; // 无符号数，大于零直接输出就行
+endmodule
+
+// 除以4除法器 (池化平均)
+module div_4 (
+    input  wire [9:0] in_data, // 考虑4个8位数相加，最大位宽为10位
+    output wire [7:0] out_data
+);
+    assign out_data = in_data / 4;
+endmodule

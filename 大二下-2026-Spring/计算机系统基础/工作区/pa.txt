@@ -1,0 +1,17 @@
+1.
+
+cd ~/ics2017/nemu
+bash runall.sh
+
+2.
+
+cd ~/ics2017/nexus-am/apps/hello
+make ARCH=x86-nemu run
+
+cd ~/ics2017/nexus-am/apps/typing
+make ARCH=x86-nemu run
+
+3. 
+
+cd ~/ics2017/nanos-lite
+make ARCH=x86-nemu run

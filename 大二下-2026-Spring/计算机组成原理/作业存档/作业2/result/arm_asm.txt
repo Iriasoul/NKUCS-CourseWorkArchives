@@ -1,0 +1,30 @@
+
+arm_dot：     文件格式 elf32-littlearm
+
+
+Disassembly of section .text:
+
+000100b8 <_start>:
+   100b8:	e59f0038 	ldr	r0, [pc, #56]	@ 100f8 <end_loop+0xc>
+   100bc:	e59f1038 	ldr	r1, [pc, #56]	@ 100fc <end_loop+0x10>
+   100c0:	e59f3038 	ldr	r3, [pc, #56]	@ 10100 <end_loop+0x14>
+   100c4:	e5933000 	ldr	r3, [r3]
+   100c8:	e3a02000 	mov	r2, #0
+
+000100cc <dot_product_loop>:
+   100cc:	e3530000 	cmp	r3, #0
+   100d0:	da000005 	ble	100ec <end_loop>
+   100d4:	e4904004 	ldr	r4, [r0], #4
+   100d8:	e4915004 	ldr	r5, [r1], #4
+   100dc:	e0060594 	mul	r6, r4, r5
+   100e0:	e0822006 	add	r2, r2, r6
+   100e4:	e2433001 	sub	r3, r3, #1
+   100e8:	eafffff7 	b	100cc <dot_product_loop>
+
+000100ec <end_loop>:
+   100ec:	e1a00002 	mov	r0, r2
+   100f0:	e3a07001 	mov	r7, #1
+   100f4:	ef000000 	svc	0x00000000
+   100f8:	00020104 	.word	0x00020104
+   100fc:	00020118 	.word	0x00020118
+   10100:	0002012c 	.word	0x0002012c

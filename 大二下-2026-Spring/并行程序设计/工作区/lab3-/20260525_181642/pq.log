@@ -1,0 +1,498 @@
+
+=== S3 --rerank_k 50 [run 1/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1108.69 us
+rerank_k = 50
+
+====================
+
+
+=== S3 --rerank_k 50 [run 2/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1108.77 us
+rerank_k = 50
+
+====================
+
+
+=== S3 --rerank_k 50 [run 3/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1118 us
+rerank_k = 50
+
+====================
+
+
+=== S4 --rerank_k 50 [run 1/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1143.52 us
+rerank_k = 50
+
+====================
+
+
+=== S4 --rerank_k 50 [run 2/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1141.2 us
+rerank_k = 50
+
+====================
+
+
+=== S4 --rerank_k 50 [run 3/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.5669
+Avg Latency: 1232.88 us
+rerank_k = 50
+
+====================
+
+
+=== S3 --rerank_k 100 [run 1/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1158.76 us
+rerank_k = 100
+
+====================
+
+
+=== S3 --rerank_k 100 [run 2/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1170.04 us
+rerank_k = 100
+
+====================
+
+
+=== S3 --rerank_k 100 [run 3/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1164.08 us
+rerank_k = 100
+
+====================
+
+
+=== S4 --rerank_k 100 [run 1/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1198.76 us
+rerank_k = 100
+
+====================
+
+
+=== S4 --rerank_k 100 [run 2/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1217.31 us
+rerank_k = 100
+
+====================
+
+
+=== S4 --rerank_k 100 [run 3/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.716652
+Avg Latency: 1185.58 us
+rerank_k = 100
+
+====================
+
+
+=== S3 --rerank_k 200 [run 1/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1264.28 us
+rerank_k = 200
+
+====================
+
+
+=== S3 --rerank_k 200 [run 2/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1253.28 us
+rerank_k = 200
+
+====================
+
+
+=== S3 --rerank_k 200 [run 3/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1316.31 us
+rerank_k = 200
+
+====================
+
+
+=== S4 --rerank_k 200 [run 1/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1312.37 us
+rerank_k = 200
+
+====================
+
+
+=== S4 --rerank_k 200 [run 2/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1291.77 us
+rerank_k = 200
+
+====================
+
+
+=== S4 --rerank_k 200 [run 3/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.839054
+Avg Latency: 1250.78 us
+rerank_k = 200
+
+====================
+
+
+=== S3 --rerank_k 500 [run 1/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1488.43 us
+rerank_k = 500
+
+====================
+
+
+=== S3 --rerank_k 500 [run 2/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1553.25 us
+rerank_k = 500
+
+====================
+
+
+=== S3 --rerank_k 500 [run 3/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1510.89 us
+rerank_k = 500
+
+====================
+
+
+=== S4 --rerank_k 500 [run 1/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1558.64 us
+rerank_k = 500
+
+====================
+
+
+=== S4 --rerank_k 500 [run 2/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1592.64 us
+rerank_k = 500
+
+====================
+
+
+=== S4 --rerank_k 500 [run 3/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.946104
+Avg Latency: 1590.81 us
+rerank_k = 500
+
+====================
+
+
+=== S3 --rerank_k 1000 [run 1/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 2029.77 us
+rerank_k = 1000
+
+====================
+
+
+=== S3 --rerank_k 1000 [run 2/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 1978.24 us
+rerank_k = 1000
+
+====================
+
+
+=== S3 --rerank_k 1000 [run 3/3] ===
+Running Strategy: 3  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 2083.52 us
+rerank_k = 1000
+
+====================
+
+
+=== S4 --rerank_k 1000 [run 1/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 1923.06 us
+rerank_k = 1000
+
+====================
+
+
+=== S4 --rerank_k 1000 [run 2/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 2074.22 us
+rerank_k = 1000
+
+====================
+
+
+=== S4 --rerank_k 1000 [run 3/3] ===
+Running Strategy: 4  [Online: single-thread]
+Avg Recall: 0.980602
+Avg Latency: 2028.93 us
+rerank_k = 1000
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 1 [run 1/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1577.44 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 1 [run 2/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1596.21 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 1 [run 3/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1595.84 us
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 1 [run 1/3] ===
+Running Strategy: 6  [Online: Pthread, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1556.05 us
+pthreads = 1
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 1 [run 2/3] ===
+Running Strategy: 6  [Online: Pthread, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1632.56 us
+pthreads = 1
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 1 [run 3/3] ===
+Running Strategy: 6  [Online: Pthread, threads=1]
+Avg Recall: 0.946104
+Avg Latency: 1577.13 us
+pthreads = 1
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 2 [run 1/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 935.867 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 2 [run 2/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 904.727 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 2 [run 3/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 950.496 us
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 2 [run 1/3] ===
+Running Strategy: 6  [Online: Pthread, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 1034.17 us
+pthreads = 2
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 2 [run 2/3] ===
+Running Strategy: 6  [Online: Pthread, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 1029.31 us
+pthreads = 2
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 2 [run 3/3] ===
+Running Strategy: 6  [Online: Pthread, threads=2]
+Avg Recall: 0.980452
+Avg Latency: 1058.46 us
+pthreads = 2
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 4 [run 1/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 620.128 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 4 [run 2/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 634.867 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 4 [run 3/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 649.701 us
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 4 [run 1/3] ===
+Running Strategy: 6  [Online: Pthread, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 754.074 us
+pthreads = 4
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 4 [run 2/3] ===
+Running Strategy: 6  [Online: Pthread, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 761.526 us
+pthreads = 4
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 4 [run 3/3] ===
+Running Strategy: 6  [Online: Pthread, threads=4]
+Avg Recall: 0.995001
+Avg Latency: 764.385 us
+pthreads = 4
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 8 [run 1/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1864.42 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 8 [run 2/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1857.91 us
+rerank_k = 500
+
+====================
+
+
+=== S5 --rerank_k 500 --omp 8 [run 3/3] ===
+Running Strategy: 5  [Online: OpenMP, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1808.93 us
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 8 [run 1/3] ===
+Running Strategy: 6  [Online: Pthread, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1148.23 us
+pthreads = 8
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 8 [run 2/3] ===
+Running Strategy: 6  [Online: Pthread, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1166.47 us
+pthreads = 8
+rerank_k = 500
+
+====================
+
+
+=== S6 --rerank_k 500 --pthreads 8 [run 3/3] ===
+Running Strategy: 6  [Online: Pthread, threads=8]
+Avg Recall: 0.99915
+Avg Latency: 1118.45 us
+pthreads = 8
+rerank_k = 500
+
+====================
+

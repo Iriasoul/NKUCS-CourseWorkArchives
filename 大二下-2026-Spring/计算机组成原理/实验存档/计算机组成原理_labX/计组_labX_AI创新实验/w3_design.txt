@@ -1,0 +1,139 @@
+`timescale 1ns / 1ps
+
+module mult_8_dsp (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    output wire [7:0] p
+);
+    (* use_dsp = "yes" *) wire [15:0] full;
+    assign full = a * b;
+    assign p = full[7:0];
+endmodule
+
+module adder_8_carry (
+    input  wire [7:0] a,
+    input  wire [7:0] b,
+    output wire [7:0] sum,
+    output wire       cout   // 进位输出（顶层可接溢出检测）
+);
+    // S = a XOR b，为 CARRY4 的传播（Propagate）输入
+    wire [7:0] s = a ^ b;
+ 
+    // 第一级 CARRY4：处理低4位 [3:0]
+    wire [3:0] co_low;
+    CARRY4 u_carry_low (
+        .CYINIT (1'b0   ),   // 初始进位为0
+        .CI     (1'b0   ),   // 级联进位输入（第一级固定为0）
+        .DI     (a[3:0] ),   // 生成（Generate）输入 = a
+        .S      (s[3:0] ),   // 传播（Propagate）输入 = a^b
+        .O      (sum[3:0]),  // 和输出
+        .CO     (co_low  )   // 进位输出，CO[3]传给下一级
+    );
+ 
+    // 第二级 CARRY4：处理高4位 [7:4]
+    wire [3:0] co_high;
+    CARRY4 u_carry_high (
+        .CYINIT (1'b0      ),
+        .CI     (co_low[3] ),  // 低4位的进位输出级联至此
+        .DI     (a[7:4]    ),
+        .S      (s[7:4]    ),
+        .O      (sum[7:4]  ),
+        .CO     (co_high   )
+    );
+ 
+    assign cout = co_high[3];  // 最终进位（溢出标志）
+endmodule
+
+// 优化点1：使用加法树架构的卷积单元，将逻辑层级从8层降至4层
+module conv3x3_tree_unit(
+    input  wire [71:0] pixels,
+    input  wire [71:0] weights,
+    output wire [7:0]  conv_out
+);
+    wire [7:0] p[0:8], w[0:8], m[0:8];
+    genvar i;
+    generate
+        for (i = 0; i < 9; i = i + 1) begin : MULT_GEN
+            assign p[i] = pixels[i*8 +: 8];
+            assign w[i] = weights[i*8 +: 8];
+            // 乘法操作
+            mult_8_dsp u_m (.a(p[i]), .b(w[i]), .p(m[i]));
+        end
+    endgenerate
+
+    // 加法树（Adder Tree）实现并行累加
+    wire [7:0] s1_0, s1_1, s1_2, s1_3;
+    wire [7:0] s2_0, s2_1;
+    wire [7:0] s3_0;
+    wire [7:0] sum;
+    
+    adder_8_carry u_add1 (.a(m[0]), .b(m[1]), .sum(s1_0));
+    adder_8_carry u_add2 (.a(m[2]), .b(m[3]), .sum(s1_1));
+    adder_8_carry u_add3 (.a(m[4]), .b(m[5]), .sum(s1_2));
+    adder_8_carry u_add4 (.a(m[6]), .b(m[7]), .sum(s1_3));
+    
+    adder_8_carry u_add5 (.a(s1_0), .b(s1_1), .sum(s2_0));
+    adder_8_carry u_add6 (.a(s1_2), .b(s1_3), .sum(s2_1));
+    
+    adder_8_carry u_add7 (.a(s2_0), .b(s2_1), .sum(s3_0));
+    adder_8_carry u_add8 (.a(s3_0), .b(m[8]), .sum(sum));
+
+    // 截断输出（ReLU逻辑：由于输入均为正，累加后直接截断低8位，若溢出需在实际工程中处理，此处按实验要求保留低8位）
+    assign conv_out = (sum > 255) ? 8'd255 : sum[7:0];
+endmodule
+
+// 优化点2：使用移位运算替换除法
+module div_4_shift (
+    input  wire [9:0] in_data, 
+    output wire [7:0] out_data
+);
+    // 右移2位等效于除以4，减少LUT逻辑资源
+    assign out_data = (in_data >> 2);
+endmodule
+
+module pool2x2_avg_shift(
+    input  wire [7:0] p1, p2, p3, p4,
+    output wire [7:0] pool_out
+);
+    wire [9:0] sum = p1 + p2 + p3 + p4;
+    
+    div_4_shift u_div (.in_data(sum), .out_data(pool_out));
+endmodule
+
+// 顶层优化模块
+module cnn_core_top_opt(
+    input  wire [199:0] img_5x5,
+    input  wire [71:0]  weight_3x3,
+    output wire [31:0]  out_2x2
+);
+    wire [7:0] img[0:24];
+    genvar k;
+    generate
+        for (k = 0; k < 25; k = k + 1) begin : IMG_UNPACK
+            assign img[k] = img_5x5[k*8 +: 8];
+        end
+    endgenerate
+
+    // 定义卷积中间结果
+    wire [7:0] c[0:8];
+
+    // 实例化9个优化卷积单元 (对应滑动窗口)
+    conv3x3_tree_unit u_c0({img[12],img[11],img[10],img[7],img[6],img[5],img[2],img[1],img[0]}, weight_3x3, c[0]);
+    conv3x3_tree_unit u_c1({img[13],img[12],img[11],img[8],img[7],img[6],img[3],img[2],img[1]}, weight_3x3, c[1]);
+    conv3x3_tree_unit u_c2({img[14],img[13],img[12],img[9],img[8],img[7],img[4],img[3],img[2]}, weight_3x3, c[2]);
+    conv3x3_tree_unit u_c3({img[17],img[16],img[15],img[12],img[11],img[10],img[7],img[6],img[5]}, weight_3x3, c[3]);
+    conv3x3_tree_unit u_c4({img[18],img[17],img[16],img[13],img[12],img[11],img[8],img[7],img[6]}, weight_3x3, c[4]);
+    conv3x3_tree_unit u_c5({img[19],img[18],img[17],img[14],img[13],img[12],img[9],img[8],img[7]}, weight_3x3, c[5]);
+    conv3x3_tree_unit u_c6({img[22],img[21],img[20],img[17],img[16],img[15],img[12],img[11],img[10]}, weight_3x3, c[6]);
+    conv3x3_tree_unit u_c7({img[23],img[22],img[21],img[18],img[17],img[16],img[13],img[12],img[11]}, weight_3x3, c[7]);
+    conv3x3_tree_unit u_c8({img[24],img[23],img[22],img[19],img[18],img[17],img[14],img[13],img[12]}, weight_3x3, c[8]);
+
+    // 实例化4个优化池化单元
+    wire [7:0] f[0:3];
+    pool2x2_avg_shift u_p0(c[0], c[1], c[3], c[4], f[0]);
+    pool2x2_avg_shift u_p1(c[1], c[2], c[4], c[5], f[1]);
+    pool2x2_avg_shift u_p2(c[3], c[4], c[6], c[7], f[2]);
+    pool2x2_avg_shift u_p3(c[4], c[5], c[7], c[8], f[3]);
+
+    assign out_2x2 = {f[3], f[2], f[1], f[0]};
+endmodule

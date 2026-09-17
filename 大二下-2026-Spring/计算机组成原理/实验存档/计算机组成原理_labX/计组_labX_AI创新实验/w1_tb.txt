@@ -1,0 +1,28 @@
+`timescale 1ns / 1ps
+
+module tb_week1();
+    reg [7:0] a, b;
+    wire [7:0] p_out, sum_out, relu_out;
+    reg [9:0] pool_sum;
+    wire [7:0] div_out;
+
+    // 连接模块
+    mult_8 u_mult (.a(a), .b(b), .p(p_out));
+    adder_8 u_add (.a(a), .b(b), .sum(sum_out));
+    relu u_relu (.in_data(a), .out_data(relu_out));
+    div_4 u_div (.in_data(pool_sum), .out_data(div_out));
+
+    initial begin
+        // test1
+        a = 8'd10; b = 8'd5; pool_sum = 10'd100;
+        #20;
+        $display("Test 1 - Mult: %d, Add: %d, ReLU: %d, Div4: %d", p_out, sum_out, relu_out, div_out);
+        
+        // test2
+        a = 8'd25; b = 8'd2; pool_sum = 10'd200;
+        #20;
+        $display("Test 2 - Mult: %d, Add: %d, ReLU: %d, Div4: %d", p_out, sum_out, relu_out, div_out);
+        
+        $finish;
+    end
+endmodule

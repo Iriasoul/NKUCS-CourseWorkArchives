@@ -1,0 +1,420 @@
+
+=== S16 --ef 16 [run 1/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.871254
+Avg Latency: 158.275 us
+ef_search = 16
+
+====================
+
+
+=== S16 --ef 16 [run 2/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.875054
+Avg Latency: 187.783 us
+ef_search = 16
+
+====================
+
+
+=== S16 --ef 16 [run 3/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.876103
+Avg Latency: 252.868 us
+ef_search = 16
+
+====================
+
+
+=== S17 --ef 16 --omp 4 [run 1/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 503.596 us
+ef_search = 16
+
+====================
+
+
+=== S17 --ef 16 --omp 4 [run 2/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 341.68 us
+ef_search = 16
+
+====================
+
+
+=== S17 --ef 16 --omp 4 [run 3/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 463.377 us
+ef_search = 16
+
+====================
+
+
+=== S18 --ef 16 --pthreads 4 [run 1/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 564.886 us
+pthreads = 4
+ef_search = 16
+
+====================
+
+
+=== S18 --ef 16 --pthreads 4 [run 2/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 521.196 us
+pthreads = 4
+ef_search = 16
+
+====================
+
+
+=== S18 --ef 16 --pthreads 4 [run 3/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 499.241 us
+pthreads = 4
+ef_search = 16
+
+====================
+
+
+=== S16 --ef 32 [run 1/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.946954
+Avg Latency: 253.707 us
+ef_search = 32
+
+====================
+
+
+=== S16 --ef 32 [run 2/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.947403
+Avg Latency: 262.703 us
+ef_search = 32
+
+====================
+
+
+=== S16 --ef 32 [run 3/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.946754
+Avg Latency: 273.387 us
+ef_search = 32
+
+====================
+
+
+=== S17 --ef 32 --omp 4 [run 1/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 492.103 us
+ef_search = 32
+
+====================
+
+
+=== S17 --ef 32 --omp 4 [run 2/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 291.611 us
+ef_search = 32
+
+====================
+
+
+=== S17 --ef 32 --omp 4 [run 3/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 308.426 us
+ef_search = 32
+
+====================
+
+
+=== S18 --ef 32 --pthreads 4 [run 1/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 665.146 us
+pthreads = 4
+ef_search = 32
+
+====================
+
+
+=== S18 --ef 32 --pthreads 4 [run 2/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 557.539 us
+pthreads = 4
+ef_search = 32
+
+====================
+
+
+=== S18 --ef 32 --pthreads 4 [run 3/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 585.596 us
+pthreads = 4
+ef_search = 32
+
+====================
+
+
+=== S16 --ef 64 [run 1/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.981102
+Avg Latency: 368.492 us
+ef_search = 64
+
+====================
+
+
+=== S16 --ef 64 [run 2/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.980852
+Avg Latency: 576.711 us
+ef_search = 64
+
+====================
+
+
+=== S16 --ef 64 [run 3/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.980302
+Avg Latency: 468.066 us
+ef_search = 64
+
+====================
+
+
+=== S17 --ef 64 --omp 4 [run 1/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 524.226 us
+ef_search = 64
+
+====================
+
+
+=== S17 --ef 64 --omp 4 [run 2/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 683.11 us
+ef_search = 64
+
+====================
+
+
+=== S17 --ef 64 --omp 4 [run 3/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 443.13 us
+ef_search = 64
+
+====================
+
+
+=== S18 --ef 64 --pthreads 4 [run 1/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 890.946 us
+pthreads = 4
+ef_search = 64
+
+====================
+
+
+=== S18 --ef 64 --pthreads 4 [run 2/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 750.748 us
+pthreads = 4
+ef_search = 64
+
+====================
+
+
+=== S18 --ef 64 --pthreads 4 [run 3/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 619.457 us
+pthreads = 4
+ef_search = 64
+
+====================
+
+
+=== S16 --ef 128 [run 1/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.995151
+Avg Latency: 946.906 us
+ef_search = 128
+
+====================
+
+
+=== S16 --ef 128 [run 2/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.995201
+Avg Latency: 805.652 us
+ef_search = 128
+
+====================
+
+
+=== S16 --ef 128 [run 3/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.995701
+Avg Latency: 755.221 us
+ef_search = 128
+
+====================
+
+
+=== S17 --ef 128 --omp 4 [run 1/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 413.905 us
+ef_search = 128
+
+====================
+
+
+=== S17 --ef 128 --omp 4 [run 2/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 335.554 us
+ef_search = 128
+
+====================
+
+
+=== S17 --ef 128 --omp 4 [run 3/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 622.125 us
+ef_search = 128
+
+====================
+
+
+=== S18 --ef 128 --pthreads 4 [run 1/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 593.287 us
+pthreads = 4
+ef_search = 128
+
+====================
+
+
+=== S18 --ef 128 --pthreads 4 [run 2/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 790.359 us
+pthreads = 4
+ef_search = 128
+
+====================
+
+
+=== S18 --ef 128 --pthreads 4 [run 3/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 838.802 us
+pthreads = 4
+ef_search = 128
+
+====================
+
+
+=== S16 --ef 200 [run 1/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.99785
+Avg Latency: 1183.53 us
+ef_search = 200
+
+====================
+
+
+=== S16 --ef 200 [run 2/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.99785
+Avg Latency: 1187.55 us
+ef_search = 200
+
+====================
+
+
+=== S16 --ef 200 [run 3/3] ===
+Running Strategy: 16  [Online: single-thread]
+Avg Recall: 0.99795
+Avg Latency: 1170.22 us
+ef_search = 200
+
+====================
+
+
+=== S17 --ef 200 --omp 4 [run 1/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 418.163 us
+ef_search = 200
+
+====================
+
+
+=== S17 --ef 200 --omp 4 [run 2/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 495.187 us
+ef_search = 200
+
+====================
+
+
+=== S17 --ef 200 --omp 4 [run 3/3] ===
+Running Strategy: 17  [Online: OpenMP, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 431.847 us
+ef_search = 200
+
+====================
+
+
+=== S18 --ef 200 --pthreads 4 [run 1/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 671.116 us
+pthreads = 4
+ef_search = 200
+
+====================
+
+
+=== S18 --ef 200 --pthreads 4 [run 2/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 669.76 us
+pthreads = 4
+ef_search = 200
+
+====================
+
+
+=== S18 --ef 200 --pthreads 4 [run 3/3] ===
+Running Strategy: 18  [Online: Pthread, threads=4]
+Avg Recall: 0.99635
+Avg Latency: 845.606 us
+pthreads = 4
+ef_search = 200
+
+====================
+

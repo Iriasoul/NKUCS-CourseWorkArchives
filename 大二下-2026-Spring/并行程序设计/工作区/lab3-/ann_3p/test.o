@@ -1,0 +1,9 @@
+Running Strategy: 15  [Online: Pthread, threads=4]
+Avg Recall: 0.957453
+Avg Latency: 554.878 us
+pthreads = 4
+nlist = 256, nprobe = 16, rerank_k = 500 [IVF-PQ method 2]
+
+====================
+
+Authorized users only. All activities may be monitored and reported.

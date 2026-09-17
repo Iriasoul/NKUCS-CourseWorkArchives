@@ -1,0 +1,98 @@
+`timescale 1ns / 1ps
+
+// 3x3卷积单元
+module conv3x3_unit (
+    input  wire [71:0] pixels,  // 9个像素 {p9..p1}
+    input  wire [71:0] weights, // 9个权重 {w9..w1}
+    output wire [7:0]  conv_out
+);
+    wire [7:0] p[0:8], w[0:8], mult_res[0:8];
+    genvar i;
+    generate
+        for (i = 0; i < 9; i = i + 1) begin : MAC
+            assign p[i] = pixels[(i*8+7) : i*8];
+            assign w[i] = weights[(i*8+7) : i*8];
+            mult_8 u_m (.a(p[i]), .b(w[i]), .p(mult_res[i]));
+        end
+    endgenerate    
+    
+    // 串行相加
+    wire [7:0] sum1, sum2, sum3, sum4, sum5, sum6, sum7, sum8;
+    adder_8 u_add1 (.a(mult_res[0]), .b(mult_res[1]), .sum(sum1));
+    adder_8 u_add2 (.a(sum1),        .b(mult_res[2]), .sum(sum2));
+    adder_8 u_add3 (.a(sum2),        .b(mult_res[3]), .sum(sum3));
+    adder_8 u_add4 (.a(sum3),        .b(mult_res[4]), .sum(sum4));
+    adder_8 u_add5 (.a(sum4),        .b(mult_res[5]), .sum(sum5));
+    adder_8 u_add6 (.a(sum5),        .b(mult_res[6]), .sum(sum6));
+    adder_8 u_add7 (.a(sum6),        .b(mult_res[7]), .sum(sum7));
+    adder_8 u_add8 (.a(sum7),        .b(mult_res[8]), .sum(sum8));
+    
+    assign conv_out = sum8; 
+endmodule
+
+
+// 2x2平均池化单元集成
+module pool2x2_unit (
+    input  wire [7:0] p1, p2, p3, p4,
+    output wire [7:0] pool_out
+);
+    wire [9:0] sum = p1 + p2 + p3 + p4;
+    div_4 u_div (.in_data(sum), .out_data(pool_out));
+endmodule
+
+// 全链路系统顶层模块
+module cnn_core_top (
+    input  wire [199:0] img_5x5,   // 25个8位像素
+    input  wire [71:0]  weight_3x3,// 9个8位权重
+    output wire [31:0]  out_2x2    // 4个8位特征输出
+);
+    wire [7:0] img [0:24];
+    genvar k;
+    generate
+        for (k = 0; k < 25; k = k + 1) begin : UNPACK
+            assign img[k] = img_5x5[(k*8+7) : k*8];
+        end
+    endgenerate
+
+    wire [7:0] conv_map [0:8], relu_map [0:8], final_out [0:3];
+    
+    // 提取9个3x3窗口进行卷积
+    wire [71:0] win_0 = {img[12],img[11],img[10], img[7],img[6],img[5], img[2],img[1],img[0]};
+    wire [71:0] win_1 = {img[13],img[12],img[11], img[8],img[7],img[6], img[3],img[2],img[1]};
+    wire [71:0] win_2 = {img[14],img[13],img[12], img[9],img[8],img[7], img[4],img[3],img[2]};
+    wire [71:0] win_3 = {img[17],img[16],img[15], img[12],img[11],img[10], img[7],img[6],img[5]};
+    wire [71:0] win_4 = {img[18],img[17],img[16], img[13],img[12],img[11], img[8],img[7],img[6]};
+    wire [71:0] win_5 = {img[19],img[18],img[17], img[14],img[13],img[12], img[9],img[8],img[7]};
+    wire [71:0] win_6 = {img[22],img[21],img[20], img[17],img[16],img[15], img[12],img[11],img[10]};
+    wire [71:0] win_7 = {img[23],img[22],img[21], img[18],img[17],img[16], img[13],img[12],img[11]};
+    wire [71:0] win_8 = {img[24],img[23],img[22], img[19],img[18],img[17], img[14],img[13],img[12]};
+    
+    // 卷积单元
+    conv3x3_unit u_conv_0 (.pixels(win_0), .weights(weight_3x3), .conv_out(conv_map[0]));
+    conv3x3_unit u_conv_1 (.pixels(win_1), .weights(weight_3x3), .conv_out(conv_map[1]));
+    conv3x3_unit u_conv_2 (.pixels(win_2), .weights(weight_3x3), .conv_out(conv_map[2]));
+    conv3x3_unit u_conv_3 (.pixels(win_3), .weights(weight_3x3), .conv_out(conv_map[3]));
+    conv3x3_unit u_conv_4 (.pixels(win_4), .weights(weight_3x3), .conv_out(conv_map[4]));
+    conv3x3_unit u_conv_5 (.pixels(win_5), .weights(weight_3x3), .conv_out(conv_map[5]));
+    conv3x3_unit u_conv_6 (.pixels(win_6), .weights(weight_3x3), .conv_out(conv_map[6]));
+    conv3x3_unit u_conv_7 (.pixels(win_7), .weights(weight_3x3), .conv_out(conv_map[7]));
+    conv3x3_unit u_conv_8 (.pixels(win_8), .weights(weight_3x3), .conv_out(conv_map[8]));
+
+    // relu层
+    relu u_relu_0 (.in_data(conv_map[0]), .out_data(relu_map[0]));
+    relu u_relu_1 (.in_data(conv_map[1]), .out_data(relu_map[1]));
+    relu u_relu_2 (.in_data(conv_map[2]), .out_data(relu_map[2]));
+    relu u_relu_3 (.in_data(conv_map[3]), .out_data(relu_map[3]));
+    relu u_relu_4 (.in_data(conv_map[4]), .out_data(relu_map[4]));
+    relu u_relu_5 (.in_data(conv_map[5]), .out_data(relu_map[5]));
+    relu u_relu_6 (.in_data(conv_map[6]), .out_data(relu_map[6]));
+    relu u_relu_7 (.in_data(conv_map[7]), .out_data(relu_map[7]));
+    relu u_relu_8 (.in_data(conv_map[8]), .out_data(relu_map[8]));
+
+    // 组装池化输出
+    pool2x2_unit u_pool_0 (.p1(relu_map[0]), .p2(relu_map[1]), .p3(relu_map[3]), .p4(relu_map[4]), .pool_out(final_out[0]));
+    pool2x2_unit u_pool_1 (.p1(relu_map[1]), .p2(relu_map[2]), .p3(relu_map[4]), .p4(relu_map[5]), .pool_out(final_out[1]));
+    pool2x2_unit u_pool_2 (.p1(relu_map[3]), .p2(relu_map[4]), .p3(relu_map[6]), .p4(relu_map[7]), .pool_out(final_out[2]));
+    pool2x2_unit u_pool_3 (.p1(relu_map[4]), .p2(relu_map[5]), .p3(relu_map[7]), .p4(relu_map[8]), .pool_out(final_out[3]));
+    assign out_2x2 = {final_out[3], final_out[2], final_out[1], final_out[0]};
+endmodule

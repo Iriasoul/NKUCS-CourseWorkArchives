@@ -1,0 +1,83 @@
+PQyouhua
+
+k=500
+m  = 4
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.796402
+Avg Latency: 991.965 us
+
+
+m = 8
+k = 500
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.944404
+Avg Latency: 1497.56 us
+
+
+***
+修改后：
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.944404
+Avg Latency: 1567.56 us
+
+
+***
+
+16,500
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.994351
+Avg Latency: 2592.87 us
+
+32, 500
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.99825
+Avg Latency: 5252.66 us
+
+
+//-----------------------------------------------------------------------------------
+
+8,250
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.872104
+Avg Latency: 1323.58 us
+
+8, 750
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.969203
+Avg Latency: 1716.47 us
+
+8, 1000
+
+load data /anndata/DEEP100K.query.fbin
+load data /anndata/DEEP100K.gt.query.100k.top100.bin
+load data /anndata/DEEP100K.base.100k.fbin
+Running Strategy: 4
+Avg Recall: 0.980252
+Avg Latency: 1960.57 us

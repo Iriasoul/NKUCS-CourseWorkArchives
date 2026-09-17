@@ -1,0 +1,31 @@
+
+riscv_dot：     文件格式 elf64-littleriscv
+
+
+Disassembly of section .text:
+
+000000000001017c <_start>:
+   1017c:	00002417          	auipc	s0,0x2
+   10180:	e5c43403          	ld	s0,-420(s0) # 11fd8 <_GLOBAL_OFFSET_TABLE_+0x8>
+   10184:	00002497          	auipc	s1,0x2
+   10188:	e5c4b483          	ld	s1,-420(s1) # 11fe0 <_GLOBAL_OFFSET_TABLE_+0x10>
+   1018c:	00002297          	auipc	t0,0x2
+   10190:	e5c2b283          	ld	t0,-420(t0) # 11fe8 <_GLOBAL_OFFSET_TABLE_+0x18>
+   10194:	0002a903          	lw	s2,0(t0)
+   10198:	4981                	li	s3,0
+
+000000000001019a <dot_product_loop>:
+   1019a:	00090d63          	beqz	s2,101b4 <end_loop>
+   1019e:	00042303          	lw	t1,0(s0)
+   101a2:	0004a383          	lw	t2,0(s1)
+   101a6:	02730e33          	mul	t3,t1,t2
+   101aa:	99f2                	add	s3,s3,t3
+   101ac:	0411                	addi	s0,s0,4
+   101ae:	0491                	addi	s1,s1,4
+   101b0:	197d                	addi	s2,s2,-1
+   101b2:	b7e5                	j	1019a <dot_product_loop>
+
+00000000000101b4 <end_loop>:
+   101b4:	854e                	mv	a0,s3
+   101b6:	05d00893          	li	a7,93
+   101ba:	00000073          	ecall

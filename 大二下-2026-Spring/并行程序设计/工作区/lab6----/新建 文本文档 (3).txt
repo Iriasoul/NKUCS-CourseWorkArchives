@@ -1,0 +1,9 @@
+
+  编译：  cmd //c build.bat
+  运行：  main.exe <strategy> [data_dir] [p1] [p2] [p3] [p4] [p5]
+           S0    : (无)
+           S1    : p1=threads
+           S2/S4 : p1=batch_B
+           S3    : p1=threads
+           S5    : p1=batch_B p2=threads p3=nprobe p4=gpu_algo(0|1) p5=rerank_lsh
+           S6    : p1=gpu_algo p2=gpu_frac p3=nprobe p4=threads

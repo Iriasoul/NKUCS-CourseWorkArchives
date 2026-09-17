@@ -1,0 +1,648 @@
+
+=== S7 --nprobe 4 [run 1/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.800152
+Avg Latency: 173.967 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S7 --nprobe 4 [run 2/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.800152
+Avg Latency: 148.224 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S7 --nprobe 4 [run 3/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.800152
+Avg Latency: 123.636 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S7 --nprobe 8 [run 1/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.898553
+Avg Latency: 368.056 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S7 --nprobe 8 [run 2/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.898553
+Avg Latency: 346.392 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S7 --nprobe 8 [run 3/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.898553
+Avg Latency: 333.371 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S7 --nprobe 16 [run 1/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.958303
+Avg Latency: 529.201 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S7 --nprobe 16 [run 2/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.958303
+Avg Latency: 448.027 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S7 --nprobe 16 [run 3/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.958303
+Avg Latency: 462.496 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S7 --nprobe 32 [run 1/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.987552
+Avg Latency: 1043.14 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S7 --nprobe 32 [run 2/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.987552
+Avg Latency: 820.24 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S7 --nprobe 32 [run 3/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.987552
+Avg Latency: 1074.12 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S7 --nprobe 64 [run 1/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.9974
+Avg Latency: 2306.81 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S7 --nprobe 64 [run 2/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.9974
+Avg Latency: 2336.67 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S7 --nprobe 64 [run 3/3] ===
+Running Strategy: 7  [Online: single-thread]
+Avg Recall: 0.9974
+Avg Latency: 2146.96 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S8 --nprobe 16 --omp 1 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 591.966 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 1 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 569.581 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 1 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 569.042 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 1 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 671.435 us
+pthreads = 1
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 1 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 649.214 us
+pthreads = 1
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 1 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=1]
+Avg Recall: 0.958303
+Avg Latency: 629.122 us
+pthreads = 1
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 2 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 379.983 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 2 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 374.847 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 2 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 365.284 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 2 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 360.316 us
+pthreads = 2
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 2 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 355.82 us
+pthreads = 2
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 2 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=2]
+Avg Recall: 0.958303
+Avg Latency: 374.418 us
+pthreads = 2
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 229.383 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 232.003 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 228.565 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 275.872 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 284.581 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 294.225 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 8 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 676.336 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 8 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 611.253 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 8 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 620.188 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 8 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 278.658 us
+pthreads = 8
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 8 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 270.456 us
+pthreads = 8
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 8 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=8]
+Avg Recall: 0.958303
+Avg Latency: 259.505 us
+pthreads = 8
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 4 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 96.7765 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S8 --nprobe 4 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 102.837 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S8 --nprobe 4 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 100.508 us
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S9 --nprobe 4 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 153.923 us
+pthreads = 4
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S9 --nprobe 4 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 167.163 us
+pthreads = 4
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S9 --nprobe 4 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.800152
+Avg Latency: 138.711 us
+pthreads = 4
+nlist = 256, nprobe = 4
+
+====================
+
+
+=== S8 --nprobe 8 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 531.302 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S8 --nprobe 8 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 127.346 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S8 --nprobe 8 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 133.458 us
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S9 --nprobe 8 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 199.394 us
+pthreads = 4
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S9 --nprobe 8 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 195.413 us
+pthreads = 4
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S9 --nprobe 8 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.898553
+Avg Latency: 209.503 us
+pthreads = 4
+nlist = 256, nprobe = 8
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 830.042 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 850.982 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 16 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 206.491 us
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 300.047 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 299.997 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S9 --nprobe 16 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.958303
+Avg Latency: 291.718 us
+pthreads = 4
+nlist = 256, nprobe = 16
+
+====================
+
+
+=== S8 --nprobe 32 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 380.605 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S8 --nprobe 32 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 1062.66 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S8 --nprobe 32 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 1060.21 us
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S9 --nprobe 32 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 523.19 us
+pthreads = 4
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S9 --nprobe 32 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 477.495 us
+pthreads = 4
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S9 --nprobe 32 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.987552
+Avg Latency: 521.586 us
+pthreads = 4
+nlist = 256, nprobe = 32
+
+====================
+
+
+=== S8 --nprobe 64 --omp 4 [run 1/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 732.141 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S8 --nprobe 64 --omp 4 [run 2/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 679.603 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S8 --nprobe 64 --omp 4 [run 3/3] ===
+Running Strategy: 8  [Online: OpenMP, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 665.359 us
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S9 --nprobe 64 --pthreads 4 [run 1/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 825.598 us
+pthreads = 4
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S9 --nprobe 64 --pthreads 4 [run 2/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 813.935 us
+pthreads = 4
+nlist = 256, nprobe = 64
+
+====================
+
+
+=== S9 --nprobe 64 --pthreads 4 [run 3/3] ===
+Running Strategy: 9  [Online: Pthread, threads=4]
+Avg Recall: 0.9974
+Avg Latency: 1353 us
+pthreads = 4
+nlist = 256, nprobe = 64
+
+====================
+
